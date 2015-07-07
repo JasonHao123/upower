@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://WEB-INF/jsp.apache.org/dtds/WEB-INF/jsp-config_2_0.dtd">
+<tiles-definitions>
+
+  <definition name="base.definition"
+    template="/WEB-INF/jsp/layout/layout.jsp">
+    <put-attribute name="title" value="base def" />
+    <put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />  
+    <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+  </definition>
+
+</tiles-definitions>

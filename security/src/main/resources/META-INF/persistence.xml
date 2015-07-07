@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="SecurityPU" transaction-type="JTA">
+		<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source> 
+    <class>jason.app.weixin.security.entity.UserImpl</class>
+    <class>jason.app.weixin.security.entity.RoleImpl</class>
+    <class>jason.app.weixin.security.entity.AclClassImpl</class>
+    <class>jason.app.weixin.security.entity.AclEntryImpl</class>
+    <class>jason.app.weixin.security.entity.AclObjectIdentityImpl</class>
+    <class>jason.app.weixin.security.entity.AclSidImpl</class>
+    <class>jason.app.weixin.security.entity.RememberMeTokenImpl</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+		</properties>
+	</persistence-unit>
+  
+</persistence>

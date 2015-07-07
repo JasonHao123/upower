@@ -1,0 +1,10 @@
+<dataset>
+	<CATEGORY id="111" name="hello" type="0"/>
+    <CATEGORY id="112" name="hello" type="1"/>
+    <CATEGORY id="113" name="hello" type="2"/>
+    <CATEGORY id="114" name="hello" type="feature"/>
+    <CATEGORY id="115" name="hello" type="4"/>
+    <CATEGORY id="116" name="hello" type="5"/>
+    <CATEGORY id="117" name="hello" type="6"/>
+    
+</dataset>

@@ -1,0 +1,10 @@
+<dataset>
+    <USER id="1"
+                username="jason"
+                password="cde34rfv" enabled="1"/> 
+	<ROLE label="ROLE_ADMIN" name="ROLE_ADMIN" />
+
+    <USER_ROLES USER_ID="1" ROLES_NAME="ROLE_ADMIN"/>
+
+    
+</dataset>
