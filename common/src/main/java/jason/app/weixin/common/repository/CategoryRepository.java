@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CategoryRepository extends JpaRepository<CategoryImpl, Long>{
     
     public List<CategoryImpl> findByType(String type);
-    
-    public List<CategoryImpl> findByTypeAndNameLike(String type,String pattern);
+
+	public List<CategoryImpl> findByTypeAndParent_Id(String type, Long parent);
+
+	public List<CategoryImpl> findByTypeAndNameLikeIgnoreCase(String type,
+			String parent);
 }

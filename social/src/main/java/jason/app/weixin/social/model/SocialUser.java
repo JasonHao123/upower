@@ -1,6 +1,6 @@
-package jason.app.weixin.web.controller.user.model;
+package jason.app.weixin.social.model;
 
-public class ProfileForm {
+public class SocialUser {
     private Long id;
     private String nickname;
     private String age;
@@ -8,8 +8,13 @@ public class ProfileForm {
     private String category2;
     private String[] location;
     private String[] hobby;
-    
-    public String getNickname() {
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getNickname() {
 		return nickname;
 	}
 	public void setNickname(String nickname) {
@@ -45,11 +50,4 @@ public class ProfileForm {
 	public void setHobby(String[] hobby) {
 		this.hobby = hobby;
 	}
-	public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 }

@@ -6,10 +6,8 @@ import java.util.List;
 
 public interface ICategoryService {
 
-    List<Category> listJobTypes();
+	List<Category> findByParent(String string, Long parent);
 
-    List<Category> listEducationLevels();
-
-    List<Category> findFeatureByPattern(String pattern);
+	List<Category> findByPattern(String string, String parent);
 
 }

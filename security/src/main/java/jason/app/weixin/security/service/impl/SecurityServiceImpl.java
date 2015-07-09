@@ -48,6 +48,9 @@ public class SecurityServiceImpl implements ISecurityService {
     	userImpl.setUsername(username);
     	userImpl.setPassword(encoder.encode(password));
     	List<RoleImpl> roleImpls = new ArrayList<RoleImpl>();
+    	// save first time to generate id, otherwise roles cannot be added
+    	userImpl = userDao.save(userImpl);
+    	
     	if(roles!=null) {
     		for(String role:roles) {
     			RoleImpl roleImpl = findOrCreateRole(role);
@@ -97,5 +100,12 @@ public class SecurityServiceImpl implements ISecurityService {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
+	@Override
+	public User getCurrentUser() {
+		// TODO Auto-generated method stub
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = UserTranslator.toDTO(userDao.findByUsername(username));
+		return user;
+	}
 
 }

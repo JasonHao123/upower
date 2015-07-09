@@ -15,4 +15,6 @@ public interface ISecurityService {
     public List<String> getAllUsernames();
 
     public void login(HttpServletRequest request, HttpServletResponse response, String username, String password);
+
+	public User getCurrentUser();
 }

@@ -25,7 +25,7 @@ public class LoginController {
     public String performCheck() {
        String result = service.validate();
        if(result==null) {
-    	   result = "redirect:/index.do";
+    	   result = "redirect:/user/index.do";
        }
        return result;
     }

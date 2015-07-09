@@ -27,7 +27,7 @@ public class UserProfileRule implements IRule {
 		if(user!=null) {
 			Long id = user.getId();
 			SocialUserImpl user2 = socialUserRepo.findOne(id);
-			if(user2==null) return "redirect:/user/editprofile.do";
+			if(user2==null) return "redirect:/user/profile/edit.do";
 		}
 		return null;
 	}

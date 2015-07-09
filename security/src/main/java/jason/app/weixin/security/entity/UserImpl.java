@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "USER")
 public class UserImpl {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     /**

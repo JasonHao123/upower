@@ -6,9 +6,11 @@
 <%@ page pageEncoding="UTF-8" %>
 
 	<div role="main" class="ui-content jqm-content">
-			<h2>Non-inset, collapsible set</h2>
+			<h2>个人主页</h2>
+			<h3>个人信息</h3>
+			<h3>社交圈分析</h3>
 			<p>Setting <code>data-inset="false"</code> on a collapsible or a collapsible set makes the collapsible full width (non-inset), like a full width listview.</p>
-			
+<!-- 		
 			<div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-inset="false">
 				<div data-role="collapsible">
 					<h2>消息</h2>
@@ -65,4 +67,7 @@
 					</ul>
 				</div>
 			</div>
+			      -->
         </div>
+        
+   	

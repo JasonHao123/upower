@@ -2,6 +2,7 @@ package jason.app.weixin.social.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -13,6 +14,12 @@ public class SocialUserImpl {
 
 	@Id
 	private Long id;
+	
+	@Column(unique=true)
+	private String nickname;
+	
+	@Column
+	private Integer age;
 	
 	@OneToMany
 	private List<SocialUserImpl> friends;
@@ -31,5 +38,21 @@ public class SocialUserImpl {
 
 	public void setFriends(List<SocialUserImpl> friends) {
 		this.friends = friends;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }

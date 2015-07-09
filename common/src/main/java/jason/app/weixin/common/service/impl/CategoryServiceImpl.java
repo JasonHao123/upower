@@ -15,20 +15,18 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     private CategoryRepository categoryRepo;
 
-    public List<Category> listJobTypes() {
-        
-        return CategoryTranslator.toDTO(categoryRepo.findByType("job.type"));
-    }
+	@Override
+	public List<Category> findByParent(String type, Long parent) {
+		// TODO Auto-generated method stub
+        return CategoryTranslator.toDTO(categoryRepo.findByTypeAndParent_Id(type,parent));
+	}
 
-    public List<Category> listEducationLevels() {
-        // TODO Auto-generated method stub
-    	return CategoryTranslator.toDTO(categoryRepo.findByType("education.level"));
-    }
+	@Override
+	public List<Category> findByPattern(String type, String parent) {
+		// TODO Auto-generated method stub
+        return CategoryTranslator.toDTO(categoryRepo.findByTypeAndNameLikeIgnoreCase(type,parent+"%"));
 
-    public List<Category> findFeatureByPattern(String pattern) {
-        // TODO Auto-generated method stub
-    	return CategoryTranslator.toDTO(categoryRepo.findByTypeAndNameLike("feature",pattern+"%"));
-    }
+	}
 
 
 }
