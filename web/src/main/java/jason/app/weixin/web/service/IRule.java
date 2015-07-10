@@ -1,5 +1,6 @@
 package jason.app.weixin.web.service;
 
-public interface IRule {
-	public String check();
+public interface IRule extends Comparable<IRule>{
+	public abstract String check();
+	public abstract Integer getOrder();
 }

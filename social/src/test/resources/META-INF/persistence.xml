@@ -6,6 +6,8 @@
 
 	<persistence-unit name="SocialTestPU" transaction-type="JTA">
 		<class>jason.app.weixin.social.entity.SocialUserImpl</class>
+		<class>jason.app.weixin.social.entity.FriendRelationshipImpl</class>
+		<class>jason.app.weixin.social.entity.AddFriendLinkImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

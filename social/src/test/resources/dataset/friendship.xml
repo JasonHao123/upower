@@ -1,0 +1,5 @@
+<dataset>
+	<SOCIAL_USER id="1" nickname="jason" age="31" />
+	<SOCIAL_USER id="2" nickname="lulu" age="31" />
+	<FRIENDSHIP id="1_2" FROM_ID="1" TO_ID="2" relationType="relative" />
+</dataset>

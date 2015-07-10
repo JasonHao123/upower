@@ -79,7 +79,7 @@ private ProfileValidator validator = new ProfileValidator();
         profile.setAge(profileForm.getAge());
         socialService.saveProfile(profile);
         if(profileForm.getId()==null) {
-        	return "redirect:/user/index.do";
+        	return "redirect:/check.do";
         }else {
         	return "redirect:/user/profile.do";
         }

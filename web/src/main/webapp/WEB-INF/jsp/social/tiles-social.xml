@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+  <definition name="social.base" extends="base.definition">
+    <put-attribute name="leftPane" value="page.button.title.tags" />
+    <put-attribute name="left" value="/WEB-INF/jsp/user/left.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
+  <definition name="social.addfriend" extends="social.base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
+  
+
+</tiles-definitions>

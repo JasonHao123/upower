@@ -3,6 +3,7 @@ package jason.app.weixin.web.service.impl;
 import jason.app.weixin.web.service.IRule;
 import jason.app.weixin.web.service.IUserAccountValidationService;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,14 @@ public class UserAccountValidationServiceImpl implements
 
 	@Autowired
 	private List<IRule> rules;
+	
+	private boolean sorted = false;
 	@Override
 	public String validate() {
-		// TODO Auto-generated method stub
+		if(!sorted) {
+			Collections.sort(rules);
+			sorted = true;
+		}
 		String result = null;
 		for(IRule rule:rules) {
 			result = rule.check();

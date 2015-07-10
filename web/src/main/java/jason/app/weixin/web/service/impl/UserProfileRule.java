@@ -4,14 +4,14 @@ import jason.app.weixin.security.entity.UserImpl;
 import jason.app.weixin.security.repository.UserRepository;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.repository.SocialUserRepository;
-import jason.app.weixin.web.service.IRule;
+import jason.app.weixin.web.service.Rule;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserProfileRule implements IRule {
+public class UserProfileRule extends Rule {
 
 	@Autowired
 	private SocialUserRepository socialUserRepo;
@@ -30,6 +30,12 @@ public class UserProfileRule implements IRule {
 			if(user2==null) return "redirect:/user/profile/edit.do";
 		}
 		return null;
+	}
+
+	@Override
+	public Integer getOrder() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

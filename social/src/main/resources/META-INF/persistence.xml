@@ -7,6 +7,8 @@
 	<persistence-unit name="SocialPU" transaction-type="JTA">
 		<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source> 
 		<class>jason.app.weixin.social.entity.SocialUserImpl</class>
+		<class>jason.app.weixin.social.entity.FriendRelationshipImpl</class>
+		<class>jason.app.weixin.social.entity.AddFriendLinkImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

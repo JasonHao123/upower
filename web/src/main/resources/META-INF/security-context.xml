@@ -11,6 +11,7 @@
 </beans:bean>
 	<http auto-config="true" use-expressions="true" disable-url-rewriting="true" >
 		<intercept-url pattern="/user/**" access="isAuthenticated()" />
+		<intercept-url pattern="/social/**" access="isAuthenticated()" />
         <intercept-url pattern="/**" access="permitAll" />
         <form-login login-page="/login.do" />
         <logout/>

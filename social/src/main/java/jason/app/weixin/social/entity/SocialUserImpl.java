@@ -1,11 +1,8 @@
 package jason.app.weixin.social.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +17,6 @@ public class SocialUserImpl {
 	
 	@Column
 	private Integer age;
-	
-	@OneToMany
-	private List<SocialUserImpl> friends;
 
 	public Long getId() {
 		return id;
@@ -30,14 +24,6 @@ public class SocialUserImpl {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public List<SocialUserImpl> getFriends() {
-		return friends;
-	}
-
-	public void setFriends(List<SocialUserImpl> friends) {
-		this.friends = friends;
 	}
 
 	public Integer getAge() {
