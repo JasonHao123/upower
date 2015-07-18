@@ -17,6 +17,51 @@ public class SocialUserImpl {
 	
 	@Column
 	private Integer age;
+	
+	@Column
+	private Long category1;
+	
+	@Column
+	private Long category2;
+	
+	@Column
+	private String locations;
+	
+	@Column
+	private String hobbys;
+	
+
+	public Long getCategory1() {
+		return category1;
+	}
+
+	public void setCategory1(Long category1) {
+		this.category1 = category1;
+	}
+
+	public Long getCategory2() {
+		return category2;
+	}
+
+	public void setCategory2(Long category2) {
+		this.category2 = category2;
+	}
+
+	public String getLocations() {
+		return locations;
+	}
+
+	public void setLocations(String locations) {
+		this.locations = locations;
+	}
+
+	public String getHobbys() {
+		return hobbys;
+	}
+
+	public void setHobbys(String hobbys) {
+		this.hobbys = hobbys;
+	}
 
 	public Long getId() {
 		return id;

@@ -6,7 +6,7 @@
 
 	<persistence-unit name="SocialTestPU" transaction-type="JTA">
 		<class>jason.app.weixin.social.entity.SocialUserImpl</class>
-		<class>jason.app.weixin.social.entity.FriendRelationshipImpl</class>
+		<class>jason.app.weixin.social.entity.SocialRelationshipImpl</class>
 		<class>jason.app.weixin.social.entity.AddFriendLinkImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>

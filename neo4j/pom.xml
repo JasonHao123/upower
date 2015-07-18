@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <artifactId>parent</artifactId>
+        <groupId>jason.app.weixin</groupId>
+        <version>1.0</version>
+    </parent>
+	<groupId>jason.app.weixin</groupId>
+	<artifactId>neo4j</artifactId>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<name>neo4j</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring-data-neo4j.version>3.2.1.RELEASE</spring-data-neo4j.version>
+		<spring.version>4.0.7.RELEASE</spring.version>
+		
+        <neo4j.version>2.1.5</neo4j.version>
+        <junit.version>4.11</junit.version>
+	</properties>
+
+	<dependencies>
+			<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>1.0.0.Final</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+	<dependency>
+    <groupId>org.hornetq</groupId>
+    <artifactId>hornetq-jms</artifactId>
+    <version>2.2.14.Final</version>
+</dependency>
+	<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jms</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+		<!-- Spring Dependencies -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		        <!-- SDN for simple mapping mode -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-neo4j</artifactId>
+            <version>${spring-data-neo4j.version}</version>
+        </dependency>
+        <dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-neo4j-rest</artifactId>
+    <version>${spring-data-neo4j.version}</version>
+</dependency>
+        <dependency>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-apt</artifactId>
+    <version>3.6.5</version>
+</dependency>
+<dependency>
+    <groupId>org.neo4j</groupId>
+    <artifactId>server-api</artifactId>
+    <version>${neo4j.version}</version>
+</dependency>
+        <!-- Hibernate implementation of the JSR-303 Bean Validation Spec API.
+            (SDN makes use of the javax.validation:validation-api dependency and
+            hibernate provides a concrete implementation -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.1.1.Final</version>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- View Dependencies -->
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+
+		<!-- Test Dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jason.app.weixin</groupId>
+			<artifactId>social-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+
+	
+	<build>
+		<finalName>neo4j</finalName>
+		<plugins>
+
+			
+
+			<!-- Ensures we are compiling at 1.6 level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			
+		</plugins>
+	</build>
+</project>

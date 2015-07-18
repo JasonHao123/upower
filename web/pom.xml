@@ -17,13 +17,23 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<spring.version>3.2.11.RELEASE</spring.version>
 		<slf4j.version>1.5.10</slf4j.version>
 		<junit.version>4.8.2</junit.version>
 		<hibernate.version>4.1.9.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
+	<dependency>
+    <groupId>org.hornetq</groupId>
+    <artifactId>hornetq-jms</artifactId>
+    <version>2.2.14.Final</version>
+</dependency>
+	<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jms</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+
 		<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>jstl</artifactId>
@@ -199,6 +209,11 @@
 		<dependency>
 			<groupId>jason.app.weixin</groupId>
 			<artifactId>social</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jason.app.weixin</groupId>
+			<artifactId>social-api</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

@@ -3,9 +3,9 @@ package jason.app.weixin.social.model;
 public class SocialUser {
     private Long id;
     private String nickname;
-    private String age;
-    private String category1;
-    private String category2;
+    private Integer age;
+    private Long category1;
+    private Long category2;
     private String[] location;
     private String[] hobby;
 	public Long getId() {
@@ -20,22 +20,22 @@ public class SocialUser {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	public String getAge() {
+	public Integer getAge() {
 		return age;
 	}
-	public void setAge(String age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
-	public String getCategory1() {
+	public Long getCategory1() {
 		return category1;
 	}
-	public void setCategory1(String category1) {
+	public void setCategory1(Long category1) {
 		this.category1 = category1;
 	}
-	public String getCategory2() {
+	public Long getCategory2() {
 		return category2;
 	}
-	public void setCategory2(String category2) {
+	public void setCategory2(Long category2) {
 		this.category2 = category2;
 	}
 	public String[] getLocation() {

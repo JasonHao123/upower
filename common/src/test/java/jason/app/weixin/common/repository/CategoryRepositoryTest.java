@@ -50,14 +50,14 @@ public class CategoryRepositoryTest extends BaseTestCase {
 
     @Test
     public void testFindByTypeAndNameLikeFound() {
-        List<CategoryImpl> result = repository.findByTypeAndNameLike("feature", "%hell%");
+        List<CategoryImpl> result = repository.findByTypeAndNameLikeIgnoreCase("feature", "%hell%");
         assertNotNull(result);
         assertEquals(1, result.size());
     }
 
     @Test
     public void testFindByTypeAndNameLikeNotFound() {
-        List<CategoryImpl> result = repository.findByTypeAndNameLike("feature", "%jason%");
+        List<CategoryImpl> result = repository.findByTypeAndNameLikeIgnoreCase("feature", "%jason%");
         assertNotNull(result);
         assertEquals(0, result.size());
     }

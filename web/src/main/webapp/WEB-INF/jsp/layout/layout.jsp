@@ -33,9 +33,9 @@
 	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.tagit.css" />">
 <!-- 	<link rel="stylesheet" href="<c:url value="/resources/css/listview-grid.css" />"> 
 	<link rel="stylesheet" href="<c:url value="/resources/css/redactor.css" />">
- --> 
+
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-	<script src="<c:url value="/resources/js/jquery.js" />"></script>
+ --> 	<script src="<c:url value="/resources/js/jquery.js" />"></script>
 	<script src="<c:url value="/resources/js/index.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery.mobile-1.4.5.min.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui.js" />" type="text/javascript" charset="utf-8"></script>

@@ -149,18 +149,29 @@
 			id="category1" name="category1">
 			<option></option>
 			<c:forEach items="${categories}" var="category">
-				<option value="${category.id}">${category.name}</option>
+				<option value="${category.id}" <c:if test="${category.id==profileForm.category1 }">selected</c:if>>${category.name}</option>
 			</c:forEach>
 		</select> <label for="title">职业分类:</label> <select id="category2"
 			name="category2">
 			<option></option>
+						<c:forEach items="${categories2}" var="category">
+				<option value="${category.id}" <c:if test="${category.id==profileForm.category2 }">selected</c:if>>${category.name}</option>
+			</c:forEach>
 		</select> <label for="locations">常出没城市:</label>
 		<ul id="locations"
-			class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"></ul>
+			class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+			<c:forEach items="${profileForm.location }" var="location">
+			<li>${location}</li>
+			</c:forEach>
+			</ul>
 
 		<label>兴趣爱好</label>
 		<ul id="hobbys"
-			class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"></ul>
+			class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+						<c:forEach items="${profileForm.hobby }" var="hobby">
+			<li>${hobby}</li>
+			</c:forEach>
+			</ul>
 
 		<div class="ui-grid-a">
 			<div class="ui-block-a">

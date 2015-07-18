@@ -6,7 +6,15 @@
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/listview-grid.css" />">
 <div role="main" class="ui-content jqm-content">
+<label>Nickname</label>
+<label>${profile.nickname}</label>
+<c:choose>
+<c:when test="${not isSelf}">
+<a href="<c:url value="/social/addfriend.do" ><c:param name="id" value="${profile.id}" /></c:url>">follow</a>
+</c:when>
+<c:otherwise>
+<a href="<c:url value="/user/profile/edit.do" ><c:param name="id" value="${profile.id}" /></c:url>">Edit</a>
 
-<a href="<c:url value="/user/follow.do" ><c:param name="id" value="${id}" /></c:url>">follow</a>
-
+</c:otherwise>
+</c:choose>
 </div>

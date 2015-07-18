@@ -23,7 +23,7 @@ public class SocialUserRepositoryTest extends BaseTestCase {
         // TODO Auto-generated method stub
         final FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
         builder.setColumnSensing(true);
-        return builder.build(this.getClass().getClassLoader().getResourceAsStream("dataset/users.xml"));
+        return builder.build(this.getClass().getClassLoader().getResourceAsStream("dataset/friendship.xml"));
 
     }
 

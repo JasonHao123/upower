@@ -1,7 +1,7 @@
 package jason.app.weixin.social.repository;
 
 import jason.app.weixin.social.BaseTestCase;
-import jason.app.weixin.social.entity.FriendRelationshipImpl;
+import jason.app.weixin.social.entity.SocialRelationshipImpl;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class FriendRelationshipRepositoryTest extends BaseTestCase{
 	@Autowired
-	private FriendRelationshipRepository relationRepo;
+	private SocialRelationshipRepository relationRepo;
 	@Test
 	public void testFindByFrom_Id() {
-		List<FriendRelationshipImpl> result =relationRepo.findByFrom_Id(1L);
+		List<SocialRelationshipImpl> result =relationRepo.findByFrom_Id(1L);
 		assertNotNull(result);
 	}
 

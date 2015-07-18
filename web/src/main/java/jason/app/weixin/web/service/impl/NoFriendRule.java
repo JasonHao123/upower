@@ -2,8 +2,8 @@ package jason.app.weixin.web.service.impl;
 
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
-import jason.app.weixin.social.entity.FriendRelationshipImpl;
-import jason.app.weixin.social.repository.FriendRelationshipRepository;
+import jason.app.weixin.social.entity.SocialRelationshipImpl;
+import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.web.service.Rule;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class NoFriendRule extends Rule{
 
 	@Autowired
-	private FriendRelationshipRepository repo;
+	private SocialRelationshipRepository repo;
 	
 	@Autowired
 	private ISecurityService securityService;
@@ -22,7 +22,7 @@ public class NoFriendRule extends Rule{
 	@Override
 	public String check() {
 		User user = securityService.getCurrentUser();
-		List<FriendRelationshipImpl> friends = repo.findByFrom_Id(user.getId());
+		List<SocialRelationshipImpl> friends = repo.findByFrom_Id(user.getId());
 		if(friends==null || friends.size()==0) return "redirect:/social/addfriend.do";
 		return null;
 	}

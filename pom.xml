@@ -23,6 +23,8 @@
     <module>common</module>
     <module>security</module>
     <module>social</module>
+    <module>neo4j</module>
+    <module>social-api</module>
   </modules>
   
   
