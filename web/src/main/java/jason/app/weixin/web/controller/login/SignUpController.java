@@ -37,12 +37,12 @@ public class SignUpController {
     
     private static final Logger logger = LoggerFactory
             .getLogger(SignUpController.class);
-    @RequestMapping(value="/signup", method=RequestMethod.GET)
+  //  @RequestMapping(value="/signup", method=RequestMethod.GET)
     public String signupStep1() {
         return "signup";
     }
     
-    @RequestMapping(value="/signupuser", method=RequestMethod.GET)
+    @RequestMapping(value="/signup", method=RequestMethod.GET)
     public ModelAndView signupUser(HttpSession session) {
 
        SignupForm User =  new SignupForm();
@@ -96,12 +96,12 @@ public class SignUpController {
     /**
      * Selects the home page and populates the model with a message
      */
-    @RequestMapping(value = "/signupuser", method = RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
     @Transactional
     public String postSignUpUser(HttpServletRequest request,HttpServletResponse response,HttpSession session,SignupForm signupForm, BindingResult result) {
-        String result2 = postSignUp(request,response,session,signupForm,result,"ROLE_TALENT");
+        String result2 = postSignUp(request,response,session,signupForm,result,"ROLE_USER");
         if(result2==null) {
-            result2 = "signup.agent";
+            result2 = "signup.user";
         }
         return result2;
     }

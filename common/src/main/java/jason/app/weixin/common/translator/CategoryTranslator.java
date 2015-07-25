@@ -20,7 +20,7 @@ public class CategoryTranslator {
         return result;
     }
 
-    private static Category toDTO(CategoryImpl entity) {
+    public static Category toDTO(CategoryImpl entity) {
         Category cate = new Category();
         cate.setId(entity.getId());
         cate.setName(entity.getName());

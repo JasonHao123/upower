@@ -1,12 +1,11 @@
 package jason.app.weixin.social.translator;
 
-import java.util.Arrays;
-
-import org.springframework.util.StringUtils;
-
+import jason.app.weixin.social.api.util.ArrayUtil;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.SocialUser;
-import jason.app.weixin.social.util.ArrayUtil;
+
+import java.util.Arrays;
+import java.util.Date;
 
 public class SocialUserTranslator {
 
@@ -20,6 +19,7 @@ public class SocialUserTranslator {
 		user.setCategory2(profile.getCategory2());
 		user.setHobbys(Arrays.toString(profile.getHobby()));
 		user.setLocations(Arrays.toString(profile.getLocation()));
+		user.setLastUpdate(new Date());
 		return user;
 	}
 

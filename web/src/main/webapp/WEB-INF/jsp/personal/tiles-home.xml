@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+  <definition name="personal.home" extends="base.definition">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="leftPane" value="page.button.title.tags" />
+    <put-attribute name="rightPane" value="page.button.title.filter" />
+    <put-attribute name="left" value="/WEB-INF/jsp/personal/left.jsp" />
+    <put-attribute name="content" value="/WEB-INF/jsp/personal/content.jsp" />
+    <put-attribute name="right" value="/WEB-INF/jsp/layout/right.jsp" />
+    <put-attribute name="navi" value="job" />
+  </definition>
+  
+    <definition name="personal.post" extends="base.definition">
+    <put-attribute name="title" value="page.title.login" />
+
+    <put-attribute name="content" value="/WEB-INF/jsp/personal/post.jsp" />
+    <put-attribute name="navi" value="job" />
+  </definition>
+  
+  
+    <definition name="personal.message" extends="base.definition">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/personal/message.jsp" />
+    <put-attribute name="navi" value="job" />
+  </definition>
+
+
+</tiles-definitions>

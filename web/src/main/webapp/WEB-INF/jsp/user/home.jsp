@@ -9,7 +9,7 @@
 			<h2>个人主页</h2>
 			<h3>个人信息</h3>
 			<h3>社交圈分析</h3>
-			<p>Setting <code>data-inset="false"</code> on a collapsible or a collapsible set makes the collapsible full width (non-inset), like a full width listview.</p>
+			<p>势力版图，根据好友地址分析地图分布，按百分比，标记颜色Setting <code>data-inset="false"</code> on a collapsible or a collapsible set makes the collapsible full width (non-inset), like a full width listview.</p>
 <!-- 		
 			<div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-inset="false">
 				<div data-role="collapsible">

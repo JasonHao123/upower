@@ -67,4 +67,8 @@
 
 	<!-- Jpa Repositories -->
 	<jpa:repositories base-package="jason.app.weixin.social.repository" />
+	
+	<bean id="categoryService" class="org.mockito.Mockito" factory-method="mock"> 
+    <constructor-arg value="jason.app.weixin.common.service.ICategoryService" /> 
+</bean>
 </beans>

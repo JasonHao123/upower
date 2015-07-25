@@ -38,7 +38,7 @@
 			<input type="submit" value="Login">
 		</div>
 		<div class="ui-block-b">
-			<a data-role="button" href="<c:url value="/signupuser.do" />"><spring:message
+			<a data-role="button" href="<c:url value="/signup.do" />"><spring:message
 			code="page.label.login.signup" text="Signup" /></a>
 		</div>
 		<div class="ui-block-a">

@@ -5,6 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ICommandReceiver {
 	@Transactional
-	void createUser(Long userId, String nickname, Integer age);
+	public void createUser(Long userId, String nickname, Integer age,Long category1,Long category2,String[] locations,String[] hobbys);
+
+	void createRelation(Long fromUser, Long toUser, Long[] types);
+
+	public void analyzeUserRelationDistance(Long userId, Integer extensiveLevel);
 
 }

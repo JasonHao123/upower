@@ -9,5 +9,7 @@ public interface ICategoryService {
 	List<Category> findByParent(String string, Long parent);
 
 	List<Category> findByPattern(String string, String parent);
+	
+	Category findById(Long id);
 
 }

@@ -3,7 +3,7 @@ package jason.app.weixin.social.entity;
 public class GroupMessageSettings {
 	// PK user & group
 	private SocialUserImpl user;
-	private SocialGroup group;
+	private SocialGroupImpl group;
 	
 	private Boolean findFriend;
 	private Boolean supplyAndDemand;

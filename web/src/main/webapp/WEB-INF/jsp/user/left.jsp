@@ -43,9 +43,9 @@
 	</h3>
 	<div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
 		<ul>
-			<li ><a href="../controlgroup/" data-ajax="false">系统设置</a></li>
-			<li ><a href="../controlgroup-dynamic/" data-ajax="false">社交设置</a></li>
-			<li ><a href="../controlgroup-dynamic/" data-ajax="false">消息设置</a></li>
+			<li ><a href="<c:url value="/settings/system.do" />" data-ajax="false">系统设置</a></li>
+			<li ><a href="<c:url value="/settings/social.do" />" data-ajax="false">社交设置</a></li>
+			<li ><a href="<c:url value="/settings/message.do" />" data-ajax="false">消息设置</a></li>
 		</ul>
 	</div>
 </li>

@@ -7,7 +7,7 @@
 <p><span class="jqm-version"></span> Demos</p>
 <div data-role="navbar">
 	<ul>
-		<li><a href="<c:url value="/job/index.do" />" <c:if test="${navi=='' || navi=='job' }">class="ui-btn-active"</c:if> >个人消息</a></li>
+		<li><a href="<c:url value="/personal/index.do" />" <c:if test="${navi=='' || navi=='job' }">class="ui-btn-active"</c:if> >个人消息</a></li>
 		<li><a href="<c:url value="/company/index.do" />" <c:if test="${navi=='company' }">class="ui-btn-active"</c:if> >群消息</a></li>
 <!--				<li><a href="<c:url value="/agent/index.do" />" <c:if test="${navi=='agent' }">class="ui-btn-active"</c:if> >消息推广</a></li>
 		 

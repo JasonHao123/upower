@@ -14,7 +14,7 @@ public class SocialRelation {
     @StartNode SocialUser from;
     @EndNode SocialUser to;
     
-    String[] types;
+    Long[] types;
 
 	public Long getId() {
 		return id;
@@ -40,11 +40,11 @@ public class SocialRelation {
 		this.to = to;
 	}
 
-	public String[] getTypes() {
+	public Long[] getTypes() {
 		return types;
 	}
 
-	public void setTypes(String[] types) {
+	public void setTypes(Long[] types) {
 		this.types = types;
 	}
    

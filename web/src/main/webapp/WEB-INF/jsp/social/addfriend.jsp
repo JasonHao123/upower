@@ -3,8 +3,20 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page pageEncoding="UTF-8"%>
-
-<div role="main">
+<link rel="stylesheet" href="<c:url value="/resources/css/jquery.raty.css" />">
+<script src="<c:url value="/resources/js/jquery.raty.js" />"></script>
+<script type="text/javascript">
+<!--
+$( document ).on( "pagecreate", "#myPage", function() {
+$('#targetScore').raty({
+	  targetScore: '#target-score',
+	  half     : true,
+	  score: ${addFriendForm.rating}
+	});
+});
+//-->
+</script>
+<div role="main" class="ui-content jqm-content">
 
 <c:choose>
 <c:when test="${self}">
@@ -24,16 +36,24 @@
 <form id="myForm"  method="POST" data-ajax="false">
 	<input type="hidden" name="<c:out value="${_csrf.parameterName}"/>"
 		value="<c:out value="${_csrf.token}"/>" /> 
-<div class="ui-field-contain"><label for="friendshipType">Friendship Type:</label>
+		<label for="friendshipType">关系类型</label>
+<div class="ui-field-contain">
 <select name="friendshipType" id="friendshipType" multiple="multiple" data-native-menu="false">
 <option>Choose options</option>
 <c:forEach items="${friendshipTypes}" var="type">
-<option value="${type.id}">${type.name }</option>
+<option value="${type.id}"
+<c:forEach items="${addFriendForm.friendshipType }" var="friendType">
+<c:if test="${friendType==type.id}">selected</c:if>
+</c:forEach>
+>${type.name }</option>
 
 </c:forEach>
 </select>
 </div>
+<label>友好度</label>
+<div id="targetScore"></div>
 
+<p><input id="target-score" name="rating" type="hidden" ></p>
 	<div class="ui-grid-a ui-responsive">
 		<div class="ui-block-a">
 			<input type="submit" value="<spring:message

@@ -30,8 +30,13 @@
     <tx:annotation-driven />
 	
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
-<jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/ExpiryQueue"/>
+<jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/neo4j"/>
+<jee:jndi-lookup id="socialDestination" jndi-name="java:/jms/queue/social"/>
 
+	   <bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="socialDestination" />
+    </bean>
     
     <!-- this is the Message Driven POJO (MDP) -->
 <bean id="messageListener" class="jason.app.weixin.neo4j.controller.ExampleListener" />

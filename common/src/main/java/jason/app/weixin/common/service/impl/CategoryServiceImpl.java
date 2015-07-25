@@ -28,5 +28,11 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	}
 
+	@Override
+	public Category findById(Long id) {
+		// TODO Auto-generated method stub
+		return CategoryTranslator.toDTO(categoryRepo.findOne(id));
+	}
+
 
 }

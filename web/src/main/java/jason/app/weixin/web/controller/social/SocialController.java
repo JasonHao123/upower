@@ -3,24 +3,36 @@ package jason.app.weixin.web.controller.social;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
+import jason.app.weixin.social.api.command.AddRelationCommand;
+import jason.app.weixin.social.api.command.AddUserCommand;
+import jason.app.weixin.social.api.util.ArrayUtil;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.SocialRelationshipImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
 import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
+import jason.app.weixin.web.controller.login.model.SignupForm;
+import jason.app.weixin.web.controller.social.model.AddFriendForm;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/social")
 public class SocialController {
+	
+//	@Autowired
+//	private JmsTemplate jmsTemplate;
 
 	@Autowired
 	private ISecurityService service;
@@ -77,8 +92,17 @@ public class SocialController {
 					.compareTo(link.getCreateDate()) >= 0;
 			model.addAttribute("link", link);
 			model.addAttribute("expired", expired);
-			model.addAttribute("self",
-					link.getUser().getId().equals(user.getId()));
+			boolean self = link.getUser().getId().equals(user.getId());
+			model.addAttribute("self",self);
+			AddFriendForm form = new AddFriendForm();
+			if(!self) {
+				SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),link.getUser().getId());
+				form.setRating(relation.getRating());
+				form.setFriendshipType(ArrayUtil.toLongArray(relation.getRelationType()));
+			}else {
+				form.setRating(3f);
+			}
+			model.addAttribute("addFriendForm",form);
 			SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
 			model.addAttribute("hasProfile",user!=null);
 			model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
@@ -91,26 +115,40 @@ public class SocialController {
 	
 	@RequestMapping(value = "/addfriend", method = RequestMethod.POST)
 	@Transactional
-	public String postAddFriend(Model model,
-			@RequestParam("id") String id,@RequestParam("friendshipType") Long[] friendshipType) {
-		User user = service.getCurrentUser();
+	public String postAddFriend(Model model,final AddFriendForm addFriendForm, BindingResult result) {
+		final User user = service.getCurrentUser();
 		// from
 		SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
-		AddFriendLinkImpl link = linkRepo.findOne(id);
+		final AddFriendLinkImpl link = linkRepo.findOne(addFriendForm.getId());
 		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),link.getUser().getId());
 		if(relation==null) {
 			relation = new SocialRelationshipImpl();
 			relation.setId(userImpl.getId()+"_"+link.getUser().getId());
 			relation.setFrom(userImpl);
 			relation.setTo(link.getUser());
-			relation.setRelationType(Arrays.toString(friendshipType));
-		}else {
-			relation.setRelationType(Arrays.toString(friendshipType));
+
+			SocialRelationshipImpl reverse = socialRelationRepo.findByFrom_IdAndTo_Id(link.getUser().getId(), userImpl.getId());
+			if(reverse==null) {
+				// TODO something here
+			}
 		}
+		relation.setLastUpdate(new Date());
+		relation.setRating(addFriendForm.getRating());
+		relation.setRelationType(Arrays.toString(addFriendForm.getFriendshipType()));
 		socialRelationRepo.save(relation);
 		// dfggffg
-		
-		
+/**		jmsTemplate.send(new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+              //  return session.createTextMessage("hello queue world");
+            	AddRelationCommand command = new AddRelationCommand();
+            	command.setFromUser(user.getId());
+            	command.setToUser(link.getUser().getId());
+            	command.setTypes(addFriendForm.getFriendshipType());
+            	command.setRating(addFriendForm.getRating());
+            	return session.createObjectMessage(command);
+              }
+          });
+		*/
 		return "redirect:/user/index.do";
 	}
 	

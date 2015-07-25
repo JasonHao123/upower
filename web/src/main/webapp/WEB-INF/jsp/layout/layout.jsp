@@ -40,7 +40,7 @@
 	<script src="<c:url value="/resources/js/jquery.mobile-1.4.5.min.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-ui.js" />" type="text/javascript" charset="utf-8"></script>
 	<script src="<c:url value="/resources/js/tag-it.js" />" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/js/redactor.js" />" type="text/javascript" charset="utf-8"></script>
+
 </head>
 <body>
 <div data-role="page" id="myPage" class="jqm-demos jqm-home">

@@ -17,14 +17,55 @@ public class SocialUser {
     @GraphId
     private Long id;
     
+    @Indexed
     private Long userId;
 
     // Uses default schema based index
     @Indexed
     private String name;
+    
+    private Long category1;
+    
+    private Long category2;
+    
+    private String[] locations;
+    
+    private String[] hobbys;
 
 
-    public Long getUserId() {
+    public Long getCategory1() {
+		return category1;
+	}
+
+	public void setCategory1(Long category1) {
+		this.category1 = category1;
+	}
+
+	public Long getCategory2() {
+		return category2;
+	}
+
+	public void setCategory2(Long category2) {
+		this.category2 = category2;
+	}
+
+	public String[] getLocations() {
+		return locations;
+	}
+
+	public void setLocations(String[] locations) {
+		this.locations = locations;
+	}
+
+	public String[] getHobbys() {
+		return hobbys;
+	}
+
+	public void setHobbys(String[] hobbys) {
+		this.hobbys = hobbys;
+	}
+
+	public Long getUserId() {
 		return userId;
 	}
 
@@ -61,7 +102,7 @@ public class SocialUser {
     @RelatedToVia(type = "RELATE_TO", direction = Direction.OUTGOING)
     @Fetch Set<SocialRelation> friends;
 
-    public void addFriend(SocialUser friend,String[] types) {
+    public void addFriend(SocialUser friend,Long[] types) {
     	SocialRelation relation = new SocialRelation();
     	relation.setFrom(friend);
     	relation.setTo(this);

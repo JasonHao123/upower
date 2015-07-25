@@ -35,8 +35,8 @@ public class UserProfileController {
     private static final Logger logger = LoggerFactory
             .getLogger(UserProfileController.class);
     
-@Autowired
-private JmsTemplate jmsTemplate;
+//@Autowired
+//private JmsTemplate jmsTemplate;
 	
 @Autowired
 private ICategoryService categoryService;
@@ -96,17 +96,23 @@ private ProfileValidator validator = new ProfileValidator();
         profile.setHobby(profileForm.getHobby());
         profile.setLocation(profileForm.getLocation());
         socialService.saveProfile(profile);
+        /*
+		jmsTemplate.send(new MessageCreator() {
+            public Message createMessage(Session session) throws JMSException {
+              //  return session.createTextMessage("hello queue world");
+            	AddUserCommand addUser = new AddUserCommand();
+            	addUser.setUserId(profile.getId());
+            	addUser.setNickname(profile.getNickname());
+            	addUser.setAge(profile.getAge());
+            	addUser.setCategory1(profile.getCategory1());
+            	addUser.setCategory2(profile.getCategory2());
+            	addUser.setLocations(profile.getLocation());
+            	addUser.setHobbys(profile.getHobby());
+            	return session.createObjectMessage(addUser);
+              }
+          });
+          */
         if(profileForm.getId()==null) {
-    		jmsTemplate.send(new MessageCreator() {
-                public Message createMessage(Session session) throws JMSException {
-                  //  return session.createTextMessage("hello queue world");
-                	AddUserCommand addUser = new AddUserCommand();
-                	addUser.setUserId(profile.getId());
-                	addUser.setNickname(profile.getNickname());
-                	addUser.setAge(profile.getAge());
-                	return session.createObjectMessage(addUser);
-                  }
-              });
         	return "redirect:/check.do";
         }else {
         	return "redirect:/user/profile.do";
