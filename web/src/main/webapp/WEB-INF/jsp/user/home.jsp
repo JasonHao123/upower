@@ -68,6 +68,52 @@
 				</div>
 			</div>
 			      -->
+			      
+			      <h2>My messages</h2>
+			      			<div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-inset="false">
+				<div data-role="collapsible">
+					<h2>好友申请<span class="ui-li-count">12</span></h2>
+					<ul data-role="listview">
+						<li><a href="index.html">Inbox <span class="ui-li-count">12</span></a></li>
+						<li><a href="index.html">Outbox <span class="ui-li-count">0</span></a></li>
+						<li><a href="index.html">Drafts <span class="ui-li-count">4</span></a></li>
+						<li><a href="index.html">Sent <span class="ui-li-count">328</span></a></li>
+						<li><a href="index.html">Trash <span class="ui-li-count">62</span></a></li>
+					</ul>
+				</div>
+				<div data-role="collapsible">
+					<h2>私信<span class="ui-li-count">12</span></h2>
+					<ul data-role="listview" data-theme="d" data-divider-theme="d">
+						<li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+						<li><a href="index.html">
+								<h3>Stephen Weber</h3>
+								<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+								<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+								<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+						</a></li>
+						<li><a href="index.html">
+							<h3>jQuery Team</h3>
+							<p><strong>Boston Conference Planning</strong></p>
+							<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
+							<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+						</a></li>
+						<li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
+						<li><a href="index.html">
+							<h3>Avery Walker</h3>
+							<p><strong>Re: Dinner Tonight</strong></p>
+							<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait! </p>
+							<p class="ui-li-aside"><strong>4:48</strong>PM</p>
+						</a></li>
+						<li data-role="list-divider">Wednesday, October 6, 2010 <span class="ui-li-count">3</span></li>
+						<li><a href="index.html">
+							<h3>Amazon.com</h3>
+							<p><strong>4-for-3 Books for Kids</strong></p>
+							<p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>
+							<p class="ui-li-aside"><strong>12:47</strong>PM</p>
+						</a></li>
+					</ul>
+				</div>
+				</div>
         </div>
         
    	

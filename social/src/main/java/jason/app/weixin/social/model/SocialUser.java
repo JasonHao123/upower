@@ -8,6 +8,13 @@ public class SocialUser {
     private Long category2;
     private String[] location;
     private String[] hobby;
+    private Integer distance;
+	public Integer getDistance() {
+		return distance;
+	}
+	public void setDistance(Integer distance) {
+		this.distance = distance;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -9,22 +9,9 @@
 <script type="text/javascript">
 <!--
 $( document ).on( "pagecreate", "#myPage", function() {
-	<c:choose>
-	<c:when test="${isSelf}">
-	$('#edit').click(function() {
-		$.mobile.navigate("<c:url value="/user/profile/edit.do" />");
-	});
-	</c:when>
-	<c:otherwise>
-$('#addFriend').click(function() {
-	$.mobile.navigate("<c:url value="/user/addfriend.do" />?id=${profile.id}");
+$('#edit').click(function() {
+	$.mobile.navigate("<c:url value="/user/profile/edit.do" />");
 });
-$('#contact').click(function() {
-	$.mobile.navigate("conversation.do?id=${profile.id}");
-});
-</c:otherwise>
-</c:choose>
-
 $('#userRating').raty({
 	  half     : true,
 	  score: 4,
@@ -48,19 +35,10 @@ $(".ui-li-aside").each(function() {
 <label>City:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
 <label>Hobby:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
 <label>Rating: </label><div id="userRating"></div>
-<c:choose>
-<c:when test="${isSelf}">
-<button id="edit">Edit</button>
-</c:when>
-<c:otherwise>
-<div class="ui-grid-b">
-<div class="ui-block-a"><button id="addFriend" <c:if test="${isFriend}">disabled="disabled"</c:if> >Add Friend</button></div>
-<div class="ui-block-b"><button id="contact">Conversation</button></div>
-<div class="ui-block-c"><button id="comment">Comment</button></div>
+<label>Tags:</label>
+<div class="ui-grid-a">
+<div class="ui-block-a"><button id="edit">编辑</button></div>
 </div>
-</c:otherwise>
-</c:choose>
-
 <h2>Comments:</h2>
 					<ul data-role="listview" data-theme="d" data-divider-theme="d">
 						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="3" /></c:url>" data-ajax="false">

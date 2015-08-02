@@ -1,4 +1,4 @@
-package jason.app.weixin.social.api.util;
+package jason.app.weixin.social.util;
 
 public class ArrayUtil {
 

@@ -13,6 +13,7 @@
 		<class>jason.app.weixin.social.entity.SocialMessageImpl</class>
 		<class>jason.app.weixin.social.entity.MessageImpl</class>
 		<class>jason.app.weixin.social.entity.AddFriendRequestImpl</class>
+		<class>jason.app.weixin.social.entity.SettingsImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

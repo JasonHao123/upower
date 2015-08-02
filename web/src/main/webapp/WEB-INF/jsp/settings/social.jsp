@@ -6,15 +6,21 @@
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/listview-grid.css" />">
 <div role="main" class="ui-content jqm-content">
-<label>Nickname</label>
-<label>${profile.nickname}</label>
-<c:choose>
-<c:when test="${not isSelf}">
-<a href="<c:url value="/social/addfriend.do" ><c:param name="id" value="${profile.id}" /></c:url>">follow</a>
-</c:when>
-<c:otherwise>
-<a href="<c:url value="/user/profile/edit.do" ><c:param name="id" value="${profile.id}" /></c:url>">Edit</a>
+社交圈范围设定
+核心（好友）
+圈子
 
-</c:otherwise>
-</c:choose>
+个人信息可见范围
+<form>
+<h3>朋友圈设置</h3>
+<label for="slider-2">朋友圈范围:</label>
+<input type="range" name="slider-2" id="slider-2" value="3" min="1" max="5" data-highlight="true">
+<label for="slider-2">群组中朋友圈范围:</label>
+<input type="range" name="slider-3" id="slider-3" value="5" min="1" max="7" data-highlight="true">
+<label for="flip-2">允许朋友圈好友给我发消息:</label>
+<select name="flip-2" id="flip-2" data-role="slider">
+<option value="off">Off</option>
+<option value="on">On</option>
+</select>
+</form>
 </div>

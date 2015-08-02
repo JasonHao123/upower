@@ -1,6 +1,5 @@
 package jason.app.weixin.web.controller;
 
-import jason.app.weixin.social.api.model.SocialRelationDTO;
 import jason.app.weixin.social.entity.SocialDistanceImpl;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
@@ -35,7 +34,7 @@ public class ExampleListener implements MessageListener {
         	ObjectMessage hmsg = (ObjectMessage)message;
         	try {
 				System.out.println(hmsg.getObject());
-				SocialRelationDTO dto = (SocialRelationDTO)hmsg.getObject();
+/**				SocialRelationDTO dto = (SocialRelationDTO)hmsg.getObject();
 				if(dto.getFrom()!=null && dto.getTo()!=null) {
 					SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(dto.getFrom(), dto.getTo());
 					if(distance==null) {
@@ -46,6 +45,7 @@ public class ExampleListener implements MessageListener {
 					distance.setDistance(dto.getDistance());
 					distanceRepo.save(distance);
 				}
+*/
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

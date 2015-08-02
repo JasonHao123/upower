@@ -4,6 +4,7 @@
 
 	    <div data-role="panel" class="jqm-navmenu-panel" data-position="left" data-display="overlay" data-theme="a">
 	    	<ul class="jqm-list ui-alt-icon ui-nodisc-icon">
+	    	<li data-icon="home"><a href="<c:url value="/user/index.do" />">Home</a></li>
 <li data-icon="user"><a href="<c:url value="/user/profile.do" />">个人信息</a></li>
 <li  data-icon="plus"><a data-ajax="false" href="<c:url value="/social/addfriend.do" />">邀请好友</a></li>
 <li data-role="collapsible" data-enhanced="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right" data-inset="false" class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
@@ -14,9 +15,10 @@
 	</h3>
 	<div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
 		<ul>
-			<li ><a href="../controlgroup/" data-ajax="false">我的好友</a></li>
-			<li ><a href="../controlgroup-dynamic/" data-ajax="false">我的圈子</a></li>
+			<li ><a href="<c:url value="/user/friends.do" />" data-ajax="false">我的好友</a></li>
+			<li ><a href="<c:url value="/user/circle.do" />" data-ajax="false">我的圈子</a></li>
 			<li ><a href="../controlgroup-dynamic/" data-ajax="false">我的群组</a></li>
+			<li ><a href="../controlgroup-dynamic/" data-ajax="false">黑名单</a></li>
 			<li ><a href="../controlgroup-dynamic/" data-ajax="false">社交圈分析</a></li>
 		</ul>
 	</div>
@@ -30,11 +32,13 @@
 	</h3>
 	<div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
 		<ul>
-			<li ><a href="../controlgroup/" data-ajax="false">私信</a></li>
-			<li ><a href="../controlgroup-dynamic/" data-ajax="false">好友申请</a></li>
+			<li ><a href="<c:url value="/user/mails.do" />" data-ajax="false">私信</a></li>
+			<li ><a href="<c:url value="/user/requests.do" />" data-ajax="false">好友申请</a></li>
 		</ul>
 	</div>
 </li>
+<li data-icon="user"><a href="<c:url value="/settings/index.do" />">设置</a></li>
+<!--
 <li data-role="collapsible" data-enhanced="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right" data-inset="false" class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
 	<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
 		<a href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
@@ -49,6 +53,7 @@
 		</ul>
 	</div>
 </li>
+  -->
 <li data-role="collapsible" data-enhanced="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right" data-inset="false" class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
 	<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
 		<a href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">

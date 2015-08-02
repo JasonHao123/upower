@@ -3,23 +3,17 @@ package jason.app.weixin.web.controller.user;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
-import jason.app.weixin.social.api.command.AddUserCommand;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.user.model.ProfileForm;
 import jason.app.weixin.web.controller.user.validator.ProfileValidator;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -122,10 +116,32 @@ private ProfileValidator validator = new ProfileValidator();
     @RequestMapping("/profile")
     public String profile(Model model,@RequestParam(required=false,value="id") Long id) {
         User user = securityService.getCurrentUser();
+        if(user==null) {
+        	return "redirect:/user/profile/edit.do";
+        }else {
+        	SocialUser profile = null;
+        	if(id==null || user.getId()==id) {
+        		profile = socialService.loadProfile(user.getId());
+        	}else {
+        		profile = socialService.loadProfile(id);
+        	}
+        	model.addAttribute("profile",profile);
+        	model.addAttribute("isSelf",user.getId()==id);
+    		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+    		model.addAttribute("distance",distance);
+    		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
+            return "user.profile";
+        }
+      /**  
     	if(id!=null) {
     		SocialUser profile = socialService.loadProfile(id);
         	model.addAttribute("profile",profile);
-        	model.addAttribute("isSelf",user.getId()==profile.getId());
+        	boolean self = user.getId()==profile.getId();
+        	if(!self) {
+        		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+        		model.addAttribute("distance",distance);
+        	}
+        	model.addAttribute("isSelf",self);
     	}else {
 
 	        if(user!=null) {
@@ -137,5 +153,7 @@ private ProfileValidator validator = new ProfileValidator();
 	        }
     	}
         return "user.profile";
+        
+        */
     }
 }

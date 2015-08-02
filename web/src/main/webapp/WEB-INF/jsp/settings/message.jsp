@@ -6,15 +6,10 @@
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/listview-grid.css" />">
 <div role="main" class="ui-content jqm-content">
-<label>Nickname</label>
-<label>${profile.nickname}</label>
-<c:choose>
-<c:when test="${not isSelf}">
-<a href="<c:url value="/social/addfriend.do" ><c:param name="id" value="${profile.id}" /></c:url>">follow</a>
-</c:when>
-<c:otherwise>
-<a href="<c:url value="/user/profile/edit.do" ><c:param name="id" value="${profile.id}" /></c:url>">Edit</a>
+接收消息类型
+谁可以给我发消息
+1. 与我的距离
+2. 关系类型，亲密度
+3. 个人的评价
 
-</c:otherwise>
-</c:choose>
 </div>

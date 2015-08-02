@@ -1,12 +1,14 @@
 package jason.app.weixin.social.service;
 
+import jason.app.weixin.social.model.AddFriendRequest;
+import jason.app.weixin.social.model.Message;
+import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialUser;
+
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-
-import jason.app.weixin.social.model.Message;
-import jason.app.weixin.social.model.SocialUser;
 
 public interface ISocialService {
 
@@ -20,5 +22,23 @@ public interface ISocialService {
 	List<Message> getPersonalMessages(Long id, Long category, Pageable pageable);
 
 	Message getMessage(Long userId,Long id);
+
+	Integer getSocialDistance(Long id, Long id2);
+
+	List<Message> getUserMessages(Long id, Pageable pageable);
+
+	Message getMessage2(Long id, Long id2);
+	
+	Settings getUserSettings(Long id);
+
+	void saveSettings(Settings settings);
+
+	List<SocialUser> getFriends(Long user, Pageable pageable);
+
+	List<SocialUser> getCircle(Long id, Pageable pageable);
+
+	boolean isFriend(Long id, Long id2);
+
+	List<AddFriendRequest> getMyAddFriendRequests(Long id, Pageable pageable);
 
 }

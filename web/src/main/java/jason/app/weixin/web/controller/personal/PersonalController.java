@@ -40,8 +40,14 @@ public class PersonalController {
 	public String home(Model model,@PageableDefault(size=10,page=0,sort={"message.lastUpdate"},direction=Direction.DESC) Pageable pageable,@RequestParam(value="category",required=false) Long category) {
 
 		User user = securityService.getCurrentUser();
-		List<Message> messages  = socialService.getPersonalMessages(user.getId(),category,pageable);
-//		model.addAttribute("messages",messages);
+/**		List<Message> messages = null;
+		if(category!=null && category==-1) {
+			messages = socialService.getUserMessages(user.getId(),pageable);
+		}else {
+			messages  = socialService.getPersonalMessages(user.getId(),category,pageable);
+		}
+		model.addAttribute("messages",messages);
+		*/
 		model.addAttribute("cate",category);
 		List<Category> categories = categoryService.findByParent("message.type", null);
 		model.addAttribute("categories", categories);
@@ -49,10 +55,17 @@ public class PersonalController {
 	}
 	
 	@RequestMapping(value = "/messages", method = RequestMethod.GET)
-	public @ResponseBody List<Message> messages(@PageableDefault(size=10,page=0,sort={"message.lastUpdate"},direction=Direction.DESC) Pageable pageable,@RequestParam(value="category",required=false) Long category) {
+	public @ResponseBody List<Message> messages(@PageableDefault(size=10,page=0) Pageable pageable,@RequestParam(value="category",required=false) Long category) {
 
 		User user = securityService.getCurrentUser();
-		 return socialService.getPersonalMessages(user.getId(),category,pageable);
+		List<Message> messages =null;
+		if(category!=null && category==-1) {
+			messages  = socialService.getUserMessages(user.getId(),pageable);
+		}else {
+			messages  = socialService.getPersonalMessages(user.getId(),category,pageable);
+		}
+		// return socialService.getPersonalMessages(user.getId(),category,pageable);
+		return messages;
 
 	}
 	
@@ -74,9 +87,15 @@ public class PersonalController {
 	
 	
 	@RequestMapping(value = "/message", method = RequestMethod.GET)
-	public String message(Model model,@RequestParam("id") Long id) {
+	public String message(Model model,@RequestParam(value="id",required=false) Long id,@RequestParam(value="id2",required=false) Long id2) {
 		User user = securityService.getCurrentUser();
-		Message message  = socialService.getMessage(user.getId(),id);
+		Message message = null;
+		if(id!=null) {
+			message = socialService.getMessage(user.getId(),id);
+		}
+		if(id2!=null) {
+			message = socialService.getMessage2(user.getId(),id2); 
+		}
 		model.addAttribute("message", message);
 		return "personal.message";
 	}

@@ -3,31 +3,25 @@ package jason.app.weixin.web.controller.social;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
-import jason.app.weixin.social.api.command.AddRelationCommand;
-import jason.app.weixin.social.api.command.AddUserCommand;
-import jason.app.weixin.social.api.util.ArrayUtil;
+import jason.app.weixin.social.constant.AddFriendRequestType;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
+import jason.app.weixin.social.entity.AddFriendRequestImpl;
 import jason.app.weixin.social.entity.SocialRelationshipImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
+import jason.app.weixin.social.repository.AddFriendRequestRepository;
 import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
-import jason.app.weixin.web.controller.login.model.SignupForm;
+import jason.app.weixin.social.util.ArrayUtil;
 import jason.app.weixin.web.controller.social.model.AddFriendForm;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -55,6 +49,9 @@ public class SocialController {
 
 	@Autowired
 	private AddFriendLinkRepository linkRepo;
+	
+	@Autowired
+	private AddFriendRequestRepository addFriendRequestRepo;
 	
 	@Autowired
 	private ICategoryService categoryService;
@@ -97,8 +94,12 @@ public class SocialController {
 			AddFriendForm form = new AddFriendForm();
 			if(!self) {
 				SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),link.getUser().getId());
+				if(relation!=null) {
 				form.setRating(relation.getRating());
 				form.setFriendshipType(ArrayUtil.toLongArray(relation.getRelationType()));
+				}else {
+					form.setRating(3F);
+				}
 			}else {
 				form.setRating(3f);
 			}
@@ -126,16 +127,25 @@ public class SocialController {
 			relation.setId(userImpl.getId()+"_"+link.getUser().getId());
 			relation.setFrom(userImpl);
 			relation.setTo(link.getUser());
-
+			
+			// check whether reverse relation exists
 			SocialRelationshipImpl reverse = socialRelationRepo.findByFrom_IdAndTo_Id(link.getUser().getId(), userImpl.getId());
 			if(reverse==null) {
 				// TODO something here
+				AddFriendRequestImpl request = new AddFriendRequestImpl();
+				request.setFrom(userImpl);
+				request.setTo(link.getUser());
+				request.setMessage(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend!");
+				request.setType(AddFriendRequestType.CONFIRM);
+				request.setCreateDate(new Date());
+				addFriendRequestRepo.save(request);
 			}
 		}
 		relation.setLastUpdate(new Date());
 		relation.setRating(addFriendForm.getRating());
 		relation.setRelationType(Arrays.toString(addFriendForm.getFriendshipType()));
 		socialRelationRepo.save(relation);
+
 		// dfggffg
 /**		jmsTemplate.send(new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {

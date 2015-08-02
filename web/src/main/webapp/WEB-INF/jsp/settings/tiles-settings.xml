@@ -8,19 +8,26 @@
     <put-attribute name="left" value="/WEB-INF/jsp/user/left.jsp" />
     <put-attribute name="navi" value="user" />
   </definition>
-  <definition name="settings.system" extends="social.base">
+  
+    <definition name="settings" extends="settings.base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/settings/settings.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
+  
+  <definition name="settings.system" extends="settings.base">
     <put-attribute name="title" value="page.title.login" />
     <put-attribute name="content" value="/WEB-INF/jsp/settings/system.jsp" />
     <put-attribute name="navi" value="user" />
   </definition>
 
-  <definition name="settings.social" extends="social.base">
+  <definition name="settings.social" extends="settings.base">
     <put-attribute name="title" value="page.title.login" />
     <put-attribute name="content" value="/WEB-INF/jsp/settings/social.jsp" />
     <put-attribute name="navi" value="user" />
   </definition>
   
-    <definition name="settings.message" extends="social.base">
+    <definition name="settings.message" extends="settings.base">
     <put-attribute name="title" value="page.title.login" />
     <put-attribute name="content" value="/WEB-INF/jsp/settings/message.jsp" />
     <put-attribute name="navi" value="user" />

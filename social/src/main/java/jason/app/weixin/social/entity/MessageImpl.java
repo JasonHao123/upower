@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="MESSAGE")
@@ -24,8 +25,8 @@ public class MessageImpl {
     
     @ManyToOne
     private SocialUserImpl author;
-    
-    @Column
+
+	@Column
     private Long category;
     
     @Column
