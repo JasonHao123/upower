@@ -12,4 +12,6 @@ public interface SocialMessageRepository extends JpaRepository<SocialMessageImpl
 
 	Page<SocialMessageImpl> findByUser_IdAndMessage_Category(Long id, Long category,Pageable pageable);
 
+	SocialMessageImpl findByUser_IdAndMessage_Id(Long id, Long id2);
+
 }

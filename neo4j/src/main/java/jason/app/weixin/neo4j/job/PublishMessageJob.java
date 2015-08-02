@@ -45,10 +45,16 @@ public class PublishMessageJob {
     		List<SocialDistanceImpl> targets =  distanceRepo.findByFromUser_IdAndDistanceLessThanEqual(user.getAuthor().getId(), settings.getPersonalCircal());
     		for(SocialDistanceImpl dis:targets) {
     			SocialUserImpl usr = dis.getToUser();
-    			SocialMessageImpl msg = new SocialMessageImpl();
-    			msg.setUser(usr);
+    			SocialMessageImpl msg = messageRepo2.findByUser_IdAndMessage_Id(usr.getId(),user.getId());
+    			if(msg==null) {
+    				msg = new SocialMessageImpl();
+        			msg.setUser(usr);
+        			
+    			}
     			msg.setMessage(user);
     			messageRepo2.save(msg);
+    			//SocialMessageImpl msg = new SocialMessageImpl();
+
     		}
     	}
     }  
