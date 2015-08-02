@@ -1,6 +1,7 @@
 package jason.app.weixin.social.repository;
 
 import jason.app.weixin.social.entity.SocialDistanceImpl;
+import jason.app.weixin.social.entity.SocialUserImpl;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface SocialDistanceRepository extends JpaRepository<SocialDistanceIm
 
 	public Page<SocialDistanceImpl> findByFromUser_IdAndDistanceLessThanEqual(
 			Long id, Integer personalCircal, Pageable pageable);
+
+	public List<SocialDistanceImpl> findByFromUser_IdAndDistanceLessThanEqual(
+			Long id, Integer personalCircal);
 }

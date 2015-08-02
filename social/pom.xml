@@ -11,6 +11,8 @@
   <name>social</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spring.version>4.0.7.RELEASE</spring.version>
+    <spring.data.version>1.7.1.RELEASE</spring.data.version>
   </properties>
   <dependencies>
          <dependency>

@@ -3,6 +3,7 @@ package jason.app.weixin.social.repository;
 import jason.app.weixin.social.entity.SocialRelationshipImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -15,4 +16,6 @@ public interface SocialRelationshipRepository extends JpaRepository<SocialRelati
 	public SocialRelationshipImpl findByFrom_IdAndTo_Id(Long id, Long id2);
 
 	public Page<SocialRelationshipImpl> findByFrom_Id(Long user, Pageable pageable);
+
+	public List<SocialRelationshipImpl> findByLastUpdateGreaterThan(Date time);
 }

@@ -15,6 +15,16 @@ public class SocialRelation {
     @EndNode SocialUser to;
     
     Long[] types;
+    
+    Float rating;
+
+	public Float getRating() {
+		return rating;
+	}
+
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
 
 	public Long getId() {
 		return id;

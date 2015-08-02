@@ -15,7 +15,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
  * @author mh
  * @since 02.04.11
  */
-public interface SocialUserRepository extends GraphRepository<SocialUser>, RelationshipOperationsRepository<SocialUser> {
+public interface SocialUserNeo4jRepository extends GraphRepository<SocialUser>, RelationshipOperationsRepository<SocialUser> {
 	public SocialUser findByUserId(Long userId);
 	
 	 @Query("start usr=node({0}),other=node({1}) match usr-[r:RELATE_TO]->other  return r")

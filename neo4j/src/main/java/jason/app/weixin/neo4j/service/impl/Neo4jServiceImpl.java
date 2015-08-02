@@ -1,19 +1,17 @@
-package jason.app.weixin.neo4j.service;
+package jason.app.weixin.neo4j.service.impl;
 
 import jason.app.weixin.neo4j.domain.SocialRelation;
 import jason.app.weixin.neo4j.domain.SocialUser;
-import jason.app.weixin.neo4j.repository.SocialUserRepository;
-import jason.app.weixin.social.api.command.AddUserCommand;
-import jason.app.weixin.social.api.command.ICommandReceiver;
-import jason.app.weixin.social.api.model.SocialRelationDTO;
+import jason.app.weixin.neo4j.repository.SocialUserNeo4jRepository;
+import jason.app.weixin.neo4j.service.INeo4jService;
+import jason.app.weixin.social.entity.SocialDistanceImpl;
+import jason.app.weixin.social.model.SocialRelationDTO;
+import jason.app.weixin.social.repository.SocialDistanceRepository;
+import jason.app.weixin.social.repository.SocialUserRepository;
+import jason.app.weixin.social.service.ISocialService;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -21,25 +19,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.conversion.QueryResultBuilder;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CommandReceiver implements ICommandReceiver{
+public class Neo4jServiceImpl implements INeo4jService{
 	
 	private static final Logger logger = LoggerFactory
-			.getLogger(CommandReceiver.class);
+			.getLogger(Neo4jServiceImpl.class);
+	
+	@Autowired
+	private ISocialService socialService;
+
 
 	@Autowired
-	private SocialUserRepository userRepo;
+	private SocialUserNeo4jRepository userRepo;
 	
 	@Autowired
 	private Neo4jTemplate neo4jTemplate;
-	
-	@Autowired
-	private JmsTemplate jmsTemplate;
 	
 	@Override
 	@Transactional
@@ -60,10 +57,11 @@ public class CommandReceiver implements ICommandReceiver{
 	}
 
 	@Override
-	public void createRelation(Long fromUser, Long toUser, Long[] types) {
+	public void createRelation(Long fromUser, Long toUser, Long[] types,Float rating) {
 		// TODO Auto-generated method stub
 		SocialUser user = userRepo.findByUserId(fromUser);
 		SocialUser user2 = userRepo.findByUserId(toUser);
+		
 
 /**		
 		user.addFriend(user2, types);
@@ -79,10 +77,12 @@ public class CommandReceiver implements ICommandReceiver{
 			relation.setTo(user2);
 		}
 		relation.setTypes(types);
+		relation.setRating(rating);
 		neo4jTemplate.save(relation);
 	}
 
 	@Override
+	@Transactional
 	public void analyzeUserRelationDistance(Long userId, Integer extensiveLevel) {
 		// TODO Auto-generated method stub
 		try {
@@ -96,15 +96,9 @@ public class CommandReceiver implements ICommandReceiver{
 			 final SocialRelationDTO dto = new SocialRelationDTO();
 	
 				BeanUtils.copyProperties(dto,item);
-			jmsTemplate.send(new MessageCreator() {
-	            public Message createMessage(Session session) throws JMSException {
-	              //  return session.createTextMessage("hello queue world");
-
-	    			logger.info(dto.toString());
-	            	return session.createObjectMessage(dto);
-	              }
-	          });
+				socialService.saveDistance(dto);
 		}
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

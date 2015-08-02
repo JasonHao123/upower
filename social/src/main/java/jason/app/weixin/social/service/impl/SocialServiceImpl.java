@@ -12,6 +12,7 @@ import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.repository.AddFriendRequestRepository;
 import jason.app.weixin.social.repository.MessageRepository;
@@ -234,6 +235,20 @@ public class SocialServiceImpl implements ISocialService {
 		Page<AddFriendRequestImpl> requests = requestRepo.findByTo_IdAndStatusIsNull(id,pageable);
 		
 		return AddFriendRequestTranslator.toDTO(requests);
+	}
+
+	@Override
+	@Transactional
+	public void saveDistance(SocialRelationDTO dto) {
+		// TODO Auto-generated method stub
+		SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(dto.getFrom(), dto.getTo());
+		if(distance==null) {
+			distance = new SocialDistanceImpl();
+			distance.setFromUser(socialUserRepo.findOne(dto.getFrom()));
+			distance.setToUser(socialUserRepo.findOne(dto.getTo()));
+		}
+		distance.setDistance(dto.getDistance());
+		distanceRepo.save(distance);
 	}
 
 }

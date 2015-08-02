@@ -3,6 +3,7 @@ package jason.app.weixin.social.service;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 
 import java.util.List;
@@ -40,5 +41,7 @@ public interface ISocialService {
 	boolean isFriend(Long id, Long id2);
 
 	List<AddFriendRequest> getMyAddFriendRequests(Long id, Pageable pageable);
+
+	void saveDistance(SocialRelationDTO dto);
 
 }
