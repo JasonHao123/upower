@@ -23,11 +23,11 @@ public class SyncUserJob {
 	@Autowired
 	private SocialUserNeo4jRepository userRepo2;
 	
-    @Scheduled(cron="0/5 * *  * * ? ")   //每5秒执行一次   
+    @Scheduled(cron="0/10 * *  * * ? ")   //每5秒执行一次   
     @Transactional
     public void myTest(){  
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, -1);
+		calendar.add(Calendar.SECOND, -10);
 		
     	List<SocialUserImpl> users =  userRepo.findByLastUpdateGreaterThan(calendar.getTime());
     	for(SocialUserImpl usr:users) {

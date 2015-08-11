@@ -35,7 +35,7 @@ public class AnalyzeDistanceJob {
 	@Autowired
 	private SocialDistanceRepository distanceRepo;
 	
-    @Scheduled(cron="0/5 * *  * * ? ")   //每5秒执行一次   
+    @Scheduled(cron="* 0/30 * * * ? ")   //每5秒执行一次   
     @Transactional()
     public void myTest(){  
 		

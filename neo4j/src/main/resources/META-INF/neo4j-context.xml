@@ -20,9 +20,9 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
 
         <neo4j:config graphDatabaseService="graphDatabaseService" base-package="jason.app.weixin.neo4j.domain"/>
         <bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
-            <constructor-arg value="http://localhost:7474/db/data"/>
-            <constructor-arg name="user" value="neo4j"/>
-    <constructor-arg name="password" value="cde34rfv"/>
+            <constructor-arg value="#{ systemProperties['neo4j_url'] }"/>
+            <constructor-arg name="user" value="#{ systemProperties['neo4j_user'] }"/>
+    <constructor-arg name="password" value="#{ systemProperties['neo4j_password'] }"/>
         </bean>
 
     <neo4j:repositories base-package="jason.app.weixin.neo4j.repository"/>

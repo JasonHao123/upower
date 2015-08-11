@@ -33,11 +33,11 @@ public class PublishMessageJob {
 	@Autowired
 	private SocialMessageRepository messageRepo2;
 
-    @Scheduled(cron="0/5 * *  * * ? ")   //每5秒执行一次   
+    @Scheduled(cron="0/10 * *  * * ? ")   //每5秒执行一次   
     @Transactional
     public void myTest(){  
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, -1);
+		calendar.add(Calendar.SECOND, -10);
 		
     	List<MessageImpl> users =  messageRepo.findByLastUpdateGreaterThan(calendar.getTime());
     	for(MessageImpl user:users) {

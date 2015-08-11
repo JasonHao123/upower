@@ -32,11 +32,11 @@ public class SyncRelationJob {
 	private Neo4jTemplate neo4jTemplate;
 
 	
-    @Scheduled(cron="0/5 * *  * * ? ")   //每5秒执行一次   
+    @Scheduled(cron="0/10 * *  * * ? ")   //每5秒执行一次   
     @Transactional
     public void myTest(){  
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, -1);
+		calendar.add(Calendar.SECOND, -10);
 		
     	List<SocialRelationshipImpl> relations =  relationRepo.findByLastUpdateGreaterThan(calendar.getTime());
     	for(SocialRelationshipImpl rel:relations) {
