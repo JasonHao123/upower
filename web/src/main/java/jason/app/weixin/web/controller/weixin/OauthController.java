@@ -1,10 +1,13 @@
 package jason.app.weixin.web.controller.weixin;
 
+import jason.app.weixin.security.exception.UserAlreadyExistException;
+import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.web.controller.model.WeixinHeader;
 import jason.app.weixin.web.controller.model.WeixinParam;
 import jason.app.weixin.web.oauth.WeixinApi;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +21,8 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +33,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/weixin/oauth")
 public class OauthController {
+	
+    @Autowired
+    private ISecurityService facade;
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
 	 String apiKey = "wxbe821ceae333b377";
 	    String apiSecret = "d8578702710ff6a5d17efc6338efc08a";
 	    private static final Token EMPTY_TOKEN = null;
@@ -63,14 +75,26 @@ public class OauthController {
 		
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 		request.addQuerystringParameter("access_token", accessToken.getToken());
-		request.addQuerystringParameter("openid", "oDUuBw4rBU_IJO0Oclrl6JPolu-c");
+//		request.addQuerystringParameter("openid", "oDUuBw4rBU_IJO0Oclrl6JPolu-c");
 	    service.signRequest(accessToken, request);
 	    Response response = request.send();
 	    logger.info("Got it! Lets see what we found...");
 	    logger.info(""+response.getCode());
 	    logger.info(response.getBody());
 	    model.addAttribute("body",response.getBody());
-	    
-		return "redirect:/check.do";
+/**	    userDetailsService.loadUserByUsername(signupForm.getUsername());
+        try {
+            facade.createUser(signupForm.getUsername(), signupForm.getPassword(), Arrays.asList(new String[]{"ROLE_USER"}));
+            // password encoded in signup, need to reset again
+            //user.setPassword(signupForm.getPassword());
+            facade.login(request,response,signupForm.getUsername(), signupForm.getPassword());
+        } catch (UserAlreadyExistException ee) {
+            result.rejectValue("username", "validate.err.username", "User is already exist!");
+            signupForm.setPassword("");
+            signupForm.setPasswordAgain("");         
+            return null;
+        }
+        */
+		return "logincheck";
 	}
 }
