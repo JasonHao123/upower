@@ -9,5 +9,5 @@
 <label>${userInfo.nickname}</label>
 <label>${userInfo.country }-${userInfo.province }-${userInfo.city }</label>
 <label>${userInfo.sex}</label>
-<img alt="" src="${userInfo.headimagurl }">
+<img alt="" src="${userInfo.headimgurl }">
 </div>
