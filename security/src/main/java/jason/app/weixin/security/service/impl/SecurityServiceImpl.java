@@ -114,7 +114,7 @@ public class SecurityServiceImpl implements ISecurityService {
 		return user!=null;
 	}
 	@Override
-	public void createExternalUser(String username, String password,
+	public User createExternalUser(String username, String password,
 			List<String> roles) {
 		// TODO Auto-generated method stub
 	  	UserImpl userImpl = new UserImpl();
@@ -134,7 +134,7 @@ public class SecurityServiceImpl implements ISecurityService {
     	}
     	userImpl.setRoles(roleImpls);
     	userImpl = userDao.save(userImpl);
-       // return UserTranslator.toDTO(userImpl);
+        return UserTranslator.toDTO(userImpl);
 	}
 	@Override
 	public void loginExternalUser(HttpServletRequest request,

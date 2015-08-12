@@ -20,7 +20,7 @@ public interface ISecurityService {
 
 	public boolean isWeixinUserExists(String openid);
 
-	public void createExternalUser(String openid, String openid2,
+	public User createExternalUser(String openid, String openid2,
 			List<String> asList);
 
 	public void loginExternalUser(HttpServletRequest req,

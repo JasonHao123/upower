@@ -23,6 +23,13 @@ public class SocialUserTranslator {
 		user.setCategory2(profile.getCategory2());
 		user.setHobbys(Arrays.toString(profile.getHobby()));
 		user.setLocations(Arrays.toString(profile.getLocation()));
+		
+		user.setSex(profile.getSex());
+		user.setCountry(profile.getCountry());
+		user.setProvince(profile.getProvince());
+		user.setCity(profile.getCity());
+		user.setHeadimagurl(profile.getHeadimagurl());
+		
 		user.setLastUpdate(new Date());
 		return user;
 	}

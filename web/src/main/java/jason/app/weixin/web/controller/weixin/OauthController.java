@@ -1,6 +1,9 @@
 package jason.app.weixin.web.controller.weixin;
 
+import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
+import jason.app.weixin.social.model.SocialUser;
+import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.weixin.model.AuthorizeResponse;
 import jason.app.weixin.web.controller.weixin.model.WeixinUserInfo;
 import jason.app.weixin.web.oauth.WeixinApi;
@@ -10,6 +13,7 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.scribe.builder.ServiceBuilder;
@@ -33,6 +37,9 @@ public class OauthController {
 	
     @Autowired
     private ISecurityService facade;
+    
+    @Autowired
+    private ISocialService socialService;
     
     private ObjectMapper mapper = new ObjectMapper();
     
@@ -62,17 +69,26 @@ public class OauthController {
 	}
 	
 	@RequestMapping("/callback")
-	public String post(HttpServletRequest req,HttpServletResponse resp,Model model,@RequestParam(value="code",required=false) String code) {
+	public String post(HttpServletRequest req,HttpServletResponse resp,HttpSession session,Model model,@RequestParam(value="code",required=false) String code) {
 		logger.info("code:"+code);
 		Verifier verifier = new Verifier(code);
 		Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+		session.setAttribute("accessToken", accessToken);
 		logger.info("(if your curious it looks like this: " + accessToken + " )");
 				
 		try {
 			AuthorizeResponse response2 = mapper.readValue(accessToken.getRawResponse(),AuthorizeResponse.class);
 
 			if(response2!=null && response2.getOpenid()!=null) {
-		
+				session.setAttribute("openid", response2.getOpenid());
+		User user = null;
+		if(!facade.isWeixinUserExists(response2.getOpenid())) {
+            user = facade.createExternalUser(response2.getOpenid(), response2.getOpenid(), Arrays.asList(new String[]{"ROLE_USER"}));			
+		}
+		facade.loginExternalUser(req,resp,response2.getOpenid());
+
+		//TODO need to move it to update user profile function;
+		try {
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 		request.addQuerystringParameter("access_token", accessToken.getToken());
 		request.addQuerystringParameter("openid", response2.getOpenid());
@@ -83,29 +99,25 @@ public class OauthController {
 	    logger.info(response.getBody());
 	    model.addAttribute("body",response.getBody());
 		WeixinUserInfo userInfo = mapper.readValue(response.getBody(),WeixinUserInfo.class);
-		if(!facade.isWeixinUserExists(userInfo.getOpenid())) {
-            facade.createExternalUser(userInfo.getOpenid(), userInfo.getOpenid(), Arrays.asList(new String[]{"ROLE_USER"}));			
+		if(userInfo!=null && user!=null) {
+	        final SocialUser profile = new SocialUser();
+	        profile.setId(user.getId());
+	        profile.setNickname(userInfo.getNickname());
+	        profile.setCountry(userInfo.getCountry());
+	        profile.setProvince(userInfo.getProvince());
+	        profile.setCity(userInfo.getCity());
+	        profile.setHeadimagurl(userInfo.getHeadimagurl());
+	        profile.setSex(userInfo.getSex());
+	        socialService.saveProfile(profile);		}
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		facade.loginExternalUser(req,resp,userInfo.getOpenid());
-/**	    userDetailsService.loadUserByUsername(signupForm.getUsername());
-        try {
-            facade.createUser(signupForm.getUsername(), signupForm.getPassword(), Arrays.asList(new String[]{"ROLE_USER"}));
-            // password encoded in signup, need to reset again
-            //user.setPassword(signupForm.getPassword());
-            facade.login(request,response,signupForm.getUsername(), signupForm.getPassword());
-        } catch (UserAlreadyExistException ee) {
-            result.rejectValue("username", "validate.err.username", "User is already exist!");
-            signupForm.setPassword("");
-            signupForm.setPasswordAgain("");         
-            return null;
-        }
-        */
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return "logincheck";
+		return "redirect:/check.do";
 	}
 }

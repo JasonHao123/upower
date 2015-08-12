@@ -35,6 +35,72 @@ public class SocialUserImpl {
 	private String hobbys;
 	
 	@Column
+	private Integer sex;
+	
+	@Column
+	private String language;
+	
+	@Column
+	private String city;
+	
+	@Column
+	private String province;
+	
+	@Column
+	private String country;
+	
+	@Column
+	private String headimagurl;
+	
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getHeadimagurl() {
+		return headimagurl;
+	}
+
+	public void setHeadimagurl(String headimagurl) {
+		this.headimagurl = headimagurl;
+	}
+
+	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdate;
 	

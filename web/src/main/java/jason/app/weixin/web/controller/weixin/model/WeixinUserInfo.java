@@ -3,7 +3,7 @@ package jason.app.weixin.web.controller.weixin.model;
 public class WeixinUserInfo {
 	private String openid;
 	private String nickname;
-	private String sex;
+	private Integer sex;
 	private String language;
 	private String city;
 	private String province;
@@ -21,10 +21,10 @@ public class WeixinUserInfo {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	public String getSex() {
+	public Integer getSex() {
 		return sex;
 	}
-	public void setSex(String sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 	public String getLanguage() {
