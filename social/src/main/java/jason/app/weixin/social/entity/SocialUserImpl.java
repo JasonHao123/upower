@@ -50,7 +50,7 @@ public class SocialUserImpl {
 	private String country;
 	
 	@Column
-	private String headimagurl;
+	private String headimgurl;
 	
 	public Integer getSex() {
 		return sex;
@@ -92,12 +92,12 @@ public class SocialUserImpl {
 		this.country = country;
 	}
 
-	public String getHeadimagurl() {
-		return headimagurl;
+	public String getHeadimgurl() {
+		return headimgurl;
 	}
 
-	public void setHeadimagurl(String headimagurl) {
-		this.headimagurl = headimagurl;
+	public void setHeadimgurl(String headimagurl) {
+		this.headimgurl = headimagurl;
 	}
 
 	@Column

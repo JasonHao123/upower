@@ -109,7 +109,7 @@ public class OauthController {
 	        profile.setCountry(userInfo.getCountry());
 	        profile.setProvince(userInfo.getProvince());
 	        profile.setCity(userInfo.getCity());
-	        profile.setHeadimagurl(userInfo.getHeadimagurl());
+	        profile.setHeadimgurl(userInfo.getHeadimgurl());
 	        profile.setSex(userInfo.getSex());
 	        socialService.saveProfile(profile);		}
 		}catch(Exception e) {

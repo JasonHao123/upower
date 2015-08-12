@@ -14,7 +14,7 @@ public class SocialUser {
 	private String city;
 	private String province;
 	private String country;
-	private String headimagurl;
+	private String headimgurl;
 	public Integer getSex() {
 		return sex;
 	}
@@ -45,11 +45,11 @@ public class SocialUser {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public String getHeadimagurl() {
-		return headimagurl;
+	public String getHeadimgurl() {
+		return headimgurl;
 	}
-	public void setHeadimagurl(String headimagurl) {
-		this.headimagurl = headimagurl;
+	public void setHeadimgurl(String headimagurl) {
+		this.headimgurl = headimagurl;
 	}
 	public Integer getDistance() {
 		return distance;
