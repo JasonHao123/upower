@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="CATEGORY")
 public class CategoryImpl {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)// ,generator="CATEGORY_ID_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// ,generator="CATEGORY_ID_SEQ")
     // @SequenceGenerator(name="CATEGORY_ID_SEQ",sequenceName="CATEGORY_ID_SEQ",initialValue=1000)
     private Long id;
     

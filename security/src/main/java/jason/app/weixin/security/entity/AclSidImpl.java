@@ -18,7 +18,7 @@ public class AclSidImpl {
     private static final long serialVersionUID = -422644020769237533L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class AclClassImpl {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name="CLASS",unique=true)
     private String clazz;

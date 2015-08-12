@@ -21,7 +21,7 @@ import org.springframework.security.acls.model.ObjectIdentity;
 @Table(name="ACL_OBJECT_IDENTITY")
 public class AclObjectIdentityImpl implements ObjectIdentity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne

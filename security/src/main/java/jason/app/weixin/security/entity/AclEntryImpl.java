@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Table(name="ACL_ENTRY")
 public class AclEntryImpl{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne

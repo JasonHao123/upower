@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Table(name="SOCIAL_MESSAGE")
 public class SocialMessageImpl {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
     
     @ManyToOne
