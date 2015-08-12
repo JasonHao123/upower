@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE tiles-definitions PUBLIC
-       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
-       "http://WEB-INF/jsp.apache.org/dtds/WEB-INF/jsp-config_2_0.dtd">
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 
   <definition name="base.definition"
@@ -9,6 +7,12 @@
     <put-attribute name="title" value="base def" />
     <put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />  
     <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+  </definition>
+  
+    <definition name="content.definition"
+    template="/WEB-INF/jsp/layout/content.jsp">
+    <put-attribute name="title" value="base def" />
+     <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
   </definition>
 
 </tiles-definitions>

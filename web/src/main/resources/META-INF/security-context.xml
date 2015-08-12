@@ -13,6 +13,8 @@
 	<intercept-url pattern="/resources/**" access="permitAll" />
 	    <intercept-url pattern="/login.do" access="permitAll" />
 	    <intercept-url pattern="/signup.do" access="permitAll" />
+	    <intercept-url pattern="/weixin/processor.do" access="permitAll" />
+	    <intercept-url pattern="/weixin/oauth/**" access="permitAll" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />
         <form-login login-page="/login.do" />
         <logout/>

@@ -7,6 +7,10 @@
 		<put-attribute name="content" value="/WEB-INF/jsp/login/login.jsp" />
 		<put-attribute name="navi" value="user" />
 	</definition>
+	
+	<definition name="logincheck" extends="content.definition">
+		<put-attribute name="content" value="/WEB-INF/jsp/login/logincheck.jsp" />
+	</definition>
 
 	<definition name="signup" extends="base.definition">
 		<put-attribute name="content" value="/WEB-INF/jsp/login/signup.jsp" />

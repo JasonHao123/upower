@@ -2,11 +2,12 @@ package jason.app.weixin.web.controller.login;
 
 import jason.app.weixin.web.service.IUserAccountValidationService;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
@@ -17,8 +18,12 @@ public class LoginController {
      * The public index page, used for unauthenticated users.
      */
     @RequestMapping(value="/login", method=RequestMethod.GET)
-    public ModelAndView displayLogin() {
-       return new ModelAndView("login");
+    public String displayLogin(HttpServletRequest request) {
+    	String agent =  request.getHeader("User-Agent");
+    	if(agent!=null && agent.indexOf("MicroMessenger")>=0) {
+    		return "redirect:/weixin/oauth/authorize";
+    	}
+       return "login";
     }
     
     @RequestMapping(value="/check", method=RequestMethod.GET)
