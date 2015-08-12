@@ -5,6 +5,7 @@
 <%@ page pageEncoding="UTF-8"%>
 
 <div role="main">
+<p>${body }</p>
 <label>${userInfo.nickname}</label>
 <label>${userInfo.country }-${userInfo.province }-${userInfo.city }</label>
 <label>${userInfo.sex}</label>
