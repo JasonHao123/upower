@@ -12,6 +12,7 @@ public class UserTranslator {
 
 	public static User toDTO(UserImpl userImpl) {
 		// TODO Auto-generated method stub
+		if(userImpl==null) return null;
 		User user = new User();
 		user.setId(userImpl.getId());
 		user.setEnabled(userImpl.isEnabled());

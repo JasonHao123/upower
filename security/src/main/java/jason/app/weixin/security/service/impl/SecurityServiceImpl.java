@@ -154,5 +154,11 @@ public class SecurityServiceImpl implements ISecurityService {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
 	}
+	@Override
+	public User findExternalUser(String openid) {
+		// TODO Auto-generated method stub
+		UserImpl user = userDao.findByExternalId(openid);
+		return UserTranslator.toDTO(user);
+	}
 
 }

@@ -83,8 +83,8 @@ public class OauthController {
 
 			if(response2!=null && response2.getOpenid()!=null) {
 				session.setAttribute("openid", response2.getOpenid());
-		User user = null;
-		if(!facade.isWeixinUserExists(response2.getOpenid())) {
+		User user = facade.findExternalUser(response2.getOpenid());
+		if(user==null) {
             user = facade.createExternalUser(response2.getOpenid(), response2.getOpenid(), Arrays.asList(new String[]{"ROLE_USER"}));			
 		}
 		facade.loginExternalUser(req,resp,response2.getOpenid());
@@ -121,6 +121,6 @@ public class OauthController {
 			e.printStackTrace();
 		}
 		
-		return "logincheck";
+		return "redirect:/check.do";
 	}
 }
