@@ -19,14 +19,14 @@ public class WeixinProcessor
 
 	private static Logger logger = LoggerFactory.getLogger(WeixinProcessor.class);
 	@RequestMapping("/processor")
-    public @ResponseBody String home(@ModelAttribute WeixinParam params,@ModelAttribute WeixinHeader header)
+    public @ResponseBody WeixinParam home(@ModelAttribute WeixinParam params,@ModelAttribute WeixinHeader header)
     {
-		
+		/** 	
 		if(StringUtils.hasText(header.getEchostr())) {
 			return header.getEchostr();
 		}
 		return "hello";
-		/** 
+	*/
 		logger.info(header.getEchostr());
         WeixinParam response = new WeixinParam();
         response.setMsgType("text");
@@ -36,7 +36,7 @@ public class WeixinProcessor
         response.setContent("found more than one record, please provide more information");
 
         return response;
-        */
+        
     }
 
 

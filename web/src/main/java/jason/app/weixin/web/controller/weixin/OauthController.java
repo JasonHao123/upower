@@ -36,7 +36,7 @@ public class OauthController {
      .provider(WeixinApi.class)
      .apiKey(apiKey)
      .apiSecret(apiSecret)
-     .scope("snsapi_base")
+     .scope("snsapi_userinfo")
      .callback("http://www.openpub.cn/weixin/oauth/callback.do")
      .build();
 	private static Logger logger = LoggerFactory.getLogger(WeixinProcessor.class);

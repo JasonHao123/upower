@@ -21,7 +21,7 @@ public class LoginController {
     public String displayLogin(HttpServletRequest request) {
     	String agent =  request.getHeader("User-Agent");
     	if(agent!=null && agent.indexOf("MicroMessenger")>=0) {
-    		return "redirect:/weixin/oauth/authorize";
+    		return "redirect:/weixin/oauth/authorize.do";
     	}
        return "login";
     }
