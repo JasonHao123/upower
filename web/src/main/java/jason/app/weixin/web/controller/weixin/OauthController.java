@@ -1,17 +1,17 @@
 package jason.app.weixin.web.controller.weixin;
 
-import jason.app.weixin.security.exception.UserAlreadyExistException;
 import jason.app.weixin.security.service.ISecurityService;
-import jason.app.weixin.web.controller.model.WeixinHeader;
-import jason.app.weixin.web.controller.model.WeixinParam;
+import jason.app.weixin.web.controller.weixin.model.AuthorizeResponse;
 import jason.app.weixin.web.oauth.WeixinApi;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -25,10 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/weixin/oauth")
@@ -39,6 +37,8 @@ public class OauthController {
     
     @Autowired
     private UserDetailsService userDetailsService;
+    
+    private ObjectMapper mapper = new ObjectMapper();
     
 	 String apiKey = "wxbe821ceae333b377";
 	    String apiSecret = "d8578702710ff6a5d17efc6338efc08a";
@@ -71,17 +71,22 @@ public class OauthController {
 		Verifier verifier = new Verifier(code);
 		Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
 		logger.info("(if your curious it looks like this: " + accessToken + " )");
-		
+				
+		try {
+			AuthorizeResponse response2 = mapper.readValue(accessToken.getRawResponse(),AuthorizeResponse.class);
+
+			if(response2!=null && response2.getOpenid()!=null) {
 		
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
 		request.addQuerystringParameter("access_token", accessToken.getToken());
-//		request.addQuerystringParameter("openid", "oDUuBw4rBU_IJO0Oclrl6JPolu-c");
+		request.addQuerystringParameter("openid", response2.getOpenid());
 	    service.signRequest(accessToken, request);
 	    Response response = request.send();
 	    logger.info("Got it! Lets see what we found...");
 	    logger.info(""+response.getCode());
 	    logger.info(response.getBody());
 	    model.addAttribute("body",response.getBody());
+			}
 /**	    userDetailsService.loadUserByUsername(signupForm.getUsername());
         try {
             facade.createUser(signupForm.getUsername(), signupForm.getPassword(), Arrays.asList(new String[]{"ROLE_USER"}));
@@ -95,6 +100,10 @@ public class OauthController {
             return null;
         }
         */
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "logincheck";
 	}
 }
