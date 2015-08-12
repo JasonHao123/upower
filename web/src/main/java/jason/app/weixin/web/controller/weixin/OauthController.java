@@ -101,6 +101,7 @@ public class OauthController {
 	    logger.info(response.getBody());
 	    model.addAttribute("body",response.getBody());
 		WeixinUserInfo userInfo = mapper.readValue(response.getBody(),WeixinUserInfo.class);
+		model.addAttribute("userInfo",userInfo);
 		if(userInfo!=null && user!=null) {
 	        final SocialUser profile = new SocialUser();
 	        profile.setId(user.getId());
@@ -120,6 +121,6 @@ public class OauthController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/check.do";
+		return "logincheck";
 	}
 }

@@ -114,6 +114,7 @@ public class SecurityServiceImpl implements ISecurityService {
 		return user!=null;
 	}
 	@Override
+	@Transactional
 	public User createExternalUser(String username, String password,
 			List<String> roles) {
 		// TODO Auto-generated method stub
