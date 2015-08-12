@@ -17,4 +17,12 @@ public interface ISecurityService {
     public void login(HttpServletRequest request, HttpServletResponse response, String username, String password);
 
 	public User getCurrentUser();
+
+	public boolean isWeixinUserExists(String openid);
+
+	public void createExternalUser(String openid, String openid2,
+			List<String> asList);
+
+	public void loginExternalUser(HttpServletRequest req,
+			HttpServletResponse resp, String openid);
 }

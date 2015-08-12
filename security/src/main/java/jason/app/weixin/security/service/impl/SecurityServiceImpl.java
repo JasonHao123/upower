@@ -107,5 +107,51 @@ public class SecurityServiceImpl implements ISecurityService {
 		User user = UserTranslator.toDTO(userDao.findByUsername(username));
 		return user;
 	}
+	@Override
+	public boolean isWeixinUserExists(String openid) {
+		// TODO Auto-generated method stub
+		UserImpl user = userDao.findByExternalId(openid);
+		return user!=null;
+	}
+	@Override
+	public void createExternalUser(String username, String password,
+			List<String> roles) {
+		// TODO Auto-generated method stub
+	  	UserImpl userImpl = new UserImpl();
+    	userImpl.setEnabled(true);
+    	userImpl.setUsername(username);
+    	userImpl.setExternalId(username);
+    	userImpl.setPassword(encoder.encode(password));
+    	List<RoleImpl> roleImpls = new ArrayList<RoleImpl>();
+    	// save first time to generate id, otherwise roles cannot be added
+    	userImpl = userDao.save(userImpl);
+    	
+    	if(roles!=null) {
+    		for(String role:roles) {
+    			RoleImpl roleImpl = findOrCreateRole(role);
+    			roleImpls.add(roleImpl);
+    		}
+    	}
+    	userImpl.setRoles(roleImpls);
+    	userImpl = userDao.save(userImpl);
+       // return UserTranslator.toDTO(userImpl);
+	}
+	@Override
+	public void loginExternalUser(HttpServletRequest request,
+			HttpServletResponse resp, String openid) {
+		// TODO Auto-generated method stub
+        try {
+            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
+
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(openid, openid);
+            token.setDetails(new WebAuthenticationDetails(request));
+
+            Authentication authentication = authenticationProvider.authenticate(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            e.printStackTrace();
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
+	}
 
 }

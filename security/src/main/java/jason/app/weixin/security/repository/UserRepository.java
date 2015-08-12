@@ -8,4 +8,6 @@ public interface UserRepository extends JpaRepository<UserImpl, Long>{
 
 	UserImpl findByUsername(String username);
 
+	UserImpl findByExternalId(String openid);
+
 }

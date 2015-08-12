@@ -2,15 +2,15 @@ package jason.app.weixin.web.controller.weixin;
 
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.web.controller.weixin.model.AuthorizeResponse;
+import jason.app.weixin.web.controller.weixin.model.WeixinUserInfo;
 import jason.app.weixin.web.oauth.WeixinApi;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
@@ -22,7 +22,6 @@ import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +33,6 @@ public class OauthController {
 	
     @Autowired
     private ISecurityService facade;
-    
-    @Autowired
-    private UserDetailsService userDetailsService;
     
     private ObjectMapper mapper = new ObjectMapper();
     
@@ -66,7 +62,7 @@ public class OauthController {
 	}
 	
 	@RequestMapping("/callback")
-	public String post(Model model,@RequestParam(value="code",required=false) String code) {
+	public String post(HttpServletRequest req,HttpServletResponse resp,Model model,@RequestParam(value="code",required=false) String code) {
 		logger.info("code:"+code);
 		Verifier verifier = new Verifier(code);
 		Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
@@ -86,7 +82,11 @@ public class OauthController {
 	    logger.info(""+response.getCode());
 	    logger.info(response.getBody());
 	    model.addAttribute("body",response.getBody());
-			}
+		WeixinUserInfo userInfo = mapper.readValue(response.getBody(),WeixinUserInfo.class);
+		if(!facade.isWeixinUserExists(userInfo.getOpenid())) {
+            facade.createExternalUser(userInfo.getOpenid(), userInfo.getOpenid(), Arrays.asList(new String[]{"ROLE_USER"}));			
+		}
+		facade.loginExternalUser(req,resp,userInfo.getOpenid());
 /**	    userDetailsService.loadUserByUsername(signupForm.getUsername());
         try {
             facade.createUser(signupForm.getUsername(), signupForm.getPassword(), Arrays.asList(new String[]{"ROLE_USER"}));
@@ -100,10 +100,12 @@ public class OauthController {
             return null;
         }
         */
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return "logincheck";
 	}
 }
