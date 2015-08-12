@@ -9,6 +9,13 @@ public class WeixinUserInfo {
 	private String province;
 	private String country;
 	private String headimagurl;
+	public String[] getPrivilege() {
+		return privilege;
+	}
+	public void setPrivilege(String[] privilege) {
+		this.privilege = privilege;
+	}
+	private String[] privilege;
 	public String getOpenid() {
 		return openid;
 	}
