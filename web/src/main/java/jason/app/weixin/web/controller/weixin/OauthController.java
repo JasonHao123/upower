@@ -111,6 +111,7 @@ public class OauthController {
 	        profile.setCity(userInfo.getCity());
 	        profile.setHeadimgurl(userInfo.getHeadimgurl());
 	        profile.setSex(userInfo.getSex());
+	        profile.setOpenid(userInfo.getOpenid());
 	        socialService.saveProfile(profile);		}
 		}catch(Exception e) {
 			e.printStackTrace();

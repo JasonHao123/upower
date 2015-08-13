@@ -52,6 +52,17 @@ public class SocialUserImpl {
 	@Column
 	private String headimgurl;
 	
+	@Column
+	private String openid;
+	
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+
 	public Integer getSex() {
 		return sex;
 	}

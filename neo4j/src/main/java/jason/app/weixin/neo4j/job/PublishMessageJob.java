@@ -5,6 +5,8 @@ import jason.app.weixin.social.entity.SocialDistanceImpl;
 import jason.app.weixin.social.entity.SocialMessageImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialMessage;
+import jason.app.weixin.social.model.Text;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
 import jason.app.weixin.social.repository.SocialMessageRepository;
@@ -13,13 +15,22 @@ import jason.app.weixin.social.service.ISocialService;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PublishMessageJob {
+	
+	@Autowired
+	private JmsTemplate jmsTemplate;
 	
 	@Autowired
 	private MessageRepository messageRepo;
@@ -52,9 +63,20 @@ public class PublishMessageJob {
         			
     			}
     			msg.setMessage(user);
-    			messageRepo2.save(msg);
+    			msg = messageRepo2.save(msg);
+            	final SocialMessage command = new SocialMessage();
+            	command.setTouser(msg.getUser().getOpenid());
+            	command.setMsgtype("text");
+            	Text text = new Text();
+            	text.setContent("content");
+            	command.setText(text);
     			//SocialMessageImpl msg = new SocialMessageImpl();
-
+    			jmsTemplate.send(new MessageCreator() {
+    	            public Message createMessage(Session session) throws JMSException {
+    	              //  return session.createTextMessage("hello queue world");    
+    	            	return session.createObjectMessage(command);
+    	              }
+    	          });
     		}
     	}
     }  

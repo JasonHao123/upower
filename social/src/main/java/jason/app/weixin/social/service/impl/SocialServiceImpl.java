@@ -28,6 +28,7 @@ import jason.app.weixin.social.translator.SettingsTransaltor;
 import jason.app.weixin.social.translator.SocialUserTranslator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -68,7 +69,35 @@ public class SocialServiceImpl implements ISocialService {
 	@Transactional
 	public void saveProfile(SocialUser profile) {
 		// TODO Auto-generated method stub
-		SocialUserImpl user = SocialUserTranslator.toEntity(profile);
+		SocialUserImpl user = socialUserRepo.findOne(profile.getId());
+		if(user==null) {
+			user = SocialUserTranslator.toEntity(profile);
+		}else {
+			if(profile.getAge()!=null)
+			user.setAge(profile.getAge());
+			if(profile.getNickname()!=null)
+			user.setNickname(profile.getNickname());
+			if(profile.getCategory1()!=null)
+			user.setCategory1(profile.getCategory1());
+			if(profile.getCategory2()!=null)
+			user.setCategory2(profile.getCategory2());
+			if(profile.getHobby()!=null)
+			user.setHobbys(Arrays.toString(profile.getHobby()));
+			if(profile.getLocation()!=null)
+			user.setLocations(Arrays.toString(profile.getLocation()));
+			if(profile.getSex()!=null)
+			user.setSex(profile.getSex());
+			if(profile.getCountry()!=null)
+			user.setCountry(profile.getCountry());
+			if(profile.getProvince()!=null)
+			user.setProvince(profile.getProvince());
+			if(profile.getCity()!=null)
+			user.setCity(profile.getCity());
+			if(profile.getHeadimgurl()!=null)
+			user.setHeadimgurl(profile.getHeadimgurl());
+			
+			user.setLastUpdate(new Date());
+		}
 		socialUserRepo.save(user);
 	}
 
