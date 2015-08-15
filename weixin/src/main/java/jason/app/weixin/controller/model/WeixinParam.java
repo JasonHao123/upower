@@ -5,6 +5,7 @@
 
 package jason.app.weixin.controller.model;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="xml")
@@ -99,13 +100,20 @@ public class WeixinParam
 		this.eventKey = eventKey;
 	}
 
-
+	@XmlElement(name="FromUserName")
 	private String fromUserName;
+	@XmlElement(name="ToUserName")
     private String toUserName;
+	@XmlElement(name="CreateTime")
     private String createTime;
+	@XmlElement(name="MsgType")
     private String msgType;
+	@XmlElement(name="Content")
     private String content;
+	@XmlElement(name="MsgId")
     private String msgId;
+	@XmlElement(name="Event")
     private String event;
+	@XmlElement(name="EventKey")
     private String eventKey;
 }
