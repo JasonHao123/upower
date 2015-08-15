@@ -5,7 +5,9 @@
 
 package jason.app.weixin.controller.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class WeixinParam
 {
 
