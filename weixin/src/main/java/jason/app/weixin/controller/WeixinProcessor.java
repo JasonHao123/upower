@@ -56,14 +56,14 @@ public class WeixinProcessor
 			return header.getEchostr();
 		}
 		*/
-		logger.info(params.getEventKey());
+		logger.info(params.toString());
         WeixinParam response = new WeixinParam();
         response.setMsgType("text");
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
         response.setContent("found more than one record, please provide more information");
-
+        logger.info(response.toString());
         return response;
     }
 
