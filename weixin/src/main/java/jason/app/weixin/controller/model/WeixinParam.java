@@ -1,17 +1,13 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   WeixinParam.java
-
 package jason.app.weixin.controller.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name="xml")
-//@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WeixinParam
 {
 
@@ -20,70 +16,69 @@ public class WeixinParam
     }
 
 
-//	@XmlElement(name="FromUserName")
-	private String FromUserName;
-//	@XmlElement(name="ToUserName")
-    private String ToUserName;
-//	@XmlElement(name="CreateTime")
-    private String CreateTime;
-//	@XmlElement(name="MsgType")
-    private String MsgType;
-//	@XmlElement(name="Content")
-    private String Content;
-//	@XmlElement(name="MsgId")
-    private String MsgId;
-//	@XmlElement(name="Event")
-    private String Event;
-//	@XmlElement(name="EventKey")
-    private String EventKey;
+	@XmlElement(name="FromUserName")
+	private String fromUserName;
+	@XmlElement(name="ToUserName")
+    private String toUserName;
+	@XmlElement(name="CreateTime")
+    private String createTime;
+	@XmlElement(name="MsgType")
+    private String msgType;
+	@XmlElement(name="Content")
+    private String content;
+	@XmlElement(name="MsgId")
+    private String msgId;
+	@XmlElement(name="Event")
+    private String event;
+	@XmlElement(name="EventKey")
+    private String eventKey;
 	public String getFromUserName() {
-		return FromUserName;
+		return fromUserName;
 	}
 	public void setFromUserName(String fromUserName) {
-		FromUserName = fromUserName;
+		this.fromUserName = fromUserName;
 	}
 	public String getToUserName() {
-		return ToUserName;
+		return toUserName;
 	}
 	public void setToUserName(String toUserName) {
-		ToUserName = toUserName;
+		this.toUserName = toUserName;
 	}
 	public String getCreateTime() {
-		return CreateTime;
+		return createTime;
 	}
 	public void setCreateTime(String createTime) {
-		CreateTime = createTime;
+		this.createTime = createTime;
 	}
 	public String getMsgType() {
-		return MsgType;
+		return msgType;
 	}
 	public void setMsgType(String msgType) {
-		MsgType = msgType;
+		this.msgType = msgType;
 	}
 	public String getContent() {
-		return Content;
+		return content;
 	}
 	public void setContent(String content) {
-		Content = content;
+		this.content = content;
 	}
 	public String getMsgId() {
-		return MsgId;
+		return msgId;
 	}
 	public void setMsgId(String msgId) {
-		MsgId = msgId;
+		this.msgId = msgId;
 	}
 	public String getEvent() {
-		return Event;
+		return event;
 	}
 	public void setEvent(String event) {
-		Event = event;
+		this.event = event;
 	}
 	public String getEventKey() {
-		return EventKey;
+		return eventKey;
 	}
 	public void setEventKey(String eventKey) {
-		EventKey = eventKey;
+		this.eventKey = eventKey;
 	}
-    
-    
+	
 }
