@@ -46,7 +46,7 @@ public class WeixinProcessor
         .apiKey(apiKey)
         .apiSecret(apiSecret)
         .scope("snsapi_base")
-        .callback("http://www.openpub.cn/spring/weixin/post2")
+        .callback("http://www.weaktie.cn/weixin/spring/weixin/post2")
         .build();
 	private static Logger logger = LoggerFactory.getLogger(WeixinProcessor.class);
 	@RequestMapping(value="/processor",produces="application/xml")
