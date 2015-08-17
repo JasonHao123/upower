@@ -50,7 +50,7 @@ public class OauthController {
 	private static final String PROTECTED_RESOURCE_URL = "https://api.weixin.qq.com/sns/userinfo?lang=zh_CN";
 	OAuthService service = new ServiceBuilder().provider(WeixinApi.class)
 			.apiKey(apiKey).apiSecret(apiSecret).scope("snsapi_base")
-			.callback("http://www.openpub.cn/weixin/oauth/callback.do").build();
+			.callback("http://www.weaktie.cn/weixin/oauth/callback.do").build();
 	private static Logger logger = LoggerFactory
 			.getLogger(WeixinProcessor.class);
 
