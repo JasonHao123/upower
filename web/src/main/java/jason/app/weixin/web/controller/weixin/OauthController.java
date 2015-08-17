@@ -7,7 +7,6 @@ import jason.app.weixin.web.oauth.WeixinApi;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,8 +19,8 @@ import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +34,7 @@ public class OauthController {
 
 //	@Autowired
 //	private AuthenticationSuccessHandler handler;
+	private RequestCache requestCache = new HttpSessionRequestCache();
 	
 	@Autowired
 	private ISecurityService facade;
@@ -67,7 +67,7 @@ public class OauthController {
 
 	@RequestMapping("/callback")
 	@Transactional
-	public void post(HttpServletRequest req, HttpServletResponse resp,
+	public String post(HttpServletRequest req, HttpServletResponse resp,
 			HttpSession session, Model model,
 			@RequestParam(value = "code", required = false) String code) {
 		logger.info("code:" + code);
@@ -83,20 +83,17 @@ public class OauthController {
 
 			if (response2 != null && response2.getOpenid() != null) {
 				facade.loginExternalUser(req, resp, response2.getOpenid());
+			}else {
+				return "weixin.subscribe";
 			}
+			
+			SavedRequest request = requestCache.getRequest(req, resp);
+			resp.sendRedirect(request.getRedirectUrl());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-/**		try {
-			handler.onAuthenticationSuccess(req, resp, SecurityContextHolder.getContext().getAuthentication());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+
+		return null;
 	}
 }
