@@ -24,8 +24,8 @@ public class WeixinProcessor
 	@Autowired
 	private EventHandlerChain chain;
 	
-	@RequestMapping(value="/processor",produces="application/xml")
-    public @ResponseBody String home(@RequestBody WeixinParam params,@ModelAttribute WeixinHeader header)
+	@RequestMapping(value="/processor")
+    public @ResponseBody String home(@ModelAttribute WeixinHeader header)
     {
 //		logger.info(params.toString());
 //		return chain.handle(params,header);
