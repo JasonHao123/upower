@@ -1,4 +1,4 @@
-package jason.app.weixin.controller.model;
+package jason.app.weixin.web.controller.weixin.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -1,4 +1,4 @@
-package jason.app.weixin.web.controller.model;
+package jason.app.weixin.web.controller.weixin.model;
 
 
 public class WeixinHeader
