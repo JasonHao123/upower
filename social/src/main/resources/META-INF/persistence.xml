@@ -5,7 +5,7 @@
   http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
 	<persistence-unit name="SocialPU" transaction-type="JTA">
-		<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source> 
+		<jta-data-source>java:/MysqlXADS</jta-data-source> 
 		<class>jason.app.weixin.social.entity.SocialUserImpl</class>
 		<class>jason.app.weixin.social.entity.SocialRelationshipImpl</class>
 		<class>jason.app.weixin.social.entity.AddFriendLinkImpl</class>
