@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/weixin/oauth")
 public class OauthController {
 
-	@Autowired
-	private AuthenticationSuccessHandler handler;
+//	@Autowired
+//	private AuthenticationSuccessHandler handler;
 	
 	@Autowired
 	private ISecurityService facade;
@@ -88,7 +88,7 @@ public class OauthController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
+/**		try {
 			handler.onAuthenticationSuccess(req, resp, SecurityContextHolder.getContext().getAuthentication());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -97,5 +97,6 @@ public class OauthController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 }
