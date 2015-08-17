@@ -13,7 +13,7 @@ wx.config({
     debug: true,
     appId: '${appId}',
     timestamp:'${timestamp}',
-    nonceStr: '${noncest}',
+    nonceStr: '${noncestr}',
     signature: '${signature}',
     jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 });
