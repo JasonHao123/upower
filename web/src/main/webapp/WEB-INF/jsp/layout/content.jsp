@@ -12,8 +12,14 @@
 
 <title>${title}</title>
 	<link rel="shortcut icon" href="<c:url value="/resources/favicon.ico" />">
+	<link rel="shortcut icon" href="<c:url value="/resources/favicon.ico" />">	
+	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.mobile-1.4.5.min.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/jqm-demos.css" />">
 	
-	<script src="<c:url value="//res.wx.qq.com/open/js/jweixin-1.0.0.js" />"></script>
+		<script src="<c:url value="/resources/js/jquery.js" />"></script>
+	<script src="<c:url value="/resources/js/index.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery.mobile-1.4.5.min.js" />"></script>
+	
 </head>
 <body>
 <div data-role="page" id="myPage" class="jqm-demos jqm-home">

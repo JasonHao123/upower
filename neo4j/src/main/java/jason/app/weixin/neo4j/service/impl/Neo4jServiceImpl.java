@@ -104,5 +104,26 @@ public class Neo4jServiceImpl implements INeo4jService{
 		}
 	}
 
+	@Override
+	public void createUser(jason.app.weixin.social.model.SocialUser user2) {
+		// TODO Auto-generated method stub
+		SocialUser user = userRepo.findByUserId(user2.getId());
+		if(user==null) {
+			user = new SocialUser();
+		}
+		user.setName(user2.getNickname());
+		user.setUserId(user2.getId());
+		user.setAge(user2.getAge());
+		user.setCategory1(user2.getCategory1());
+		user.setCategory2(user2.getCategory2());
+		user.setHobbys(user2.getHobby());
+		user.setLocations(user2.getLocation());
+		user.setSex(user2.getSex());
+		user.setCountry(user2.getCountry());
+		user.setProvince(user2.getProvince());
+		user.setCity(user2.getCity());
+		userRepo.save(user);
+	}
+
 
 }

@@ -13,13 +13,13 @@ http://www.springframework.org/schema/task/spring-task-3.1.xsd
 	<context:component-scan base-package="jason.app.weixin.web.service" />
 <!-- 	<task:annotation-driven/>  -->
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
-<jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/message"/>
+<jee:jndi-lookup id="weixinDestination" jndi-name="java:/jms/queue/weixin"/>
 
 <!-- <jee:jndi-lookup id="socialDestination" jndi-name="java:/jms/queue/social"/>
  --> 
 	   <bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
-        <property name="defaultDestination" ref="defaultDestination" />
+        <property name="defaultDestination" ref="weixinDestination" />
     </bean>
    
     <!-- this is the Message Driven POJO (MDP) 

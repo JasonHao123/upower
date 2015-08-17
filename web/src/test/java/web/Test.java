@@ -12,7 +12,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		HttpClient httpClient =  HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost("http://www.weaktie.cn/weixin/processor.do");
+		HttpPost post = new HttpPost("http://localhost:8080/weixin/processor.do");
 		  StringEntity entity = new StringEntity(buildXmlData());
 		  // Set XML entity
 		  post.setEntity(entity);
@@ -35,6 +35,8 @@ public class Test {
 		  sb.append("<MsgType><![CDATA[text]]></MsgType>");
 		  sb.append("<Content><![CDATA[this is a test]]></Content>");
 		  sb.append("<MsgId>1234567890123456</MsgId>");
+		  sb.append("<Event>subscribe</Event>");
+		  
 		  sb.append("</xml>");
 		// return to String Formed
 		  return sb.toString();

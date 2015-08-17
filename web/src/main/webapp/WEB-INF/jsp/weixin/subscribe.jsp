@@ -5,5 +5,5 @@
 <%@ page pageEncoding="UTF-8"%>
 
 <div role="main" class="ui-content jqm-content">
-<p>您没有权限登录友势力社交平台，请先在公众帐号中关注该平台
+<p>您没有权限登录友势力社交平台，请先在公众帐号中关注该平台</p>
 </div>

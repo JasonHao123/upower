@@ -9,5 +9,9 @@
 
   </definition>
   
+  <definition name="weixin.invite" extends="content.definition">
 
+    <put-attribute name="content" value="/WEB-INF/jsp/weixin/invite.jsp" />
+
+  </definition>
 </tiles-definitions>
