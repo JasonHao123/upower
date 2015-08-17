@@ -1,5 +1,6 @@
 package jason.app.weixin.web.controller.weixin;
 
+import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.social.model.SocialUser;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/weixin")
 public class WeixinController {
+	@Autowired
+	private IWeixinService weixinService;
 	
 	String noncestr = "Wm3WZYTPz0wzccnW";
-	String ticket = "kgt8ON7yVITDhtdwci0qedVBEbIY_RWFvlsVv6FEXEcXG5zpJg_m6O82pxkJT3zV4nnQP9j261bZFMdL_JW1Dw";
+//	String ticket = "kgt8ON7yVITDhtdwci0qedVBEbIY_RWFvlsVv6FEXEcXG5zpJg_m6O82pxkJT3zV4nnQP9j261bZFMdL_JW1Dw";
 
 	String appId = "wxbe821ceae333b377";
 
@@ -51,7 +54,7 @@ public class WeixinController {
 	    } else {
 	        url= requestURL.append('?').append(queryString).toString();
 	    }
-		String str = "jsapi_ticket="+ticket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
+		String str = "jsapi_ticket="+weixinService.getTicket()+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
 		String signature = DigestUtils.sha1Hex(str);
 		model.addAttribute("appId", appId);
 		model.addAttribute("timestamp", timestamp);

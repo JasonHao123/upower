@@ -1,4 +1,4 @@
-package jason.app.weixin.neo4j.model;
+package jason.app.weixin.common.model;
 
 public class WeixinUser {
 	private Integer  subscribe;

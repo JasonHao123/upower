@@ -1,8 +1,9 @@
 package jason.app.weixin.neo4j.controller;
 
 import jason.app.weixin.common.model.CreateUserCommand;
+import jason.app.weixin.common.model.WeixinUser;
+import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.neo4j.service.INeo4jService;
-import jason.app.weixin.neo4j.service.IWeixinService;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 
@@ -46,11 +47,18 @@ public class ExampleListener implements MessageListener {
 				Object object = hmsg.getObject();
 				if(object instanceof CreateUserCommand) {
 					CreateUserCommand command = (CreateUserCommand)object;
-					SocialUser user = weixinService.getUserInfo(command.getOpenId());
+					WeixinUser user = weixinService.getUserInfo(command.getOpenId());
+					SocialUser socialUser = new SocialUser();
+			        socialUser.setNickname(user.getNickname());
+			        socialUser.setSex(user.getSex());
+			        socialUser.setCountry(user.getCountry());
+			        socialUser.setProvince(user.getProvince());
+			        socialUser.setCity(user.getCity());
+			        socialUser.setHeadimgurl(user.getHeadimgurl());
 					if(user!=null) {
-						user.setId(command.getUserId());
-						socialService.saveProfile(user);
-						neo4jService.createUser(user);
+						socialUser.setId(command.getUserId());
+						socialService.saveProfile(socialUser);
+						neo4jService.createUser(socialUser);
 					}
 				}
 			} catch (Exception e) {
