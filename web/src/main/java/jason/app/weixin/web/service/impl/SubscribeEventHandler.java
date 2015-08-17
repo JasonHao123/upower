@@ -9,9 +9,12 @@ import javax.jms.Session;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
+import jason.app.weixin.web.controller.weixin.WeixinProcessor;
 import jason.app.weixin.web.controller.weixin.model.WeixinHeader;
 import jason.app.weixin.web.controller.weixin.model.WeixinParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -19,7 +22,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SubscribeEventHandler extends EventHandler {
-	
+	private static Logger logger = LoggerFactory.getLogger(SubscribeEventHandler.class);
+
 	@Autowired
 	private JmsTemplate jmsTemplate;
 	
@@ -36,6 +40,7 @@ public class SubscribeEventHandler extends EventHandler {
 	public WeixinParam handle(WeixinParam params, WeixinHeader header) {
 		// register a new user, or enable the user if already exists
 		String openid = params.getFromUserName();
+		logger.info("openid:"+openid);
 		User user = securityService.findExternalUser(openid);
 		if(user==null) {
 			user = securityService.createExternalUser(openid, openid, Arrays.asList(new String[]{"ROLE_USER"}));
@@ -45,7 +50,8 @@ public class SubscribeEventHandler extends EventHandler {
 		final CreateUserCommand command = new CreateUserCommand(user.getId(), openid);
 		jmsTemplate.send(new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
-              //  return session.createTextMessage("hello queue world");    
+              //  return session.createTextMessage("hello queue world");  
+            	logger.info("send create user command");
             	return session.createObjectMessage(command);
               }
           });

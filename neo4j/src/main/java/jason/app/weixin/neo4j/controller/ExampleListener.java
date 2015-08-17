@@ -12,11 +12,14 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ExampleListener implements MessageListener {
-	
+	private static Logger logger = LoggerFactory.getLogger(ExampleListener.class);
+
 	@Autowired
 	private IWeixinService weixinService;
 	
@@ -28,6 +31,7 @@ public class ExampleListener implements MessageListener {
 	
 	@Transactional
     public void onMessage(Message message) {
+		logger.info("on message"+message);
         if (message instanceof TextMessage) {
             try {
                 System.out.println(((TextMessage) message).getText());
