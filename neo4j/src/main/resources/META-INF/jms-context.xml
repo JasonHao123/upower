@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.2.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+    <context:component-scan base-package="jason.app.weixin.neo4j" />
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
 <jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/weixin"/>
 <!-- <jee:jndi-lookup id="socialDestination" jndi-name="java:/jms/queue/social"/>
