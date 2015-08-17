@@ -47,9 +47,11 @@ public class ExampleListener implements MessageListener {
 				if(object instanceof CreateUserCommand) {
 					CreateUserCommand command = (CreateUserCommand)object;
 					SocialUser user = weixinService.getUserInfo(command.getOpenId());
-					user.setId(command.getUserId());
-					socialService.saveProfile(user);
-					neo4jService.createUser(user);
+					if(user!=null) {
+						user.setId(command.getUserId());
+						socialService.saveProfile(user);
+						neo4jService.createUser(user);
+					}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

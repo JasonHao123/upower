@@ -72,7 +72,7 @@ public class WeixinServiceImpl implements IWeixinService{
 		        if (statusCode==HttpStatus.SC_OK) {
 		        	String content = EntityUtils.toString(httpResponse.getEntity());
 		        	AccessToken token = mapper.readValue(content, AccessToken.class);
-		        	accessTokenUrl = token.getAccess_token();
+		        	accessToken = token.getAccess_token();
 		        	calendar.setTime(new Date());
 		        	calendar.add(Calendar.SECOND, token.getExpires_in());
 		        	expireDate = calendar.getTime();
@@ -106,7 +106,7 @@ public class WeixinServiceImpl implements IWeixinService{
 	        HttpGet method = new HttpGet(url);  
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        HttpResponse response = httpClient.execute(method);
-	        String result = EntityUtils.toString(response.getEntity());
+	        String result = EntityUtils.toString(response.getEntity(),"UTF-8");
 	        WeixinUser user = mapper.readValue(result, WeixinUser.class);
 	        SocialUser socialUser = new SocialUser();
 	        socialUser.setNickname(user.getNickname());

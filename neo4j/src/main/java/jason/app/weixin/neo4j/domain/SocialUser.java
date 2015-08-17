@@ -113,11 +113,11 @@ public class SocialUser {
 		this.userId = userId;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
@@ -137,7 +137,7 @@ public class SocialUser {
 		this.name = name;
 	}
 
-	private int age;
+	private Integer age;
 
     @RelatedToVia(type = "RELATE_TO", direction = Direction.OUTGOING)
     @Fetch Set<SocialRelation> friends;

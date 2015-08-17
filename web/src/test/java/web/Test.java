@@ -30,7 +30,7 @@ public class Test {
 		  
 		  sb.append("<xml>");
 		  sb.append("<ToUserName><![CDATA[toUser]]></ToUserName>");
-		  sb.append("<FromUserName><![CDATA[fromUser]]></FromUserName>");
+		  sb.append("<FromUserName><![CDATA[oDUuBw4rBU_IJO0Oclrl6JPolu-c]]></FromUserName>");
 		  sb.append("<CreateTime>1348831860</CreateTime>");
 		  sb.append("<MsgType><![CDATA[text]]></MsgType>");
 		  sb.append("<Content><![CDATA[this is a test]]></Content>");
