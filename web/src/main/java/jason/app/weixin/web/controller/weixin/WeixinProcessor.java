@@ -25,10 +25,11 @@ public class WeixinProcessor
 	private EventHandlerChain chain;
 	
 	@RequestMapping(value="/processor",produces="application/xml")
-    public @ResponseBody WeixinParam home(@RequestBody WeixinParam params,@ModelAttribute WeixinHeader header)
+    public @ResponseBody String home(@RequestBody WeixinParam params,@ModelAttribute WeixinHeader header)
     {
-		logger.info(params.toString());
-		return chain.handle(params,header);
+//		logger.info(params.toString());
+//		return chain.handle(params,header);
+		return header.getEchostr();
 
     }
 
