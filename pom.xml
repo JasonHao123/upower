@@ -25,7 +25,6 @@
     <module>social</module>
     <module>neo4j</module>
     <module>social-api</module>
-    <module>weixin</module>
   </modules>
   
   
