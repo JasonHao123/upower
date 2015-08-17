@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -87,11 +86,11 @@ public class OauthController {
 				return "weixin.subscribe";
 			}
 			
-			SavedRequest request = requestCache.getRequest(req, resp);
-			resp.sendRedirect(request.getRedirectUrl());
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "weixin.subscribe";
 		}
 
 		return null;
