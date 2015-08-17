@@ -12,7 +12,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		HttpClient httpClient =  HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost("http://localhost:8080/weixin/spring/weixin/processor");
+		HttpPost post = new HttpPost("http://localhost:8080/weixin/processor.do");
 		  StringEntity entity = new StringEntity(buildXmlData());
 		  // Set XML entity
 		  post.setEntity(entity);

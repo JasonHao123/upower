@@ -160,5 +160,14 @@ public class SecurityServiceImpl implements ISecurityService {
 		UserImpl user = userDao.findByExternalId(openid);
 		return UserTranslator.toDTO(user);
 	}
+	@Override
+	public void enableUser(Long id,boolean status) {
+		// TODO Auto-generated method stub
+		UserImpl user = userDao.findOne(id);
+		if(user!=null) {
+			user.setEnabled(status);
+			userDao.save(user);
+		}
+	}
 
 }

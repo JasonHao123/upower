@@ -27,4 +27,6 @@ public interface ISecurityService {
 			HttpServletResponse resp, String openid);
 
 	public User findExternalUser(String openid);
+
+	public void enableUser(Long id, boolean b);
 }
