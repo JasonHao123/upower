@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/weixin")
@@ -57,5 +59,10 @@ public class WeixinController {
 		model.addAttribute("signature", signature);
 		
 		return "weixin.invite";
+	}
+	
+	@RequestMapping(value = "/invite2", method = RequestMethod.GET)
+	public @ResponseBody String invite2(@RequestParam("id") String id,@RequestParam("type") String type) {
+		return "test";
 	}
 }

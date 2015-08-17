@@ -26,8 +26,11 @@ wx.ready(function(){
 	    imgUrl: '${profile.headimgurl}', // 分享图标
 	    success: function () { 
 	        // 用户确认分享后执行的回调函数
-	    	$.getJSON("<c:url value="/weixin/invite2"><c:param name="id" value="${uuid}" /><c:param name="type" value="timeline" /></c:url>",function(result){
-	    	  });
+	        $.ajax( "<c:url value="/weixin/invite2"><c:param name="id" value="${uuid}" /><c:param name="type" value="timeline" /></c:url>" )
+			  .done(function() {
+			    alert( "success" );
+			  })
+
 	    },
 	    cancel: function () { 
 	        // 用户取消分享后执行的回调函数
@@ -41,8 +44,10 @@ wx.ready(function(){
 	    imgUrl: '${profile.headimgurl}', // 分享图标
 	    success: function () { 
 	        // 用户确认分享后执行的回调函数
-	    	$.getJSON("<c:url value="/weixin/invite2"><c:param name="id" value="${uuid}" /><c:param name="type" value="app" /></c:url>",function(result){
-	    	  });
+	        $.ajax( "<c:url value="/weixin/invite2"><c:param name="id" value="${uuid}" /><c:param name="type" value="app" /></c:url>" )
+			  .done(function() {
+			    alert( "success" );
+			  })
 	    },
 	    cancel: function () { 
 	        // 用户取消分享后执行的回调函数
