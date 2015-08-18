@@ -81,7 +81,7 @@ public class WeixinController {
 	String noncestr = "Wm3WZYTPz0wzccnW";
 //	String ticket = "kgt8ON7yVITDhtdwci0qedVBEbIY_RWFvlsVv6FEXEcXG5zpJg_m6O82pxkJT3zV4nnQP9j261bZFMdL_JW1Dw";
 
-	String appId = "wxbe821ceae333b377";
+//	String appId = "wxbe821ceae333b377";
 
 
 	@Autowired
@@ -109,7 +109,7 @@ public class WeixinController {
 	    }
 		String str = "jsapi_ticket="+weixinService.getTicket()+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+url;
 		String signature = DigestUtils.sha1Hex(str);
-		model.addAttribute("appId", appId);
+		model.addAttribute("appId", weixinService.getAppId());
 		model.addAttribute("timestamp", timestamp);
 		model.addAttribute("noncestr", noncestr);
 		model.addAttribute("signature", signature);
@@ -136,7 +136,7 @@ public class WeixinController {
     		form.setId(request.getId());
     		model.addAttribute("addFriendRequestForm",form);
     		model.addAttribute("user",socialService.loadProfile(request.getFrom().getId()));
-    		return "user.reply.friend.add";
+    		return "weixin.reply.friend.add";
     	}else {
     		throw new AccessDeniedException("no access to the request");
     	}

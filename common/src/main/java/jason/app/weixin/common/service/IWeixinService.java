@@ -11,4 +11,6 @@ public interface IWeixinService {
 	
 	public void postMessage(SendMessageCommand msg);
 
+	String getAppId();
+
 }

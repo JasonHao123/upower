@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class CreateUserCommand implements Serializable{
 	private Long userId;
 	private String openId;
+	public CreateUserCommand(){}
 	public CreateUserCommand(Long userId,String openId) {
 		this.userId = userId;
 		this.openId = openId;

@@ -49,18 +49,23 @@ public class ExampleListener implements MessageListener {
 				Object object = hmsg.getObject();
 				if(object instanceof CreateUserCommand) {
 					CreateUserCommand command = (CreateUserCommand)object;
-					WeixinUser user = weixinService.getUserInfo(command.getOpenId());
-					SocialUser socialUser = new SocialUser();
-			        socialUser.setNickname(user.getNickname());
-			        socialUser.setSex(user.getSex());
-			        socialUser.setCountry(user.getCountry());
-			        socialUser.setProvince(user.getProvince());
-			        socialUser.setCity(user.getCity());
-			        socialUser.setHeadimgurl(user.getHeadimgurl());
-			        socialUser.setOpenid(user.getOpenid());
-					if(user!=null) {
+					SocialUser socialUser = null;
+					if(command.getOpenId()!=null) {
+						WeixinUser user = weixinService.getUserInfo(command.getOpenId());
+						socialUser = new SocialUser();
+				        socialUser.setNickname(user.getNickname());
+				        socialUser.setSex(user.getSex());
+				        socialUser.setCountry(user.getCountry());
+				        socialUser.setProvince(user.getProvince());
+				        socialUser.setCity(user.getCity());
+				        socialUser.setHeadimgurl(user.getHeadimgurl());
+				        socialUser.setOpenid(user.getOpenid());
 						socialUser.setId(command.getUserId());
 						socialService.saveProfile(socialUser);
+					}else {
+						socialUser = socialService.loadProfile(command.getUserId());
+					}
+					if(socialUser!=null) {
 						neo4jService.createUser(socialUser);
 					}
 				}else if(object instanceof CreateRelationCommand) {

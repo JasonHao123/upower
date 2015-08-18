@@ -26,7 +26,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WeixinServiceImpl implements IWeixinService{
-	
+	@Value("#{ systemProperties['appId'] }")
+	private String appId;
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
 	@Value("#{ systemProperties['accessTokenUrl'] }")
 	private String accessTokenUrl;
 	

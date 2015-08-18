@@ -20,4 +20,22 @@
     <put-attribute name="content" value="/WEB-INF/jsp/weixin/addfriend.jsp" />
 
   </definition>
+  
+          <definition name="weixin.reply.friend.add" extends="content.definition">
+    <put-attribute name="content" value="/WEB-INF/jsp/weixin/addfriend2.jsp" />
+  </definition>
+  
+  
+        <definition name="weixin.profile" extends="content.definition">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/weixin/profile.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
+  
+
+        <definition name="weixin.profile.edit" extends="content.definition">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/weixin/profileedit.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
 </tiles-definitions>
