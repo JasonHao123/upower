@@ -22,9 +22,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -98,6 +100,12 @@ public class OauthController {
 
 				if (response2 != null && response2.getOpenid() != null) {
 					facade.loginExternalUser(req, resp, response2.getOpenid());
+					SavedRequest request = requestCache.getRequest(req, resp);
+					if(request!=null && StringUtils.hasText(request.getRedirectUrl())) {
+						resp.sendRedirect(request.getRedirectUrl());
+					}else {
+						return "redirect:/user/index.do";
+					}
 				} else {
 					return "weixin.subscribe";
 				}
