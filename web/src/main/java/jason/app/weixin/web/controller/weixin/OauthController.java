@@ -97,14 +97,14 @@ public class OauthController {
 			try {
 				AuthorizeResponse response2 = mapper.readValue(
 						accessToken.getRawResponse(), AuthorizeResponse.class);
-
+				model.addAttribute("body", accessToken.getRawResponse());
 				if (response2 != null && response2.getOpenid() != null) {
 					facade.loginExternalUser(req, resp, response2.getOpenid());
 					SavedRequest request = requestCache.getRequest(req, resp);
 					if(request!=null && StringUtils.hasText(request.getRedirectUrl())) {
 						resp.sendRedirect(request.getRedirectUrl());
 					}else {
-						return "redirect:/user/index.do";
+						return "weixin.subscribe";
 					}
 				} else {
 					return "weixin.subscribe";
