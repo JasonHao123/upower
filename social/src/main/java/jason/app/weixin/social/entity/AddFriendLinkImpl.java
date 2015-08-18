@@ -18,8 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "ADD_FRIEND_LINK")
 public class AddFriendLinkImpl {
 	@Id
-	@GenericGenerator(name="idGenerator", strategy="uuid") //这个是hibernate的注解
-	@GeneratedValue(generator="idGenerator") //使用uuid的生成策略
 	private String id;
 	
 	@ManyToOne

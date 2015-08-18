@@ -2,6 +2,7 @@ package jason.app.weixin.social.service.impl;
 
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.social.constant.MessageType;
+import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.AddFriendRequestImpl;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SettingsImpl;
@@ -14,6 +15,7 @@ import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
+import jason.app.weixin.social.repository.AddFriendLinkRepository;
 import jason.app.weixin.social.repository.AddFriendRequestRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
@@ -40,6 +42,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SocialServiceImpl implements ISocialService {
+	
+
+	@Autowired
+	private AddFriendLinkRepository linkRepo;
 
 	@Autowired
 	private SocialUserRepository socialUserRepo;
@@ -278,6 +284,17 @@ public class SocialServiceImpl implements ISocialService {
 		}
 		distance.setDistance(dto.getDistance());
 		distanceRepo.save(distance);
+	}
+
+	@Override
+	@Transactional
+	public void createAddFriendLink(Long userId, String key) {
+		// TODO Auto-generated method stub
+		AddFriendLinkImpl link = new AddFriendLinkImpl();
+		link.setUser(socialUserRepo.findOne(userId));
+		link.setCreateDate(new Date());
+		link.setId(key);
+		link = linkRepo.save(link);
 	}
 
 }

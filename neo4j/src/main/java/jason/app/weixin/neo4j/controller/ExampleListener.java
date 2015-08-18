@@ -1,5 +1,6 @@
 package jason.app.weixin.neo4j.controller;
 
+import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IWeixinService;
@@ -60,6 +61,9 @@ public class ExampleListener implements MessageListener {
 						socialService.saveProfile(socialUser);
 						neo4jService.createUser(socialUser);
 					}
+				}else if(object instanceof CreateRelationCommand) {
+					CreateRelationCommand command = (CreateRelationCommand)object;
+					neo4jService.createRelation(command.getFromUser(), command.getToUser(), command.getTypes(), command.getRating());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

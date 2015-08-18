@@ -44,4 +44,6 @@ public interface ISocialService {
 
 	void saveDistance(SocialRelationDTO dto);
 
+	void createAddFriendLink(Long id, String id2);
+
 }

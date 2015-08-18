@@ -14,4 +14,10 @@
     <put-attribute name="content" value="/WEB-INF/jsp/weixin/invite.jsp" />
 
   </definition>
+  
+    <definition name="weixin.addfriend" extends="content.definition">
+
+    <put-attribute name="content" value="/WEB-INF/jsp/weixin/addfriend.jsp" />
+
+  </definition>
 </tiles-definitions>
