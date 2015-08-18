@@ -138,7 +138,7 @@ public class SecurityServiceImpl implements ISecurityService {
         return UserTranslator.toDTO(userImpl);
 	}
 	@Override
-	public void loginExternalUser(HttpServletRequest request,
+	public boolean loginExternalUser(HttpServletRequest request,
 			HttpServletResponse resp, String openid) {
 		// TODO Auto-generated method stub
         try {
@@ -149,9 +149,11 @@ public class SecurityServiceImpl implements ISecurityService {
 
             Authentication authentication = authenticationProvider.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             SecurityContextHolder.getContext().setAuthentication(null);
+            return false;
         }
 	}
 	@Override

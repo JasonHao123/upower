@@ -29,6 +29,7 @@ public class SocialUserTranslator {
 		user.setProvince(profile.getProvince());
 		user.setCity(profile.getCity());
 		user.setHeadimgurl(profile.getHeadimgurl());
+		user.setOpenid(profile.getOpenid());
 		
 		user.setLastUpdate(new Date());
 		return user;
@@ -53,6 +54,7 @@ public class SocialUserTranslator {
 		socialUser.setProvince(findOne.getProvince());
 		socialUser.setCity(findOne.getCity());
 		socialUser.setHeadimgurl(findOne.getHeadimgurl());
+		socialUser.setOpenid(findOne.getOpenid());
 		return socialUser;
 	}
 

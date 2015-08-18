@@ -1,8 +1,8 @@
-package jason.app.weixin.social.model;
+package jason.app.weixin.common.model;
 
 import java.io.Serializable;
 
-public class SocialMessage implements Serializable{
+public class SendMessageCommand implements Serializable{
 private String touser;
 private String msgtype;
 private Text text;

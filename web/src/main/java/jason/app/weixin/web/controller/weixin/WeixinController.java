@@ -1,11 +1,14 @@
 package jason.app.weixin.web.controller.weixin;
 
 import jason.app.weixin.common.model.CreateRelationCommand;
+import jason.app.weixin.common.model.SendMessageCommand;
+import jason.app.weixin.common.model.Text;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.social.constant.AddFriendRequestType;
+import jason.app.weixin.social.constant.Status;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.AddFriendRequestImpl;
 import jason.app.weixin.social.entity.SocialRelationshipImpl;
@@ -18,6 +21,7 @@ import jason.app.weixin.social.repository.SocialUserRepository;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.social.util.ArrayUtil;
 import jason.app.weixin.web.controller.social.model.AddFriendForm;
+import jason.app.weixin.web.controller.user.model.AddFriendRequestForm;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -35,10 +39,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -121,6 +125,86 @@ public class WeixinController {
 		return "test";
 	}
 	
+	@RequestMapping(value = "/replyrequest", method = RequestMethod.GET)
+	@Transactional
+	public  String replyrequest(Model model,@RequestParam("id") Long id) {
+    	User user = securityService.getCurrentUser();
+    	AddFriendRequestImpl request = addFriendRequestRepo.findOne(id);
+    	if(request!=null && request.getTo().getId()==user.getId()) {
+    		model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
+    		AddFriendRequestForm form = new AddFriendRequestForm();
+    		form.setId(request.getId());
+    		model.addAttribute("addFriendRequestForm",form);
+    		model.addAttribute("user",socialService.loadProfile(request.getFrom().getId()));
+    		return "user.reply.friend.add";
+    	}else {
+    		throw new AccessDeniedException("no access to the request");
+    	}
+	}
+	
+	
+	@RequestMapping(value = "/replyrequest", method = RequestMethod.POST)
+	@Transactional
+	public String postReplyAddFriend(Model model,final AddFriendRequestForm addFriendRequestForm, BindingResult result) {
+		User user = securityService.getCurrentUser();
+		final SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
+		final SocialUserImpl toUser = socailUserRepo.findOne(addFriendRequestForm.getUserId());
+		
+		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),toUser.getId());
+		if(relation==null) {
+			relation = new SocialRelationshipImpl();
+			relation.setId(userImpl.getId()+"_"+toUser.getId());
+			relation.setFrom(userImpl);
+			relation.setTo(toUser);
+		}
+			relation.setLastUpdate(new Date());
+			relation.setRating(addFriendRequestForm.getRating());
+			relation.setRelationType(Arrays.toString(addFriendRequestForm.getFriendshipType()));
+			socialRelationRepo.save(relation);
+			
+			final AddFriendRequestImpl request = addFriendRequestRepo.findOne(addFriendRequestForm.getId());
+			if(AddFriendRequestType.REQUEST==request.getType()) {
+				SocialRelationshipImpl reverse = socialRelationRepo.findByFrom_IdAndTo_Id(toUser.getId(),user.getId());
+				if(reverse==null) {
+					reverse = new SocialRelationshipImpl();
+					reverse.setId(toUser.getId()+"_"+userImpl.getId());
+					reverse.setTo(userImpl);
+					reverse.setFrom(toUser);
+				}
+				reverse.setLastUpdate(new Date());
+				reverse.setRating(request.getRating());
+				reverse.setRelationType(request.getFriendType());
+				socialRelationRepo.save(reverse);
+				jmsTemplate.send(new MessageCreator() {
+		            public Message createMessage(Session session) throws JMSException {
+		              //  return session.createTextMessage("hello queue world");
+		            	CreateRelationCommand command = new CreateRelationCommand();
+		            	command.setToUser(userImpl.getId());
+		            	command.setFromUser(toUser.getId());
+		            	command.setTypes(ArrayUtil.toLongArray(request.getFriendType()));
+		            	command.setRating(request.getRating());
+		            	return session.createObjectMessage(command);
+		              }
+		          });
+				
+			}
+			request.setStatus(Status.CLOSED);
+			addFriendRequestRepo.save(request);
+			
+			
+			jmsTemplate.send(new MessageCreator() {
+	            public Message createMessage(Session session) throws JMSException {
+	              //  return session.createTextMessage("hello queue world");
+	            	CreateRelationCommand command = new CreateRelationCommand();
+	            	command.setFromUser(userImpl.getId());
+	            	command.setToUser(toUser.getId());
+	            	command.setTypes(addFriendRequestForm.getFriendshipType());
+	            	command.setRating(addFriendRequestForm.getRating());
+	            	return session.createObjectMessage(command);
+	              }
+	          });
+		return "redirect:/user/friends.do";
+	}
 
 	/**
 	 * Selects the home page and populates the model with a message
@@ -128,24 +212,12 @@ public class WeixinController {
 	@RequestMapping(value = "/accept", method = RequestMethod.GET)
 	@Transactional
 	public String home(Model model,
-			@RequestParam(required = false, value = "id") String id) {
+			@RequestParam(required = true, value = "id") String id) {
 		logger.info("Welcome home!");
 		User user = securityService.getCurrentUser();
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -7);
-		if (StringUtils.isEmpty(id)) {
-			SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
-			AddFriendLinkImpl link = linkRepo
-					.findByUser_IdAndCreateDateGreaterThan(user.getId(),
-							calendar.getTime());
-			if (link == null) {
-				link = new AddFriendLinkImpl();
-				link.setUser(userImpl);
-				link.setCreateDate(new Date());
-				link = linkRepo.save(link);
-			}
-			return "redirect:/social/addfriend.do?id=" + link.getId();
-		} else {
+
 			AddFriendLinkImpl link = linkRepo.findOne(id);
 
 			boolean expired = calendar.getTime()
@@ -171,7 +243,6 @@ public class WeixinController {
 			model.addAttribute("hasProfile",user!=null);
 			model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
 
-		}
 
 		return "weixin.addfriend";
 	}
@@ -182,7 +253,7 @@ public class WeixinController {
 	public String postAddFriend(Model model,final AddFriendForm addFriendForm, BindingResult result) {
 		final User user = securityService.getCurrentUser();
 		// from
-		SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
+		final SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
 		final AddFriendLinkImpl link = linkRepo.findOne(addFriendForm.getId());
 		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),link.getUser().getId());
 		if(relation==null) {
@@ -201,7 +272,18 @@ public class WeixinController {
 				request.setMessage(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend!");
 				request.setType(AddFriendRequestType.CONFIRM);
 				request.setCreateDate(new Date());
-				addFriendRequestRepo.save(request);
+				request = addFriendRequestRepo.save(request);
+				final Long id = request.getId();
+				jmsTemplate.send(new MessageCreator() {
+		            public Message createMessage(Session session) throws JMSException {
+		              //  return session.createTextMessage("hello queue world");
+		            	SendMessageCommand command = new SendMessageCommand();
+		            	command.setMsgtype("text");
+		            	command.setTouser(link.getUser().getOpenid());
+		            	command.setText(new Text(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend! Click the link below to accept the request.<a href=\"http://www.weaktie.cn/weixin/replyrequest.do?id="+id+"\">Accpet</a>"));
+		            	return session.createObjectMessage(command);
+		              }
+		          });
 			}
 		}
 		relation.setLastUpdate(new Date());

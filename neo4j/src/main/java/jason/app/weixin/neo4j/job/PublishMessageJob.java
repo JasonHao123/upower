@@ -1,12 +1,12 @@
 package jason.app.weixin.neo4j.job;
 
+import jason.app.weixin.common.model.SendMessageCommand;
+import jason.app.weixin.common.model.Text;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SocialDistanceImpl;
 import jason.app.weixin.social.entity.SocialMessageImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.Settings;
-import jason.app.weixin.social.model.SocialMessage;
-import jason.app.weixin.social.model.Text;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
 import jason.app.weixin.social.repository.SocialMessageRepository;
@@ -64,7 +64,7 @@ public class PublishMessageJob {
     			}
     			msg.setMessage(user);
     			msg = messageRepo2.save(msg);
-            	final SocialMessage command = new SocialMessage();
+            	final SendMessageCommand command = new SendMessageCommand();
             	command.setTouser(msg.getUser().getOpenid());
             	command.setMsgtype("text");
             	Text text = new Text();

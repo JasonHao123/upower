@@ -1,6 +1,6 @@
 package jason.app.weixin.web.controller;
 
-import jason.app.weixin.social.model.SocialMessage;
+import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
 import jason.app.weixin.web.controller.weixin.model.AccessToken;
@@ -66,7 +66,7 @@ public class ExampleListener implements MessageListener {
         	ObjectMessage hmsg = (ObjectMessage)message;
         	try {
 				System.out.println(hmsg.getObject());
-				SocialMessage msg = (SocialMessage)hmsg;
+				SendMessageCommand msg = (SendMessageCommand)hmsg;
 				postMessage(msg);
 /**				SocialRelationDTO dto = (SocialRelationDTO)hmsg.getObject();
 				if(dto.getFrom()!=null && dto.getTo()!=null) {
@@ -90,7 +90,7 @@ public class ExampleListener implements MessageListener {
         }
     }
 
-	private void postMessage(SocialMessage msg) {
+	private void postMessage(SendMessageCommand msg) {
 		// TODO Auto-generated method stub
 		try {
 			if(!checkAccessToken()) {

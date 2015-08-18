@@ -1,6 +1,7 @@
 package jason.app.weixin.common.service.impl;
 
 import jason.app.weixin.common.model.AccessToken;
+import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Ticket;
 import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IWeixinService;
@@ -15,6 +16,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -40,8 +43,8 @@ public class WeixinServiceImpl implements IWeixinService{
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private String ticket;
-	/**
-	private void postMessage(SocialMessage msg) {
+	@Override
+	public void postMessage(SendMessageCommand msg) {
 		// TODO Auto-generated method stub
 		try {
 			if(!checkAccessToken()) {
@@ -61,7 +64,7 @@ public class WeixinServiceImpl implements IWeixinService{
 			e.printStackTrace();
 		}
 	}
-*/
+	/***/
 	private void getAccessToken() {
 		// TODO Auto-generated method stub
 		

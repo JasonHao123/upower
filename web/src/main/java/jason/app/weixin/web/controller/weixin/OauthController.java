@@ -99,10 +99,14 @@ public class OauthController {
 						accessToken.getRawResponse(), AuthorizeResponse.class);
 				model.addAttribute("body", accessToken.getRawResponse());
 				if (response2 != null && response2.getOpenid() != null) {
-					facade.loginExternalUser(req, resp, response2.getOpenid());
-					SavedRequest request = requestCache.getRequest(req, resp);
-					if(request!=null && StringUtils.hasText(request.getRedirectUrl())) {
-						resp.sendRedirect(request.getRedirectUrl());
+
+					if(facade.loginExternalUser(req, resp, response2.getOpenid())){
+						SavedRequest request = requestCache.getRequest(req, resp);
+						if(request!=null && StringUtils.hasText(request.getRedirectUrl())) {
+							resp.sendRedirect(request.getRedirectUrl());
+						}else {
+							return "weixin.subscribe";
+						}
 					}else {
 						return "weixin.subscribe";
 					}

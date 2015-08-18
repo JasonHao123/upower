@@ -23,7 +23,7 @@ public interface ISecurityService {
 	public User createExternalUser(String openid, String openid2,
 			List<String> asList);
 
-	public void loginExternalUser(HttpServletRequest req,
+	public boolean loginExternalUser(HttpServletRequest req,
 			HttpServletResponse resp, String openid);
 
 	public User findExternalUser(String openid);
