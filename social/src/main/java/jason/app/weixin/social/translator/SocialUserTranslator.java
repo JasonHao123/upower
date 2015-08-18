@@ -47,6 +47,12 @@ public class SocialUserTranslator {
 		socialUser.setCategory2(findOne.getCategory2());
 		socialUser.setHobby(ArrayUtil.toArray(findOne.getHobbys()));
 		socialUser.setLocation(ArrayUtil.toArray(findOne.getLocations()));
+		
+		socialUser.setSex(findOne.getSex());
+		socialUser.setCountry(findOne.getCountry());
+		socialUser.setProvince(findOne.getProvince());
+		socialUser.setCity(findOne.getCity());
+		socialUser.setHeadimgurl(findOne.getHeadimgurl());
 		return socialUser;
 	}
 
