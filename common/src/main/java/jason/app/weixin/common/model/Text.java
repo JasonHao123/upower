@@ -1,6 +1,8 @@
 package jason.app.weixin.common.model;
 
-public class Text {
+import java.io.Serializable;
+
+public class Text implements Serializable{
 	private String content;
 	public Text(){}
 	public Text(String content) {

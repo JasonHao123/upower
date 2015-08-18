@@ -11,8 +11,8 @@ $( document ).on( "pagecreate", "#myPage", function() {
 $('#targetScore').raty({
 	  targetScore: '#target-score',
 	  half     : true,
-	  readOnly:'${self}',
-	  score: '${addFriendForm.rating}'
+	  readOnly:${self},
+	  score: ${addFriendForm.rating}
 	});
 });
 //-->
