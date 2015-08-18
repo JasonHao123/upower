@@ -43,7 +43,13 @@
     <groupId>org.apache.httpcomponents</groupId>
     <artifactId>httpclient</artifactId>
     <version>4.5</version>
-</dependency>
+    <exclusions>
+    	<exclusion>
+    		<artifactId>commons-logging</artifactId>
+    		<groupId>commons-logging</groupId>
+    	</exclusion>
+    </exclusions>
+	</dependency>
 
 	    <dependency>
     <groupId>org.scribe</groupId>
@@ -160,6 +166,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -243,6 +255,12 @@
 			<groupId>jason.app.weixin</groupId>
 			<artifactId>neo4j</artifactId>
 			<version>1.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
