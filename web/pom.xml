@@ -239,6 +239,11 @@
 			<artifactId>social</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>jason.app.weixin</groupId>
+			<artifactId>neo4j</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 

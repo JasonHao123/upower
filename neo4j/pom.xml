@@ -8,7 +8,7 @@
     </parent>
 	<groupId>jason.app.weixin</groupId>
 	<artifactId>neo4j</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>1.0</version>
 	<name>neo4j</name>
 
