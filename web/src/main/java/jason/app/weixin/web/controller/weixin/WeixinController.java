@@ -114,6 +114,7 @@ public class WeixinController {
 	}
 	
 	@RequestMapping(value = "/invite2", method = RequestMethod.GET)
+	@Transactional
 	public @ResponseBody String invite2(@RequestParam("id") String id) {
 		User currentUser = securityService.getCurrentUser();
 		socialService.createAddFriendLink(currentUser.getId(),id);
