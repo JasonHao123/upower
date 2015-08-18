@@ -5,6 +5,7 @@ import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.weixin.model.AuthorizeResponse;
 import jason.app.weixin.web.oauth.WeixinApi;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +32,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/weixin/oauth")
 public class OauthController {
 
-//	@Autowired
-//	private AuthenticationSuccessHandler handler;
+	// @Autowired
+	// private AuthenticationSuccessHandler handler;
 	private RequestCache requestCache = new HttpSessionRequestCache();
-	
+
 	@Autowired
 	private ISecurityService facade;
 
@@ -70,29 +71,43 @@ public class OauthController {
 			HttpSession session, Model model,
 			@RequestParam(value = "code", required = false) String code) {
 		logger.info("code:" + code);
-		Verifier verifier = new Verifier(code);
-		Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
-		session.setAttribute("accessToken", accessToken);
-		logger.info("(if your curious it looks like this: " + accessToken
-				+ " )");
+		if (code == null) {
+			String line = null;
+			StringBuffer result = new StringBuffer();
+			try {
+				BufferedReader reader = new BufferedReader(req.getReader());
 
-		try {
-			AuthorizeResponse response2 = mapper.readValue(
-					accessToken.getRawResponse(), AuthorizeResponse.class);
+				if ((line = reader.readLine()) != null) {
+					result.append(line + "<br>");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			model.addAttribute("body", result.toString());
+			return "weixin.subscribe";
+		} else {
+			Verifier verifier = new Verifier(code);
+			Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+			session.setAttribute("accessToken", accessToken);
+			logger.info("(if your curious it looks like this: " + accessToken
+					+ " )");
 
-			if (response2 != null && response2.getOpenid() != null) {
-				facade.loginExternalUser(req, resp, response2.getOpenid());
-			}else {
+			try {
+				AuthorizeResponse response2 = mapper.readValue(
+						accessToken.getRawResponse(), AuthorizeResponse.class);
+
+				if (response2 != null && response2.getOpenid() != null) {
+					facade.loginExternalUser(req, resp, response2.getOpenid());
+				} else {
+					return "weixin.subscribe";
+				}
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				return "weixin.subscribe";
 			}
-			
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "weixin.subscribe";
 		}
-
 		return null;
 	}
 }
