@@ -134,9 +134,6 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	@Transactional
 	public void refreshAccessToken() {
 		WeixinConfigImpl config = configRepo.findOne(appId);
-		config.setAccessToken("test");
-		configRepo.save(config);
-		if(1==1) return;
 		calendar.setTime(new Date());
     	calendar.add(Calendar.SECOND, 200);
 		if(config.getExpireDate()==null || config.getExpireDate().compareTo(calendar.getTime())<0) {
