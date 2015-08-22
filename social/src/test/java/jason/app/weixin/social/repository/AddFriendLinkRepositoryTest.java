@@ -20,6 +20,7 @@ public class AddFriendLinkRepositoryTest extends BaseTestCase{
 	@Transactional
 	public void test() {
 		AddFriendLinkImpl link = new AddFriendLinkImpl();
+		link.setId("asdfasdfasfd");
 		repo.save(link);
 		logger.info(link.getId());
 		assertNotNull(link.getId());

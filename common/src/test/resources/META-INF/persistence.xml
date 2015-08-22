@@ -6,6 +6,7 @@
 
 	<persistence-unit name="CommonTestPU" transaction-type="JTA">
 		<class>jason.app.weixin.common.entity.CategoryImpl</class>
+		<class>jason.app.weixin.common.entity.WeixinConfigImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

@@ -1,9 +1,11 @@
 package jason.app.weixin.common.service.impl;
 
+import jason.app.weixin.common.entity.WeixinConfigImpl;
 import jason.app.weixin.common.model.AccessToken;
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Ticket;
 import jason.app.weixin.common.model.WeixinUser;
+import jason.app.weixin.common.repository.WeixinConfigRepository;
 import jason.app.weixin.common.service.IWeixinService;
 
 import java.io.ByteArrayOutputStream;
@@ -21,11 +23,14 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class WeixinServiceImpl implements IWeixinService{
+public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	@Value("#{ systemProperties['appId'] }")
 	private String appId;
 	public String getAppId() {
@@ -35,8 +40,8 @@ public class WeixinServiceImpl implements IWeixinService{
 		this.appId = appId;
 	}
 
-	@Value("#{ systemProperties['accessTokenUrl'] }")
 	private String accessTokenUrl;
+	private static final String ACCESS_TOKEN_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
 	
 	private String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
 	
@@ -51,12 +56,17 @@ public class WeixinServiceImpl implements IWeixinService{
 	private ObjectMapper mapper = new ObjectMapper();
 
 	private String ticket;
+
+	private String secret;
+	
+	@Autowired
+	private WeixinConfigRepository configRepo;
 	@Override
 	public void postMessage(SendMessageCommand msg) {
 		// TODO Auto-generated method stub
 		try {
 			if(!checkAccessToken()) {
-				getAccessToken();
+				refreshAccessToken();
 			}
 			
 			String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+accessToken;
@@ -72,40 +82,6 @@ public class WeixinServiceImpl implements IWeixinService{
 			e.printStackTrace();
 		}
 	}
-	/***/
-	private void getAccessToken() {
-		// TODO Auto-generated method stub
-		
-		try {
-			HttpGet get = new HttpGet(accessTokenUrl);
-			HttpResponse httpResponse = httpClient.execute(get);
-			 int statusCode=httpResponse.getStatusLine().getStatusCode();
-		        if (statusCode==HttpStatus.SC_OK) {
-		        	String content = EntityUtils.toString(httpResponse.getEntity());
-		        	AccessToken token = mapper.readValue(content, AccessToken.class);
-		        	accessToken = token.getAccess_token();
-		        	calendar.setTime(new Date());
-		        	calendar.add(Calendar.SECOND, token.getExpires_in());
-		        	expireDate = calendar.getTime();
-		        }
-		        get = new HttpGet(String.format(ticketUrl, accessToken));
-		         httpResponse = httpClient.execute(get);
-				  statusCode=httpResponse.getStatusLine().getStatusCode();
-			        if (statusCode==HttpStatus.SC_OK) {
-			        	String content = EntityUtils.toString(httpResponse.getEntity());
-			        	Ticket token = mapper.readValue(content, Ticket.class);
-			        	ticket = token.getTicket();
-			        }
-		        
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 	private boolean checkAccessToken() {
 		// TODO Auto-generated method stub
@@ -119,23 +95,14 @@ public class WeixinServiceImpl implements IWeixinService{
 		// TODO Auto-generated method stub
 		try {
 			if(!checkAccessToken()) {
-				getAccessToken();
-			}
-			
+				refreshAccessToken();
+			}			
 			String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId+"&lang=zh_CN";
 	        HttpGet method = new HttpGet(url);  
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        HttpResponse response = httpClient.execute(method);
 	        String result = EntityUtils.toString(response.getEntity(),"UTF-8");
 	        WeixinUser user = mapper.readValue(result, WeixinUser.class);
-	      /**  SocialUser socialUser = new SocialUser();
-	        socialUser.setNickname(user.getNickname());
-	        socialUser.setSex(user.getSex());
-	        socialUser.setCountry(user.getCountry());
-	        socialUser.setProvince(user.getProvince());
-	        socialUser.setCity(user.getCity());
-	        socialUser.setHeadimgurl(user.getHeadimgurl());
-	        return socialUser;*/
 	        return user;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -148,12 +115,68 @@ public class WeixinServiceImpl implements IWeixinService{
 		// TODO Auto-generated method stub
 		try {
 			if(!checkAccessToken()) {
-				getAccessToken();
+				refreshAccessToken();
 			}
 			return ticket;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	@Override
+	public String getSecret() {
+
+		return secret;
+	}
+	
+	@Override
+	@Transactional
+	public void refreshAccessToken() {
+		WeixinConfigImpl config = configRepo.findOne(appId);
+		config.setAccessToken("test");
+		configRepo.save(config);
+		if(1==1) return;
+		calendar.setTime(new Date());
+    	calendar.add(Calendar.SECOND, 200);
+		if(config.getExpireDate()==null || config.getExpireDate().compareTo(calendar.getTime())<0) {
+		try {
+			HttpGet get = new HttpGet(accessTokenUrl);
+			HttpResponse httpResponse = httpClient.execute(get);
+			 int statusCode=httpResponse.getStatusLine().getStatusCode();
+		        if (statusCode==HttpStatus.SC_OK) {
+		        	String content = EntityUtils.toString(httpResponse.getEntity());
+		        	AccessToken token = mapper.readValue(content, AccessToken.class);
+		        	accessToken = token.getAccess_token();
+		        	config.setAccessToken(accessToken);
+		        	calendar.setTime(new Date());
+		        	calendar.add(Calendar.SECOND, token.getExpires_in());
+		        	expireDate = calendar.getTime();
+		        	config.setExpireDate(expireDate);
+		        }
+		        get = new HttpGet(String.format(ticketUrl, accessToken));
+		         httpResponse = httpClient.execute(get);
+				  statusCode=httpResponse.getStatusLine().getStatusCode();
+			        if (statusCode==HttpStatus.SC_OK) {
+			        	String content = EntityUtils.toString(httpResponse.getEntity());
+			        	Ticket token = mapper.readValue(content, Ticket.class);
+			        	ticket = token.getTicket();
+			        	config.setTicket(ticket);
+			        }
+		configRepo.save(config);        
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	}
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		WeixinConfigImpl config = configRepo.findOne(appId);
+		secret = config.getSecret();
+		this.accessTokenUrl = String.format(ACCESS_TOKEN_TEMPLATE, appId,secret);
 	}
 }

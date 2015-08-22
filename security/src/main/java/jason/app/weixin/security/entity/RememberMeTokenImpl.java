@@ -14,43 +14,43 @@ import javax.persistence.TemporalType;
 @Table(name="REMEMBER_ME_TOKEN")
 public class RememberMeTokenImpl {
     
-    @ManyToOne
-    private  UserImpl user;
-    
-    public UserImpl getUser() {
-        return user;
-    }
-    public void setUser(UserImpl user) {
-        this.user = user;
-    }
+	@Column
+    private  String username;
+
     @Id
     private  String series;
     
     @Column
-    private  String tokenValue;
+    private  String token;
     
     @Temporal(TemporalType.TIMESTAMP)
-    private  Date date;
+    private  Date lastUsed;
+
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getSeries() {
+		return series;
+	}
+	public void setSeries(String series) {
+		this.series = series;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public Date getLastUsed() {
+		return lastUsed;
+	}
+	public void setLastUsed(Date lastUsed) {
+		this.lastUsed = lastUsed;
+	}
     
 
-    public String getSeries() {
-        return series;
-    }
-    public String getTokenValue() {
-        return tokenValue;
-    }
-    public Date getDate() {
-        return date;
-    }
-
-    public void setSeries(String series) {
-        this.series = series;
-    }
-    public void setTokenValue(String tokenValue) {
-        this.tokenValue = tokenValue;
-    }
-    public void setDate(Date date) {
-        this.date = date;
-    }
     
 }

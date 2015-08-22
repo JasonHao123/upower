@@ -14,15 +14,44 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.neo4j.conversion.QueryResultBuilder;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 //@Component
-public class AnalyzeDistanceJob {
+public class AnalyzeDistanceJob  extends QuartzJobBean {  
+	private static Logger logger = LoggerFactory.getLogger(WeixinAccessTokenJob.class);
+    private ApplicationContext applicationContext;  
+  
+    /** 
+     * 从SchedulerFactoryBean注入的applicationContext. 
+     */  
+    public void setApplicationContext(ApplicationContext applicationContext) {  
+        this.applicationContext = applicationContext;  
+    }  
+  
+    @Override  
+    @Transactional
+    protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException {  
+        Map config = (Map) applicationContext.getBean("timerJobConfig");  
+        String nodeName = (String) config.get("nodeName");  
+        logger.info("AnalyzeDistanceJob job on node "+nodeName+" .");  
+        try {
+			Thread.sleep(20000L);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }  
 	
 	@Autowired
 	private SocialUserRepository userRepo;
@@ -34,8 +63,7 @@ public class AnalyzeDistanceJob {
 	
 	@Autowired
 	private SocialDistanceRepository distanceRepo;
-	
-    @Scheduled(cron="* 0/30 * * * ? ")   //每5秒执行一次   
+	 
     @Transactional()
     public void myTest(){  
 		

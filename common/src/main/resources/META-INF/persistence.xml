@@ -7,6 +7,7 @@
 	<persistence-unit name="CommonPU" transaction-type="JTA">
 		<jta-data-source>java:/MysqlXADS</jta-data-source> 
 		<class>jason.app.weixin.common.entity.CategoryImpl</class>
+		<class>jason.app.weixin.common.entity.WeixinConfigImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

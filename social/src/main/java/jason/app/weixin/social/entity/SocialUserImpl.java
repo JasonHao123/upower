@@ -55,6 +55,18 @@ public class SocialUserImpl {
 	@Column
 	private String openid;
 	
+	@Column
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date distanceLastSync;
+	
+	public Date getDistanceLastSync() {
+		return distanceLastSync;
+	}
+
+	public void setDistanceLastSync(Date distanceLastSync) {
+		this.distanceLastSync = distanceLastSync;
+	}
+
 	public String getOpenid() {
 		return openid;
 	}

@@ -81,12 +81,6 @@ xmlns:context="http://www.springframework.org/schema/context"
     </constructor-arg>
   </bean>
   
-   <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-
-<bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider" >
-  <property name="passwordEncoder" ref="encoder" />
-  <property name="userDetailsService" ref="userDetailService" />  
-</bean>
-
+   <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 </beans>

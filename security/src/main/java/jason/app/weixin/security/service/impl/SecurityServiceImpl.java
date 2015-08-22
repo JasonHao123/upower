@@ -15,12 +15,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +39,10 @@ public class SecurityServiceImpl implements ISecurityService {
     private PasswordEncoder encoder;
 
     @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private List<AuthenticationProvider> authenticationProvider;
+    
+    @Autowired(required=false)
+    private RememberMeServices rememberService;
 
     @Override
     @Transactional
@@ -92,9 +97,16 @@ public class SecurityServiceImpl implements ISecurityService {
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
             token.setDetails(new WebAuthenticationDetails(request));
-
-            Authentication authentication = authenticationProvider.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            for(AuthenticationProvider provider:authenticationProvider) {
+            	if(provider.supports(UsernamePasswordAuthenticationToken.class)) {
+		            Authentication authentication = provider.authenticate(token);
+		            if(authentication.isAuthenticated()) {
+			            SecurityContextHolder.getContext().setAuthentication(authentication);
+			            rememberService.loginSuccess(request, response, authentication);
+			            break;
+		            }
+            	}
+            }
         } catch (Exception e) {
             e.printStackTrace();
             SecurityContextHolder.getContext().setAuthentication(null);
@@ -144,12 +156,20 @@ public class SecurityServiceImpl implements ISecurityService {
         try {
             // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
 
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(openid, openid);
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(openid, DigestUtils.md5Hex(openid));
             token.setDetails(new WebAuthenticationDetails(request));
 
-            Authentication authentication = authenticationProvider.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return true;
+            for(AuthenticationProvider provider:authenticationProvider) {
+            	if(provider.supports(UsernamePasswordAuthenticationToken.class)) {
+		            Authentication authentication = provider.authenticate(token);
+		            if(authentication.isAuthenticated()) {
+			            SecurityContextHolder.getContext().setAuthentication(authentication);
+			            rememberService.loginSuccess(request, resp, authentication);
+			            return true;
+		            }
+            	}
+            }
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
             SecurityContextHolder.getContext().setAuthentication(null);
