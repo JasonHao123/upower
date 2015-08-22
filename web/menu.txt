@@ -1,0 +1,47 @@
+{
+    "menu": {
+        "button": [
+            {
+                "type": "view", 
+                "name": "发布消息", 
+                "url": "http://www.weaktie.cn/personal/post.do", 
+                "sub_button": [ ]
+            }, 
+            {
+                "type": "view", 
+                "name": "邀请好友", 
+                "url": "http://www.weaktie.cn/weixin/invite.do", 
+                "sub_button": [ ]
+            }, 
+            {
+                "name": "我的...", 
+                "sub_button": [
+                    {
+                        "type": "view", 
+                        "name": "我的信息", 
+                        "url": "http://www.weaktie.cn/user/profile.do", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "我的好友", 
+                        "url": "http://www.weaktie.cn/user/friends.do", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "好友申请", 
+                        "url": "http://www.weaktie.cn/user/requests.do", 
+                        "sub_button": [ ]
+                    }, 
+                    {
+                        "type": "view", 
+                        "name": "我的势力", 
+                        "url": "http://www.weaktie.cn/weixin/power.do", 
+                        "sub_button": [ ]
+                    }
+                ]
+            }
+        ]
+    }
+}

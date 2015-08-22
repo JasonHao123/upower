@@ -59,8 +59,9 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 
 	private String secret;
 	
-	@Autowired
+	@Autowired(required=false)
 	private WeixinConfigRepository configRepo;
+	
 	@Override
 	public void postMessage(SendMessageCommand msg) {
 		// TODO Auto-generated method stub
@@ -175,8 +176,10 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
-		WeixinConfigImpl config = configRepo.findOne(appId);
-		secret = config.getSecret();
-		this.accessTokenUrl = String.format(ACCESS_TOKEN_TEMPLATE, appId,secret);
+		if(configRepo!=null) {
+			WeixinConfigImpl config = configRepo.findOne(appId);
+			secret = config.getSecret();
+			this.accessTokenUrl = String.format(ACCESS_TOKEN_TEMPLATE, appId,secret);
+		}
 	}
 }

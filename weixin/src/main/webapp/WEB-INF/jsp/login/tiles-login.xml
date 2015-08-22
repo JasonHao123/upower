@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+
+	<definition name="login" extends="base">
+		<put-attribute name="content" value="/WEB-INF/jsp/login/login.jsp" />
+	</definition>
+	
+
+	<definition name="login.fail" extends="base">
+		<put-attribute name="content"
+			value="/WEB-INF/jsp/login/fail.jsp" />
+	</definition>
+
+</tiles-definitions>

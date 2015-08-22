@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+	<context:component-scan base-package="jason.app.weixin.web" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:jta-transaction-manager />
+
+	<bean id="transactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManagerName" value="java:jboss/TransactionManager" />
+		<property name="userTransactionName" value="java:jboss/UserTransaction" />
+		<property name="allowCustomIsolationLevels" value="true" />
+	</bean>
+
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+	</bean>
+
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/jsp/**/tiles*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="urlBasedResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass">
+			<value>
+				org.springframework.web.servlet.view.tiles2.TilesView
+			</value>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+	<!-- -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="2" />
+	</bean>
+
+
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+
+	<bean
+		class="org.springframework.data.repository.support.DomainClassConverter">
+		<constructor-arg ref="conversionService" />
+	</bean>
+
+	<mvc:annotation-driven conversion-service="conversionService">
+		<mvc:argument-resolvers>
+			<bean id="pageableResolver"
+				class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+				<constructor-arg>
+					<bean id="sortResolver"
+						class="org.springframework.data.web.SortHandlerMethodArgumentResolver" />
+
+				</constructor-arg>
+			</bean>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+
+	<!-- Configures Handler Interceptors -->
+	<mvc:interceptors>    <!-- This bit of XML will intercept all URLs - which is what you want in 
+			a web app -->
+		<bean class="jason.app.weixin.web.interceptor.WeixinSignatureInterceptor" />    <!-- This bit of XML will apply certain URLs to certain interceptors -->  <!-- <mvc:interceptor> <mvc:mapping path="/gb/shop/**"/> <bean class="marin.interceptor.RequestInitializeInterceptor" 
+			/> </mvc:interceptor> -->
+	</mvc:interceptors>
+
+</beans>
