@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/weixin/oauth")
+@RequestMapping("/oauth")
 public class OauthController implements InitializingBean{
 
 	// @Autowired

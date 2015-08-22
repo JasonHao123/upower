@@ -25,9 +25,9 @@ public class WeixinProcessor
 	
 	//,produces="application/xml"
 	@RequestMapping(value="/processor")
-    public @ResponseBody String home(@RequestBody WeixinParam params,@ModelAttribute WeixinHeader header)
+    public @ResponseBody String home(@ModelAttribute WeixinHeader header)
     {
-		logger.info(params.toString());
+		logger.info(header.toString());
 		// return chain.handle(params,header);
 		return header.getEchostr();
 
