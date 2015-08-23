@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 public class ExampleListener implements MessageListener {
 	private static Logger logger = LoggerFactory.getLogger(ExampleListener.class);
@@ -52,16 +53,21 @@ public class ExampleListener implements MessageListener {
 					SocialUser socialUser = null;
 					if(command.getOpenId()!=null) {
 						WeixinUser user = weixinService.getUserInfo(command.getOpenId());
-						socialUser = new SocialUser();
-				        socialUser.setNickname(user.getNickname());
-				        socialUser.setSex(user.getSex());
-				        socialUser.setCountry(user.getCountry());
-				        socialUser.setProvince(user.getProvince());
-				        socialUser.setCity(user.getCity());
-				        socialUser.setHeadimgurl(user.getHeadimgurl());
-				        socialUser.setOpenid(user.getOpenid());
-						socialUser.setId(command.getUserId());
-						socialService.saveProfile(socialUser);
+						if(user!=null && StringUtils.isEmpty(user.getErrcode())) {
+							socialUser = new SocialUser();
+					        socialUser.setNickname(user.getNickname());
+					        socialUser.setSex(user.getSex());
+					        socialUser.setCountry(user.getCountry());
+					        socialUser.setProvince(user.getProvince());
+					        socialUser.setCity(user.getCity());
+					        socialUser.setHeadimgurl(user.getHeadimgurl());
+					        socialUser.setOpenid(user.getOpenid());
+							socialUser.setId(command.getUserId());
+							socialService.saveProfile(socialUser);
+						}else if(user!=null && StringUtils.hasText(user.getErrcode())) {
+							logger.info("error to fetching user info "+user.getErrcode());
+							user = null;
+						}
 					}else {
 						socialUser = socialService.loadProfile(command.getUserId());
 					}

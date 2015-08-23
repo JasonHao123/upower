@@ -50,7 +50,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/weixin")
 public class WeixinController {
 	
 	private static final Logger logger = LoggerFactory

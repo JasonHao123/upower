@@ -14,6 +14,13 @@ public class WeixinUser {
 	private String unionid;
 	private String remark;
 	private Integer groupid;
+	private String errcode;
+	public String getErrcode() {
+		return errcode;
+	}
+	public void setErrcode(String errcode) {
+		this.errcode = errcode;
+	}
 	public Integer getSubscribe() {
 		return subscribe;
 	}

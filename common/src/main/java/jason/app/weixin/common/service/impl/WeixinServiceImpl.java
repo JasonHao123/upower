@@ -23,6 +23,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WeixinServiceImpl implements IWeixinService,InitializingBean{
+	private static Logger logger = LoggerFactory.getLogger(WeixinServiceImpl.class);
+
 	@Value("#{ systemProperties['appId'] }")
 	private String appId;
 	public String getAppId() {
@@ -80,7 +84,8 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	        method.setEntity(entity);  
 	        httpClient.execute(method);
 		}catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -102,11 +107,15 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	        HttpGet method = new HttpGet(url);  
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        HttpResponse response = httpClient.execute(method);
-	        String result = EntityUtils.toString(response.getEntity(),"UTF-8");
-	        WeixinUser user = mapper.readValue(result, WeixinUser.class);
-	        return user;
+	        int statusCode=response.getStatusLine().getStatusCode();
+	        if (statusCode==HttpStatus.SC_OK) {
+		        String result = EntityUtils.toString(response.getEntity(),"UTF-8");
+		        logger.info(result);
+		        WeixinUser user = mapper.readValue(result, WeixinUser.class);
+		        return user;
+	        }
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return null;
 	}

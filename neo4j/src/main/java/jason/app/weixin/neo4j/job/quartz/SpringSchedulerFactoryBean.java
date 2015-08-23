@@ -23,7 +23,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 public class SpringSchedulerFactoryBean extends SchedulerFactoryBean {
-	@Autowired
+	@Autowired(required=false)
 	private List<QuartzJobBean> jobs;
 
 	@Autowired
@@ -35,6 +35,7 @@ public class SpringSchedulerFactoryBean extends SchedulerFactoryBean {
 		// collect trigger list
 		List<Trigger> triggers = new ArrayList<Trigger>();
 		List<JobDetail> jobDetails = new ArrayList<JobDetail>();
+		if(jobs!=null) {
 		for (QuartzJobBean job : jobs) {
 			Class<?> objClz = job.getClass();
 			if (org.springframework.aop.support.AopUtils.isAopProxy(job)) {
@@ -72,6 +73,7 @@ public class SpringSchedulerFactoryBean extends SchedulerFactoryBean {
 					triggers.add(triggerBean);
 				}
 			}
+		}
 		}
 		this.setJobDetails(jobDetails.toArray(new JobDetail[0]));
 		this.setTriggers(triggers.toArray(new Trigger[0]));
