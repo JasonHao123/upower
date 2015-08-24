@@ -78,7 +78,7 @@ public class SocialServiceImpl implements ISocialService {
 	@Transactional
 	public void saveProfile(SocialUser profile) {
 		// TODO Auto-generated method stub
-		logger.info("save profile "+profile.getNickname());
+		logger.info("save profile "+profile.getNickname()+"("+profile.getId()+")");
 		SocialUserImpl user = socialUserRepo.findOne(profile.getId());
 		if(user==null) {
 			logger.info("user doesn't exist in db, create new");
@@ -109,6 +109,7 @@ public class SocialServiceImpl implements ISocialService {
 			if(profile.getHeadimgurl()!=null)
 			user.setHeadimgurl(profile.getHeadimgurl());
 			*/
+			user.setId(profile.getId());
 			user.setLastUpdate(new Date());
 		}
 		socialUserRepo.save(user);
