@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ISocialService {
 
+	@Transactional
 	void saveProfile(SocialUser profile);
 
 	SocialUser loadProfile(Long id);
@@ -32,6 +33,7 @@ public interface ISocialService {
 	
 	Settings getUserSettings(Long id);
 
+	@Transactional
 	void saveSettings(Settings settings);
 
 	List<SocialUser> getFriends(Long user, Pageable pageable);
@@ -42,8 +44,10 @@ public interface ISocialService {
 
 	List<AddFriendRequest> getMyAddFriendRequests(Long id, Pageable pageable);
 
+	@Transactional
 	void saveDistance(SocialRelationDTO dto);
 
+	@Transactional
 	void createAddFriendLink(Long id, String id2);
 
 }

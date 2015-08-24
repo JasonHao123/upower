@@ -6,7 +6,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(DigestUtils.md5Hex("fromUser"));
+		System.out.println(DigestUtils.md5Hex("opX1TwxhTm-9D2_n_EY_9WZ8K1S8"));
 	}
 
 }

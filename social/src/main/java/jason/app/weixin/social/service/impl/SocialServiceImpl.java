@@ -34,6 +34,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +45,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SocialServiceImpl implements ISocialService {
 	
-
+	private Logger logger = LoggerFactory.getLogger(SocialServiceImpl.class);
+	
 	@Autowired
 	private AddFriendLinkRepository linkRepo;
 
@@ -75,10 +78,14 @@ public class SocialServiceImpl implements ISocialService {
 	@Transactional
 	public void saveProfile(SocialUser profile) {
 		// TODO Auto-generated method stub
+		logger.info("save profile "+profile.getNickname());
 		SocialUserImpl user = socialUserRepo.findOne(profile.getId());
 		if(user==null) {
+			logger.info("user doesn't exist in db, create new");
 			user = SocialUserTranslator.toEntity(profile);
+			logger.info(user.toString());
 		}else {
+			/**
 			if(profile.getAge()!=null)
 			user.setAge(profile.getAge());
 			if(profile.getNickname()!=null)
@@ -101,7 +108,7 @@ public class SocialServiceImpl implements ISocialService {
 			user.setCity(profile.getCity());
 			if(profile.getHeadimgurl()!=null)
 			user.setHeadimgurl(profile.getHeadimgurl());
-			
+			*/
 			user.setLastUpdate(new Date());
 		}
 		socialUserRepo.save(user);
