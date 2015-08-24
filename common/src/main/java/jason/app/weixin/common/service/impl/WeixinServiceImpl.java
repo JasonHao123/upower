@@ -189,6 +189,9 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 			WeixinConfigImpl config = configRepo.findOne(appId);
 			secret = config.getSecret();
 			this.accessTokenUrl = String.format(ACCESS_TOKEN_TEMPLATE, appId,secret);
+			this.accessToken = config.getAccessToken();
+			this.expireDate = config.getExpireDate();
+			this.ticket = config.getTicket();
 		}
 	}
 }
