@@ -46,7 +46,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 
 	private String accessTokenUrl;
 	private static final String ACCESS_TOKEN_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-	
+	private static final String GET_USER_INFO_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s&openid=%s&lang=zh_CN";
 	private String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
 	
 	private String accessToken;
@@ -103,7 +103,9 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 			if(!checkAccessToken()) {
 				refreshAccessToken();
 			}			
-			String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId+"&lang=zh_CN";
+			logger.debug("accessToken:"+accessToken);
+			logger.debug("openid+"+openId);
+			String url = String.format(GET_USER_INFO_TEMPLATE, accessToken,openId);
 	        HttpGet method = new HttpGet(url);  
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        HttpResponse response = httpClient.execute(method);
@@ -154,6 +156,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 		        	String content = EntityUtils.toString(httpResponse.getEntity());
 		        	AccessToken token = mapper.readValue(content, AccessToken.class);
 		        	accessToken = token.getAccess_token();
+		        	logger.info("access token"+accessToken);
 		        	config.setAccessToken(accessToken);
 		        	calendar.setTime(new Date());
 		        	calendar.add(Calendar.SECOND, token.getExpires_in());
