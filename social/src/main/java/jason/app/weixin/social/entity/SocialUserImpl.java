@@ -12,7 +12,11 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="SOCIAL_USER")
 public class SocialUserImpl {
-
+@Override
+public String toString() {
+	// TODO Auto-generated method stub
+	return String.format("%d,%d,%s,%s,%s,%s", id,sex,nickname,country,province,city);
+}
 	@Id
 	private Long id;
 	

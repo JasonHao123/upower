@@ -83,7 +83,6 @@ public class SocialServiceImpl implements ISocialService {
 		if(user==null) {
 			logger.info("user doesn't exist in db, create new");
 			user = SocialUserTranslator.toEntity(profile);
-			logger.info(user.toString());
 		}else {
 			/**
 			if(profile.getAge()!=null)
@@ -112,7 +111,12 @@ public class SocialServiceImpl implements ISocialService {
 			user.setId(profile.getId());
 			user.setLastUpdate(new Date());
 		}
-		socialUserRepo.save(user);
+		logger.info("save user to database");
+		logger.info(user.toString());
+		user = socialUserRepo.save(user);
+		logger.info("saved user to database");
+		logger.info(user.toString());
+
 	}
 
 	@Override
