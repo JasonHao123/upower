@@ -46,7 +46,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 
 	private String accessTokenUrl;
 	private static final String ACCESS_TOKEN_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
-	private static final String GET_USER_INFO_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s&openid=%s&lang=zh_CN";
+	private static final String GET_USER_INFO_TEMPLATE = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s";
 	private String ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
 	
 	private String accessToken;
