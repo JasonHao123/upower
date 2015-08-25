@@ -27,7 +27,7 @@
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
 <jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/weixin"/>
   
- <bean id="messageListener" class="jason.app.weixin.neo4j.controller.TestListener" />
+ <bean id="messageListener" class="jason.app.weixin.neo4j.controller.ExampleListener" />
 <!-- -->
 <!-- and this is the message listener container -->
  
