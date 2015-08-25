@@ -15,10 +15,10 @@
         http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.2.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <context:component-scan base-package="jason.app.weixin.neo4j" />
-    <tx:jta-transaction-manager />
-  	<tx:annotation-driven />
+    <tx:jta-transaction-manager  />
+  	<tx:annotation-driven transaction-manager="transactionManagerNeoJMS" />
   	
-     <bean id="transactionManager"
+     <bean id="transactionManagerNeoJMS"
         class="org.springframework.transaction.jta.JtaTransactionManager">
         <property name="transactionManagerName" value="java:jboss/TransactionManager" />
         <property name="userTransactionName" value="java:jboss/UserTransaction" />
@@ -27,7 +27,7 @@
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
 <jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/weixin"/>
   
- <bean id="messageListener" class="jason.app.weixin.neo4j.controller.TestListener" />
+ <bean id="messageListener" class="jason.app.weixin.neo4j.controller.ExampleListener" />
 <!-- -->
 <!-- and this is the message listener container -->
  
@@ -35,7 +35,7 @@
     <property name="connectionFactory" ref="connectionFactory"/>
     <property name="destination" ref="defaultDestination"/>
     <property name="messageListener" ref="messageListener" />
-      <property name="transactionManager" ref="transactionManager" />  
+      <property name="transactionManager" ref="transactionManagerNeoJMS" />  
     
 </bean>
 <!-- -->

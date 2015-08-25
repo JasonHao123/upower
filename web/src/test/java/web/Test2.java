@@ -8,7 +8,7 @@ public class Test2 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String str = "Timeline:jason:";
+		String str = "opX1Tw1fTObepU12nJnjSusxCepw";
 		System.out.println(DigestUtils.md5Hex(str));
 		System.out.println(DigestUtils.md2Hex(UUID.randomUUID().toString()));
 		System.out.println(DigestUtils.md5Hex(UUID.randomUUID().toString()));

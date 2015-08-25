@@ -13,12 +13,12 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <context:component-scan base-package="jason.app.weixin.neo4j.job" />
-    <context:annotation-config />
+    <context:annotation-config   />
   	<tx:jta-transaction-manager />
-  	<tx:annotation-driven />
+  	<tx:annotation-driven transaction-manager="transactionManagerNeoJob" />
 <jee:jndi-lookup id="quartzDataSource" jndi-name="java:/quartzDS"/>
 
-     <bean id="transactionManager"
+     <bean id="transactionManagerNeoJob"
         class="org.springframework.transaction.jta.JtaTransactionManager">
         <property name="transactionManagerName" value="java:jboss/TransactionManager" />
         <property name="userTransactionName" value="java:jboss/UserTransaction" />
@@ -43,7 +43,7 @@
         <property name="startupDelay" value="3" />  
         <!-- 保存Job数据到数据库所需的数据源 -->  
         <property name="dataSource" ref="quartzDataSource" />  
-        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionManager" ref="transactionManagerNeoJob" />
         <!-- Job接受applicationContext的成员变量名 -->  
         <property name="applicationContextSchedulerContextKey" value="applicationContext" />  
     </bean>  
