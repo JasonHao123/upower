@@ -16,7 +16,7 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <context:component-scan base-package="jason.app.weixin.neo4j" />
     <tx:jta-transaction-manager />
-  	<tx:annotation-driven mode="aspectj" proxy-target-class="true"/>
+  	<tx:annotation-driven />
   	
      <bean id="transactionManager"
         class="org.springframework.transaction.jta.JtaTransactionManager">
@@ -24,23 +24,10 @@
         <property name="userTransactionName" value="java:jboss/UserTransaction" />
  		<property name="allowCustomIsolationLevels" value="true" />
     </bean>
-    <!-- 
-<bean id="listenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
-  <property name="transactionManager" ref="transactionManager" />  
-  
-</bean>  
- -->
     <jee:jndi-lookup id="connectionFactory" jndi-name="java:/ConnectionFactory"/>
 <jee:jndi-lookup id="defaultDestination" jndi-name="java:/jms/queue/weixin"/>
-<!-- <jee:jndi-lookup id="socialDestination" jndi-name="java:/jms/queue/social"/>
- -->
-<!-- 	   <bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="defaultDestination" ref="defaultDestination" />
-    </bean>
- -->    
-    <!-- this is the Message Driven POJO (MDP) -->
- <bean id="messageListener" class="jason.app.weixin.neo4j.controller.ExampleListener" />
+  
+ <bean id="messageListener" class="jason.app.weixin.neo4j.controller.TestListener" />
 <!-- -->
 <!-- and this is the message listener container -->
  
