@@ -29,5 +29,19 @@
           <definition name="social.reply.friend.add" extends="base">
     <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend2.jsp" />
   </definition>
+  
+  
+      <definition name="social.friend.list" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/friends.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition>
+  
+  
+      <definition name="social.mail.list" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/mail.jsp" />
+    <put-attribute name="navi" value="user" />
+  </definition> 
 
 </tiles-definitions>
