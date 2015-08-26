@@ -11,10 +11,10 @@ function getData() {
 	if(pageNo==0) {
 		$("#messages").empty();
 	}
-	$.getJSON("<c:url value="/user/friends2.do" />?page="+pageNo,function(result){
+	$.getJSON("<c:url value="/social/friends2.do" />?page="+pageNo,function(result){
 	    if(result.length>0) {
 		    $.each(result, function(i, message){
-			      $("#messages").append("<li><a data-ajax='false' href='<c:url value="/user/profile.do" />?id="+message.id+"' ><h2>"+message.nickname +"</h2>   <p>"+message.nickname+"</p> <p class=\"ui-li-aside\">"+message.nickname +"</p> </a></li>");
+			      $("#messages").append("<li><a data-ajax='false' href='<c:url value="/social/home.do" />?id="+message.id+"' ><h2>"+message.nickname +"</h2>   <p>"+message.nickname+"</p> <p class=\"ui-li-aside\">"+message.nickname +"</p> </a></li>");
 			    });
 		    $("#messages").listview("refresh");
 			pageNo = pageNo + 1;

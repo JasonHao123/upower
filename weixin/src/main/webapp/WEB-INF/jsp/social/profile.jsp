@@ -12,12 +12,12 @@ $( document ).on( "pagecreate", "#myPage", function() {
 	<c:choose>
 	<c:when test="${isSelf}">
 	$('#edit').click(function() {
-		$.mobile.navigate("<c:url value="/user/profile/edit.do" />");
+		$.mobile.navigate("<c:url value="/social/profile/edit.do" />");
 	});
 	</c:when>
 	<c:otherwise>
 $('#addFriend').click(function() {
-	$.mobile.navigate("<c:url value="/user/addfriend.do" />?id=${profile.id}");
+	$.mobile.navigate("<c:url value="/social/addfriend.do" />?id=${profile.id}");
 });
 $('#contact').click(function() {
 	$.mobile.navigate("conversation.do?id=${profile.id}");

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -36,16 +37,50 @@ public class SocialController {
 	@Autowired
 	private ISecurityService securityService;
 	
-	/**
-	 * Selects the home page and populates the model with a message
-	 */
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(Model model) {
-		logger.info("Welcome home!");
-		model.addAttribute("controllerMessage",
-				"This is the message from the controller!");
-		return "social.home";
-	}
+
+    @RequestMapping("/home")
+    public String profile(Model model,@RequestParam(required=false,value="id") Long id) {
+        User user = securityService.getCurrentUser();
+        if(user==null) {
+        	return "redirect:/social/profile/edit.do";
+        }else {
+        	SocialUser profile = null;
+        	if(id==null || user.getId()==id) {
+        		profile = socialService.loadProfile(user.getId());
+        	}else {
+        		profile = socialService.loadProfile(id);
+        	}
+        	model.addAttribute("profile",profile);
+        	model.addAttribute("isSelf",user.getId()==id);
+    		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+    		model.addAttribute("distance",distance);
+    		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
+            return "social.profile";
+        }
+      /**  
+    	if(id!=null) {
+    		SocialUser profile = socialService.loadProfile(id);
+        	model.addAttribute("profile",profile);
+        	boolean self = user.getId()==profile.getId();
+        	if(!self) {
+        		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+        		model.addAttribute("distance",distance);
+        	}
+        	model.addAttribute("isSelf",self);
+    	}else {
+
+	        if(user!=null) {
+	        	SocialUser profile = socialService.loadProfile(user.getId());
+	        	model.addAttribute("profile",profile);
+	        	model.addAttribute("isSelf",user.getId()==profile.getId());
+	        }else {
+	        	return "redirect:/user/profile/edit.do";
+	        }
+    	}
+        return "user.profile";
+        
+        */
+    }
 	
     @RequestMapping("/friends")
     public String friends() {
