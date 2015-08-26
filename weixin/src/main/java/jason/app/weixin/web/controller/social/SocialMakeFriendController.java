@@ -5,6 +5,7 @@ import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Text;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.common.service.IWeixinService;
+import jason.app.weixin.common.util.CommonUtil;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.social.constant.AddFriendRequestType;
@@ -245,6 +246,7 @@ public class SocialMakeFriendController {
 		final User user = securityService.getCurrentUser();
 		// from
 		final SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
+		
 		final AddFriendLinkImpl link = linkRepo.findOne(addFriendForm.getId());
 		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),link.getUser().getId());
 		if(relation==null) {
@@ -260,7 +262,7 @@ public class SocialMakeFriendController {
 				AddFriendRequestImpl request = new AddFriendRequestImpl();
 				request.setFrom(userImpl);
 				request.setTo(link.getUser());
-				request.setMessage(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend!");
+				request.setMessage(userImpl.getNickname() +" 接受了你的好友申请，"+CommonUtil.getHeOrShe(userImpl.getSex())+"也想添加你为好友!");
 				request.setType(AddFriendRequestType.CONFIRM);
 				request.setCreateDate(new Date());
 				request = addFriendRequestRepo.save(request);
@@ -271,7 +273,7 @@ public class SocialMakeFriendController {
 		            	SendMessageCommand command = new SendMessageCommand();
 		            	command.setMsgtype("text");
 		            	command.setTouser(link.getUser().getOpenid());
-		            	command.setText(new Text(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend! Click the link below to accept the request.<a href=\"http://www.weaktie.cn/weixin/replyrequest.do?id="+id+"\">Accpet</a>"));
+		            	command.setText(new Text(userImpl.getNickname() +" 接受了你的好友申请，"+CommonUtil.getHeOrShe(userImpl.getSex())+"也想添加你为好友! 点击以下链接接受请求。<a href=\"http://www.weaktie.cn/weixin/replyrequest.do?id="+id+"\">接受</a>"));
 		            	return session.createObjectMessage(command);
 		              }
 		          });

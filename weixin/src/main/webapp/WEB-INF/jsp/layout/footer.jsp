@@ -2,6 +2,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page pageEncoding="UTF-8" %>
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
-		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2014 The jQuery Foundation</p>
+		<p>Copyright © 2014-2015 友势力weaktie.cn 版权所有</p>
+		<p>津ICP备15005804号</p>
 	</div><!-- /footer -->
