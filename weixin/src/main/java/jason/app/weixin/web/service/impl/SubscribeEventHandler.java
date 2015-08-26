@@ -63,7 +63,7 @@ public class SubscribeEventHandler extends EventHandler {
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
-        response.setContent("欢迎使用友势力社交平台！<a href=\"http://www.weaktie.cn/weixin/profile/edit.do\">点击此链接编辑个人信息</a>");
+        response.setContent("欢迎使用友势力社交平台！我们的平台非常认可社交网络和个人信用的价值，本平台通过对您的社交网络和个人信用进行评价，提供差异化的服务。");
         return response;
 	}
 	

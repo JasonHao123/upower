@@ -3,6 +3,7 @@ package jason.app.weixin.neo4j.controller;
 import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.model.SendMessageCommand;
+import jason.app.weixin.common.model.Text;
 import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.neo4j.service.INeo4jService;
@@ -73,6 +74,14 @@ public class ExampleListener implements MessageListener {
 					}
 					if(socialUser!=null) {
 						neo4jService.createUser(socialUser);
+						if(command.getOpenId()!=null) {
+							SendMessageCommand command2 = new SendMessageCommand();
+							command2.setMsgtype("text");
+							command2.setTouser(command.getOpenId());
+							command2.setText(new Text("完善您的个人信息有利于优化您的个人关系网络，<a href=\"http://www.weaktie.cn/social/profile/edit.do\">请点击此链接编辑个人信息</a>，别忘了邀请好友加入啊，点击社交－>邀请好友"));
+							weixinService.postMessage(command2);
+						}
+						
 					}
 				}else if(object instanceof CreateRelationCommand) {
 					CreateRelationCommand command = (CreateRelationCommand)object;

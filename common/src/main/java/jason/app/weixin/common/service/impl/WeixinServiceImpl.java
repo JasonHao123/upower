@@ -131,7 +131,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 			}
 			return ticket;
 		}catch(Exception e) {
-			e.printStackTrace();
+			logger.error("failed to refresh access token due to "+e.getMessage());
 		}
 		return null;
 	}
@@ -173,12 +173,10 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 			        	config.setTicket(ticket);
 			        }
 		configRepo.save(config);        
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("failed to refresh access token "+e.getMessage());
 		}
 		}
 	}
