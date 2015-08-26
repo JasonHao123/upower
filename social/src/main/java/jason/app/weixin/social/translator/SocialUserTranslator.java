@@ -18,14 +18,14 @@ public class SocialUserTranslator {
 		user.setId(profile.getId());
 	
 		user.setNickname(profile.getNickname());
-		/**
+	
 		user.setAge(profile.getAge());
 
 		user.setCategory1(profile.getCategory1());
 		user.setCategory2(profile.getCategory2());
 		user.setHobbys(Arrays.toString(profile.getHobby()));
 		user.setLocations(Arrays.toString(profile.getLocation()));
-		*/
+	
 		user.setSex(profile.getSex());
 		user.setCountry(profile.getCountry());
 		user.setProvince(profile.getProvince());
