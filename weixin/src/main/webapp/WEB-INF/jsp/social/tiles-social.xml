@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+  
+  
+   <definition name="social.home" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/profile.jsp" />
+  </definition>
+  
+
+        <definition name="social.profile.edit" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/profileedit.jsp" />
+  </definition>
+  
+  <definition name="social.invite" extends="base">
+	<put-attribute name="apiList" value="'onMenuShareTimeline','onMenuShareAppMessage'" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/invite.jsp" />
+  </definition>
+  
+    <definition name="social.addfriend" extends="base">
+    	<put-attribute name="content" value="/WEB-INF/jsp/social/addfriend.jsp" />
+  </definition>
+  
+          <definition name="social.reply.friend.add" extends="base">
+    <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend2.jsp" />
+  </definition>
+
+</tiles-definitions>

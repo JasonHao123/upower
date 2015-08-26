@@ -12,11 +12,11 @@ wx.ready(function(){
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
 	wx.onMenuShareTimeline({
 	    title: '${profile.nickname}邀请您成为好友', // 分享标题
-	    link: 'http://www.weaktie.cn<c:url value="/weixin/accept.do"><c:param name="id" value="${timeline}" /></c:url>', // 分享链接
+	    link: 'http://www.weaktie.cn<c:url value="/social/accept.do"><c:param name="id" value="${timeline}" /></c:url>', // 分享链接
 	    imgUrl: '${profile.headimgurl}', // 分享图标
 	    success: function () { 
 	        // 用户确认分享后执行的回调函数
-	        $.ajax( "http://www.weaktie.cn<c:url value="/weixin/invite2.do"><c:param name="id" value="${timeline}" /></c:url>" )
+	        $.ajax( "http://www.weaktie.cn<c:url value="/social/invite2.do"><c:param name="id" value="${timeline}" /></c:url>" )
 			  .done(function() {
 			    alert( "success" );
 			  })
@@ -28,13 +28,13 @@ wx.ready(function(){
 	});
     
 	wx.onMenuShareAppMessage({
-		title:'友势力'
+		title:'友势力',
 		desc: '${profile.nickname}邀请您成为好友', // 分享标题
-	    link: 'http://www.weaktie.cn<c:url value="/weixin/accept.do"><c:param name="id" value="${app}" /></c:url>', // 分享链接
+	    link: 'http://www.weaktie.cn<c:url value="/social/accept.do"><c:param name="id" value="${app}" /></c:url>', // 分享链接
 	    imgUrl: '${profile.headimgurl}', // 分享图标
 	    success: function () { 
 	        // 用户确认分享后执行的回调函数
-	        $.ajax( "http://www.weaktie.cn<c:url value="/weixin/invite2.do"><c:param name="id" value="${app}" /></c:url>" )
+	        $.ajax( "http://www.weaktie.cn<c:url value="/social/invite2.do"><c:param name="id" value="${app}" /></c:url>" )
 			  .done(function() {
 			    alert( "success" );
 			  })

@@ -1,4 +1,4 @@
-package jason.app.weixin.web.controller.weixin;
+package jason.app.weixin.web.controller.social;
 
 import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.SendMessageCommand;
@@ -50,10 +50,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class WeixinController {
-	
+@RequestMapping("/social")
+public class SocialMakeFriendController {
 	private static final Logger logger = LoggerFactory
-			.getLogger(WeixinController.class);
+			.getLogger(SocialMakeFriendController.class);
 	
 
 	@Autowired
@@ -83,7 +83,13 @@ public class WeixinController {
 	
 	@Autowired
 	private ISocialService socialService;
-
+	
+	/**
+	 * Display invite friend page
+	 * @param request
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/invite", method = RequestMethod.GET)
 	public String invite(HttpServletRequest request,Model model) {
 		User currentUser = securityService.getCurrentUser();
@@ -93,9 +99,14 @@ public class WeixinController {
 		model.addAttribute("timeline","0"+ DigestUtils.md5Hex(UUID.randomUUID().toString()));
 		model.addAttribute("app", "1"+DigestUtils.md5Hex(UUID.randomUUID().toString()));		
 		
-		return "weixin.invite";
+		return "social.invite";
 	}
 	
+	/**
+	 * callback from UI(ajax) to save the invite link
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/invite2", method = RequestMethod.GET)
 	@Transactional
 	public @ResponseBody String invite2(@RequestParam("id") String id) {
@@ -103,6 +114,7 @@ public class WeixinController {
 		socialService.createAddFriendLink(currentUser.getId(),id);
 		return "test";
 	}
+	
 	
 	@RequestMapping(value = "/replyrequest", method = RequestMethod.GET)
 	@Transactional
@@ -115,7 +127,7 @@ public class WeixinController {
     		form.setId(request.getId());
     		model.addAttribute("addFriendRequestForm",form);
     		model.addAttribute("user",socialService.loadProfile(request.getFrom().getId()));
-    		return "weixin.reply.friend.add";
+    		return "social.reply.friend.add";
     	}else {
     		throw new AccessDeniedException("no access to the request");
     	}
@@ -182,7 +194,7 @@ public class WeixinController {
 	            	return session.createObjectMessage(command);
 	              }
 	          });
-		return "redirect:/user/friends.do";
+		return "redirect:/social/friends.do";
 	}
 
 	/**
@@ -223,7 +235,7 @@ public class WeixinController {
 			model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
 
 
-		return "weixin.addfriend";
+		return "social.addfriend";
 	}
 	
 	
@@ -283,6 +295,7 @@ public class WeixinController {
               }
           });
 	/**			*/
-		return "redirect:/weixin/accept.do?id="+addFriendForm.getId()+"&saved=true";
+		return "redirect:/social/accept.do?id="+addFriendForm.getId()+"&saved=true";
 	}
+	
 }
