@@ -41,7 +41,21 @@
       <definition name="social.mail.list" extends="base">
     <put-attribute name="title" value="page.title.login" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/mail.jsp" />
-    <put-attribute name="navi" value="user" />
   </definition> 
+        <definition name="social.friend.add" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend.jsp" />
+  </definition>
+  
+  
+          <definition name="social.already.friend" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/socail/alreadyfriend.jsp" />
+  </definition>
+  
+     <definition name="social.conversation" extends="base">
+    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/conversation.jsp" />
+  </definition>
 
 </tiles-definitions>

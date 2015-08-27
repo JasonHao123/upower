@@ -3,6 +3,7 @@ package jason.app.weixin.social.service;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialMail;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 
@@ -49,5 +50,7 @@ public interface ISocialService {
 
 	@Transactional
 	void createAddFriendLink(Long id, String id2);
+
+	List<SocialMail> getUserConversation(List<Long> users, Pageable pageable);
 
 }

@@ -13,6 +13,7 @@ import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialMail;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
@@ -20,6 +21,7 @@ import jason.app.weixin.social.repository.AddFriendRequestRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
+import jason.app.weixin.social.repository.SocialMailRepository;
 import jason.app.weixin.social.repository.SocialMessageRepository;
 import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
@@ -27,6 +29,7 @@ import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.social.translator.AddFriendRequestTranslator;
 import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
+import jason.app.weixin.social.translator.SocialMailTranslator;
 import jason.app.weixin.social.translator.SocialUserTranslator;
 
 import java.util.ArrayList;
@@ -73,6 +76,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private AddFriendRequestRepository requestRepo;
+	
+	@Autowired
+	private SocialMailRepository mailRepository;
 	
 	@Override
 	@Transactional
@@ -306,6 +312,13 @@ public class SocialServiceImpl implements ISocialService {
 		link.setCreateDate(new Date());
 		link.setId(key);
 		link = linkRepo.save(link);
+	}
+
+	@Override
+	public List<SocialMail> getUserConversation(List<Long> users,
+			Pageable pageable) {
+		
+		return SocialMailTranslator.toDTO(mailRepository.findByFrom_IdInAndTo_IdInOrderByCreateDateDesc(users,users,pageable));
 	}
 
 }

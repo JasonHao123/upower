@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,11 +52,11 @@ public class SocialController {
         		profile = socialService.loadProfile(id);
         	}
         	model.addAttribute("profile",profile);
-        	model.addAttribute("isSelf",user.getId()==id);
+        	model.addAttribute("isSelf",StringUtils.isEmpty(id) || user.getId()==id);
     		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
     		model.addAttribute("distance",distance);
     		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
-            return "social.profile";
+            return "social.home";
         }
       /**  
     	if(id!=null) {
@@ -95,12 +96,6 @@ public class SocialController {
 		
 		return socialService.getFriends(user.getId(),pageable);
 
-	}
-	
-    @RequestMapping("/mails")
-    public String mails() {
-        return "social.mail.list";
-    }
-    
+	}    
     
 }

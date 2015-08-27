@@ -14,14 +14,28 @@ $( document ).on( "pagecreate", "#myPage", function() {
 	$('#edit').click(function() {
 		$.mobile.navigate("<c:url value="/social/profile/edit.do" />");
 	});
+	$('#invite').click(function() {
+		$.mobile.navigate("<c:url value="/social/invite.do" />");
+	});
+	$('#analyze').click(function() {
+		$.mobile.navigate("<c:url value="/social/power.do" />");
+	});
 	</c:when>
 	<c:otherwise>
 $('#addFriend').click(function() {
-	$.mobile.navigate("<c:url value="/social/addfriend.do" />?id=${profile.id}");
+	$.mobile.navigate("<c:url value="/social/addfriend.do"><c:param name="id" value="${profile.id}" /></c:url>");
 });
-$('#contact').click(function() {
-	$.mobile.navigate("conversation.do?id=${profile.id}");
+$('#conversation').click(function() {
+	$.mobile.navigate("<c:url value="/social/conversation.do"><c:param name="id" value="${profile.id}" /></c:url>");
 });
+$('#comment').click(function() {
+	if("none"==$("#commentFooter").css("display")) {
+		$("#commentFooter").css("display","block");
+	}else {
+		$("#commentFooter").css("display","none");
+	}
+});
+
 </c:otherwise>
 </c:choose>
 
@@ -38,25 +52,53 @@ $(".ui-li-aside").each(function() {
 		  readOnly:true
 		});
 });
+<c:if test="${not isSelf}">
+	$("#disRating").raty({
+		  
+		  half     : true,
+		  score: 4,
+		  readOnly:true
+		});
+</c:if>
+
+$("#stars").raty({
+	  
+	  half     : true,
+	  score: 0
+	});
+
 });
 //-->
 </script>
 <div role="main" class="ui-content jqm-content">
-<label>Nickname:${profile.nickname}</label>
-<label>Age: ${profile.age }</label>
-<label>Social Distance: ${distance}</label>
-<label>City:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
-<label>Hobby:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
-<label>Rating: </label><div id="userRating"></div>
+<div style="float: right">
+<img src="<c:url value="/resources/img/apple.png" />" height="130px" />
+</div>
+<label>昵称:${profile.nickname}<c:choose>
+<c:when test="${profile.sex==1}">（男）</c:when>
+<c:when test="${profile.sex==2}">（女）</c:when>
+<c:otherwise>（性别未知）</c:otherwise></c:choose>
+</label>
+<label>年龄: ${profile.age }</label>
+<label>城市:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
+<label>爱好:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
+<c:if test="${not isSelf}">
+<div id="disRating" style="font-size: 14;padding-bottom: 5px;">社交距离: ${distance}&nbsp;&nbsp;&nbsp;</div>
+</c:if>
+<div id="userRating" style="font-size: 14;padding-bottom: 5px;">评价: </div>
 <c:choose>
 <c:when test="${isSelf}">
-<button id="edit">Edit</button>
+<div class="ui-grid-b">
+<div class="ui-block-a"><button id="edit" >编辑</button></div>
+<div class="ui-block-b"><button id="invite">邀请好友</button></div>
+<div class="ui-block-c"><button id="analyze">社交分析</button></div>
+</div>
 </c:when>
 <c:otherwise>
 <div class="ui-grid-b">
-<div class="ui-block-a"><button id="addFriend" <c:if test="${isFriend}">disabled="disabled"</c:if> >Add Friend</button></div>
-<div class="ui-block-b"><button id="contact">Conversation</button></div>
-<div class="ui-block-c"><button id="comment">Comment</button></div>
+<div class="ui-block-a"><button id="addFriend" <c:if test="${isFriend}">disabled="disabled"</c:if> >添加好友</button></div>
+<div class="ui-block-b"><button id="conversation">聊天记录</button></div>
+<div class="ui-block-c"><button id="comment">评价</button></div>
 </div>
 </c:otherwise>
 </c:choose>
@@ -89,3 +131,13 @@ $(".ui-li-aside").each(function() {
 						</a></li>
 					</ul>
 </div>
+
+
+<div id="commentFooter" data-role="footer" data-position="fixed" data-tap-toggle="false" style="display: none;" >
+	<div id="stars">评价：</div>
+		
+  		<textarea id="messageContent" rows="1" cols="30" style="" ></textarea>
+
+   		<a id="send" href="#" class="jqm-search-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-search ui-nodisc-icon ui-alt-icon ui-btn-right"></a>
+
+	</div><!-- /footer -->

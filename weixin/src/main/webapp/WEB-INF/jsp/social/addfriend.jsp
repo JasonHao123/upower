@@ -20,14 +20,21 @@ $('#targetScore').raty({
 <div role="main" class="ui-content">
 
 <h2>添加好友</h2>
+<c:if test="${not empty link.user.nickname}">
 <p>${link.user.nickname} 希望与你成为朋友，请选择好友类型并添加</p>
+</c:if>
+<c:if test="${not empty user.nickname}">
+<p>您正添加 ${user.nickname} 为好友，请选择好友类型并添加</p>
+</c:if>
+
 <c:choose>
 <c:when test="${not expired}">
 <c:choose>
 <c:when test="${hasProfile}" >
 <form id="myForm"  method="POST" data-ajax="false">
-	<input type="hidden" name="<c:out value="${_csrf.parameterName}"/>"
-		value="<c:out value="${_csrf.token}"/>" /> 
+<!-- 	<input type="hidden" name="<c:out value="${_csrf.parameterName}"/>"
+		value="<c:out value="${_csrf.token}"/>" />  -->
+		<input type="hidden" name="userId" value="${addFriendForm.userId}" />
 		<label for="friendshipType">关系类型</label>
 <div class="ui-field-contain">
 <select name="friendshipType" id="friendshipType" multiple="multiple" data-native-menu="false" >

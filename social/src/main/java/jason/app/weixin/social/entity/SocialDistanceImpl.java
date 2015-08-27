@@ -21,6 +21,15 @@ public class SocialDistanceImpl {
 	private SocialUserImpl toUser;
     @Column
 	private Integer distance;
+    @Column
+    private Float rating;
+    
+	public Float getRating() {
+		return rating;
+	}
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
 	public Long getId() {
 		return id;
 	}

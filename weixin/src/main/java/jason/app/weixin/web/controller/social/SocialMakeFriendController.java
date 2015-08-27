@@ -44,6 +44,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -300,4 +301,52 @@ public class SocialMakeFriendController {
 		return "redirect:/social/accept.do?id="+addFriendForm.getId()+"&saved=true";
 	}
 	
+	
+	
+    @RequestMapping(value="/addfriend",method=RequestMethod.GET)
+    public String addFriend(Model model,
+			@RequestParam(required = false, value = "id") Long id) {
+    	User user = securityService.getCurrentUser();
+    	String page = "social.friend.add";
+    	if(socialService.isFriend(user.getId(),id)) {
+    		page = "social.already.friend";
+    	}
+		model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
+		AddFriendRequestForm form = new AddFriendRequestForm();
+		form.setUserId(id);
+		form.setRating(3F);
+		model.addAttribute("self",false);
+		model.addAttribute("expired",false);
+		SocialUser profile = socialService.loadProfile(id);
+		model.addAttribute("hasProfile",profile!=null);
+		model.addAttribute("addFriendForm",form);
+		model.addAttribute("user",profile);
+        return page;
+    }
+    
+	@RequestMapping(value = "/addfriend", method = RequestMethod.POST)
+	@Transactional
+	public String postAddFriend(Model model,final AddFriendRequestForm addFriendRequestForm, BindingResult result) {
+		User user = securityService.getCurrentUser();
+		SocialUserImpl userImpl = socailUserRepo.findOne(user.getId());
+		SocialUserImpl toUser = socailUserRepo.findOne(addFriendRequestForm.getUserId());
+		AddFriendRequestImpl request = new AddFriendRequestImpl();
+		request.setFrom(userImpl);
+		request.setTo(toUser);
+		request.setMessage(addFriendRequestForm.getMessage());
+		request.setType(AddFriendRequestType.REQUEST);
+		request.setRating(addFriendRequestForm.getRating());
+		request.setFriendType(Arrays.toString(addFriendRequestForm.getFriendshipType()));
+		request.setCreateDate(new Date());
+		request = addFriendRequestRepo.save(request);
+		if(StringUtils.hasText(toUser.getOpenid())) {
+			SendMessageCommand command = new SendMessageCommand();
+			command.setMsgtype("text");
+			command.setTouser(toUser.getOpenid());
+			command.setText(new Text(userImpl.getNickname()+"正在申请添加您为好友，点击以下链接添加好友。<a href=\"http://www.weaktie.cn/weixin/social/replyrequest.do?id="+request.getId()+"\">同意添加</a>"));
+			weixinService.postMessage(command);
+		}
+		
+		return "redirect:/social/home.do?id="+addFriendRequestForm.getUserId();
+	}
 }
