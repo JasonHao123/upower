@@ -11,8 +11,8 @@
 	<beans:bean id="oauthRememberMeService" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
 		<beans:property name="tokenRepository" ref="tokenRepo" />
 		<beans:property name="alwaysRemember" value="true"/>
-	<!-- 	<beans:property name="userDetailsService" ref="oauthUserDetailService" /> -->
-	<beans:property name="userDetailsService" ref="userDetailService" />
+	 	<beans:property name="userDetailsService" ref="oauthUserDetailService" /> 
+	<!--<beans:property name="userDetailsService" ref="userDetailService" />-->
 		<beans:property name="key" value="UPOWER_REMEMBER_ME" />
 	</beans:bean>
 	
@@ -27,8 +27,8 @@
 	</http>
  
 	<authentication-manager>
-<!--   <authentication-provider user-service-ref="oauthUserDetailService">  -->	
-	<authentication-provider user-service-ref="userDetailService">
+   <authentication-provider user-service-ref="oauthUserDetailService">  
+<!--	<authentication-provider user-service-ref="userDetailService">-->	
 	   		<password-encoder ref="passwordEncoder" />
 	   </authentication-provider>
 	</authentication-manager>

@@ -1,0 +1,31 @@
+测试网络闭合度或者说，个人在网络中的重要度
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..3]-(bacon:SocialUser {userId:1}) 
+UNWIND relationships(p) as n
+RETURN n.types,n.rating
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..5]-(bacon:SocialUser {userId:1}) 
+UNWIND nodes(p) as n
+RETURN n.name,count(n)
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..3]-(bacon:SocialUser {userId:1}) 
+UNWIND nodes(p) as n
+RETURN distinct n.name
+
+
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..1]-(bacon:SocialUser) 
+UNWIND nodes(p) as n
+RETURN distinct n.name
+
+
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..2]-(bacon:SocialUser) 
+UNWIND nodes(p) as n
+RETURN distinct n.name
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..3]-(bacon:SocialUser) 
+UNWIND nodes(p) as n
+RETURN distinct n.name
+
+2 - 6 -6
