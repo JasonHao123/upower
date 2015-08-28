@@ -30,8 +30,8 @@ public class LocationController {
     public @ResponseBody List<Category> getLocationsByPattern(@RequestParam(value="prefix",required=false) String parent) {
         List<Category> locations = locationService.findByPattern("location",parent+"%");
         for(Category category:locations) {
-        	if("district" == category.getSubType()) {
-        		category.setName(category.getParent().getName()+" "+category.getName());
+        	if("district".equals(category.getSubType())) {
+        		category.setName(category.getParent().getName()+"-"+category.getName());
         	}
         }
         return locations;

@@ -5,6 +5,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page pageEncoding="UTF-8"%>
+
+	<link rel="stylesheet" href="<c:url value="/resources/css/jquery-ui.css" />">
+	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.tagit.css" />">
+		<script src="<c:url value="/resources/js/jquery-ui.js" />" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="<c:url value="/resources/js/tag-it.js" />" type="text/javascript" charset="utf-8"></script>
+	
 <script>
 	$(document)
 			.on(
@@ -145,7 +152,7 @@
 		</spring:bind>
 		<label for="slider-fill">年龄:</label> <input type="range" name="age"
 			id="slider-fill" value="${profileForm.age }" min="0" max="100" step="1"
-			data-highlight="true"> <label for="title">职业分类1:</label> <select
+			data-highlight="true"> <label for="title">职业大类:</label> <select
 			id="category1" name="category1">
 			<option></option>
 			<c:forEach items="${categories}" var="category">
@@ -175,10 +182,10 @@
 
 		<div class="ui-grid-a">
 			<div class="ui-block-a">
-				<input type="submit" value="Submit" data-theme="a">
+				<input type="submit" value="保存" data-theme="a">
 			</div>
 			<div class="ui-block-b">
-				<input type="reset" value="Reset" data-theme="b">
+				<input type="reset" value="重置" data-theme="a">
 			</div>
 		</div>
 	</form>

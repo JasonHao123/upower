@@ -309,7 +309,7 @@ public class SocialMakeFriendController {
     	User user = securityService.getCurrentUser();
     	String page = "social.friend.add";
     	if(socialService.isFriend(user.getId(),id)) {
-    		page = "social.already.friend";
+    		page = "redirect:/social/editrelation.do?id="+id;
     	}
 		model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
 		AddFriendRequestForm form = new AddFriendRequestForm();
@@ -348,5 +348,42 @@ public class SocialMakeFriendController {
 		}
 		
 		return "redirect:/social/home.do?id="+addFriendRequestForm.getUserId();
+	}
+	
+	
+    @RequestMapping(value="/editrelation",method=RequestMethod.GET)
+    public String editRelation(Model model,
+			@RequestParam(required = false, value = "id") Long id) {
+    	User user = securityService.getCurrentUser();
+    	String page = "social.friend.add";
+		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),id);
+		if(relation!=null) {
+		model.addAttribute("friendshipTypes",categoryService.findByParent("friendship.type", null));
+		AddFriendRequestForm form = new AddFriendRequestForm();
+		form.setUserId(id);
+		form.setRating(relation.getRating());
+		form.setFriendshipType(ArrayUtil.toLongArray(relation.getRelationType()));
+		model.addAttribute("self",false);
+		model.addAttribute("expired",false);
+		SocialUser profile = socialService.loadProfile(id);
+		model.addAttribute("hasProfile",profile!=null);
+		model.addAttribute("addFriendForm",form);
+		model.addAttribute("user",profile);
+		}
+        return page;
+    }
+    
+	@RequestMapping(value = "/editrelation", method = RequestMethod.POST)
+	@Transactional
+	public String postEditRelation(Model model,final AddFriendRequestForm addFriendRequestForm, BindingResult result) {
+    	User user = securityService.getCurrentUser();
+		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),addFriendRequestForm.getUserId());
+		if(relation!=null) {
+			relation.setRating(addFriendRequestForm.getRating());
+			relation.setLastUpdate(new Date());
+			relation.setRelationType(Arrays.toString(addFriendRequestForm.getFriendshipType()));
+			socialRelationRepo.save(relation);
+		}
+		return "redirecd:/social/editrelation.do?id="+addFriendRequestForm.getId();
 	}
 }

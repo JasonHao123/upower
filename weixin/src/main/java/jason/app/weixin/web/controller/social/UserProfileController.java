@@ -62,7 +62,7 @@ private ProfileValidator validator = new ProfileValidator();
         if(form.getCategory1()!=null) {
             model.addAttribute("categories2", categoryService.findByParent("job.category", form.getCategory1()));
         }
-        return "user.profile.edit";
+        return "social.profile.edit";
     }
     
     /**

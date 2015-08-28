@@ -2,42 +2,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.raty.css" />">
 <script src="<c:url value="/resources/js/jquery.raty.js" />"></script>
 <script type="text/javascript">
 <!--
 $( document ).on( "pagecreate", "#myPage", function() {
-	<c:choose>
-	<c:when test="${isSelf}">
-	$('#edit').click(function() {
-		$.mobile.navigate("<c:url value="/social/profile/edit.do" />");
-	});
-	$('#invite').click(function() {
-		$.mobile.navigate("<c:url value="/social/invite.do" />");
-	});
-	$('#analyze').click(function() {
-		$.mobile.navigate("<c:url value="/social/power.do" />");
-	});
-	</c:when>
-	<c:otherwise>
-$('#addFriend').click(function() {
-	$.mobile.navigate("<c:url value="/social/addfriend.do"><c:param name="id" value="${profile.id}" /></c:url>");
-});
-$('#conversation').click(function() {
-	$.mobile.navigate("<c:url value="/social/conversation.do"><c:param name="id" value="${profile.id}" /></c:url>");
-});
-$('#comment').click(function() {
-	if("none"==$("#commentFooter").css("display")) {
-		$("#commentFooter").css("display","block");
-	}else {
-		$("#commentFooter").css("display","none");
-	}
-});
-
-</c:otherwise>
-</c:choose>
 
 $('#userRating').raty({
 	  half     : true,
@@ -71,9 +41,11 @@ $("#stars").raty({
 //-->
 </script>
 <div role="main" class="ui-content jqm-content">
+<c:if test="${not empty profile.headimgurl}" >
 <div style="float: right">
-<img src="<c:url value="/resources/img/apple.png" />" height="130px" />
+<img src="${profile.headimgurl }" height="130px" />
 </div>
+</c:if>
 <label>昵称:${profile.nickname}<c:choose>
 <c:when test="${profile.sex==1}">（男）</c:when>
 <c:when test="${profile.sex==2}">（女）</c:when>
@@ -89,21 +61,21 @@ $("#stars").raty({
 <c:choose>
 <c:when test="${isSelf}">
 <div class="ui-grid-b">
-<div class="ui-block-a"><button id="edit" >编辑</button></div>
-<div class="ui-block-b"><button id="invite">邀请好友</button></div>
-<div class="ui-block-c"><button id="analyze">社交分析</button></div>
+<div class="ui-block-a"><a data-role="button" data-ajax="false" href="<c:url value="/social/profile/edit.do" />" >编辑</a></div>
+<div class="ui-block-b"><a data-role="button" data-ajax="false" href="<c:url value="/social/invite.do" />">邀请好友</a></div>
+<div class="ui-block-c"><a data-role="button" data-ajax="false" href="<c:url value="/social/power.do" />">社交分析</a></div>
 </div>
 </c:when>
 <c:otherwise>
 <div class="ui-grid-b">
-<div class="ui-block-a"><button id="addFriend" <c:if test="${isFriend}">disabled="disabled"</c:if> >添加好友</button></div>
-<div class="ui-block-b"><button id="conversation">聊天记录</button></div>
-<div class="ui-block-c"><button id="comment">评价</button></div>
+<div class="ui-block-a"><a data-role="button" data-ajax="false" href="<c:url value="/social/addfriend.do"><c:param name="id" value="${profile.id}" /></c:url>" ><c:choose><c:when test="${isFriend}">修改关系</c:when><c:otherwise>添加好友</c:otherwise></c:choose></a></div>
+<div class="ui-block-b"><a data-role="button" data-ajax="false" href="<c:url value="/social/conversation.do"><c:param name="id" value="${profile.id}" /></c:url>">聊天记录</a></div>
+<div class="ui-block-c"><a data-role="button" data-ajax="false" href="<c:url value="/social/power.do" />">社交分析</a></div>
 </div>
 </c:otherwise>
 </c:choose>
 
-<h2>Comments:</h2>
+<h2>评价:</h2>
 					<ul data-role="listview" data-theme="d" data-divider-theme="d">
 						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="3" /></c:url>" data-ajax="false">
 								<h3>Stephen Weber</h3>
@@ -133,11 +105,11 @@ $("#stars").raty({
 </div>
 
 
-<div id="commentFooter" data-role="footer" data-position="fixed" data-tap-toggle="false" style="display: none;" >
+<div id="commentFooter" data-role="footer" data-position="fixed" data-tap-toggle="false" >
 	<div id="stars">评价：</div>
 		
-  		<textarea id="messageContent" rows="1" cols="30" style="" ></textarea>
+  		<input id="messageContent" type="text" />
 
-   		<a id="send" href="#" class="jqm-search-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-search ui-nodisc-icon ui-alt-icon ui-btn-right"></a>
+   		<a id="send" href="#" class=" ui-btn  ui-corner-all ui-btn-right" style="top: -0.4em">发送</a>
 
 	</div><!-- /footer -->

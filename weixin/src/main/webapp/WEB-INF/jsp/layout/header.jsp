@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page pageEncoding="UTF-8" %>
 	<div data-role="header" class="jqm-header">
-<h2><a href="../" title="jQuery Mobile Demos home">友势力社交平台</a></h2>
+<h2><a href="../" title="jQuery Mobile Demos home">${title}</a></h2>
 
 
 	</div><!-- /header -->
