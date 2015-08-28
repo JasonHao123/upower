@@ -63,6 +63,7 @@ public class ExampleListener implements MessageListener {
 					        socialUser.setCity(user.getCity());
 					        socialUser.setHeadimgurl(user.getHeadimgurl());
 					        socialUser.setOpenid(user.getOpenid());
+					        socialUser.setLanguage(user.getLanguage());
 							socialUser.setId(command.getUserId());
 							socialService.saveProfile(socialUser);
 						}else if(user!=null && StringUtils.hasText(user.getErrcode())) {
