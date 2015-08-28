@@ -4,6 +4,7 @@ import jason.app.weixin.common.BaseTestCase;
 import jason.app.weixin.common.entity.CategoryImpl;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
@@ -12,6 +13,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +24,6 @@ public class CategoryRepositoryTest extends BaseTestCase {
     @Autowired
     CategoryRepository repository;
 
-
-    
     private void doInsert() {
         String categoryName = "jason";
         CategoryImpl post = new CategoryImpl();
@@ -30,6 +31,7 @@ public class CategoryRepositoryTest extends BaseTestCase {
         repository.save(post);
     }
     @Test
+    @Ignore
     @Transactional(propagation=Propagation.REQUIRED)
     public void testInsertAndFindOne() {
         String categoryName = "jason";
@@ -44,6 +46,7 @@ public class CategoryRepositoryTest extends BaseTestCase {
     }
 
     @Test
+    @Ignore
     public void testFindAll() {
         List<CategoryImpl> result = repository.findAll();
         assertNotNull(result);
@@ -51,6 +54,7 @@ public class CategoryRepositoryTest extends BaseTestCase {
     }
 
     @Test
+    @Ignore
     public void testFindByTypeAndNameLikeFound() {
         List<CategoryImpl> result = repository.findByTypeAndNameLikeIgnoreCase("feature", "%hell%");
         assertNotNull(result);
@@ -58,6 +62,7 @@ public class CategoryRepositoryTest extends BaseTestCase {
     }
 
     @Test
+    @Ignore
     public void testFindByTypeAndNameLikeNotFound() {
         List<CategoryImpl> result = repository.findByTypeAndNameLikeIgnoreCase("feature", "%jason%");
         assertNotNull(result);
@@ -72,5 +77,4 @@ public class CategoryRepositoryTest extends BaseTestCase {
         return builder.build(this.getClass().getClassLoader().getResourceAsStream("dataset/category/categories.xml"));
 
     }
-
 }

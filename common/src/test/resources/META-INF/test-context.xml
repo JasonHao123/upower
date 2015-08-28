@@ -30,7 +30,7 @@
 			<props>
 				<prop key="user">APP</prop>
 				<prop key="password"></prop>
-				<prop key="URL">jdbc:h2:mem:common;DB_CLOSE_ON_EXIT=FALSE</prop>
+				<prop key="URL">jdbc:h2:mem:common;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE</prop>
 			</props>
 		</property>
 	</bean>
@@ -67,4 +67,9 @@
 
 	<!-- Jpa Repositories -->
 	<jpa:repositories base-package="jason.app.weixin.common.repository" />
+	
+		<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="commonmsg" />
+	</bean>
 </beans>
