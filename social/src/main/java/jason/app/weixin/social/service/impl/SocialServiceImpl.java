@@ -113,6 +113,9 @@ public class SocialServiceImpl implements ISocialService {
 			user.setCity(profile.getCity());
 			if(profile.getHeadimgurl()!=null)
 			user.setHeadimgurl(profile.getHeadimgurl());
+			if(profile.getLanguage()!=null)
+				user.setLanguage(profile.getLanguage());
+				
 
 			user.setLastUpdate(new Date());
 		}

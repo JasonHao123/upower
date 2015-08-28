@@ -31,6 +31,7 @@ public class SocialUserTranslator {
 		user.setProvince(profile.getProvince());
 		user.setCity(profile.getCity());
 		user.setHeadimgurl(profile.getHeadimgurl());
+		user.setLanguage(profile.getLanguage());
 		user.setOpenid(profile.getOpenid());
 		
 		user.setLastUpdate(new Date());
