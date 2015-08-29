@@ -29,3 +29,27 @@ UNWIND nodes(p) as n
 RETURN distinct n.name
 
 2 - 6 -6
+
+MATCH (n:SocialUser)-[r:RELATE_TO*..2]->(m) WHERE n.userId = 2 AND m.userId<>2 RETURN m.userId;
+
+
+
+MATCH p = (lucy:SocialUser {userId:1})-[*..3]-(bacon:SocialUser {userId:1}) 
+UNWIND relationships(p) as n
+UNWIND n.types as nn
+RETURN nn,count(n)
+
+
+
+Main relation type
+
+MATCH  (s:SocialUser)-[r:RELATE_TO*..4]-(m:SocialUser) WHERE s.userId = 1 AND m.userId <> 1
+UNWIND r as n
+WITH distinct n
+UNWIND n.types as nn
+RETURN nn,count(n) as cnt order by cnt desc
+
+
+结构洞
+
+MATCH (n:SocialUser)-[r:RELATE_TO*..1]->(m:SocialUser) WHERE n.userId = 1 AND m.userId <> 1 RETURN m.name, count(m) as cnt order by cnt desc

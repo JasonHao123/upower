@@ -1,5 +1,6 @@
 package jason.app.weixin.social.service;
 
+import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
@@ -52,5 +53,9 @@ public interface ISocialService {
 	void createAddFriendLink(Long id, String id2);
 
 	List<SocialMail> getUserConversation(List<Long> users, Pageable pageable);
+
+	SocialUser loadProfileByOpenId(String openid);
+
+	AnalyzeResult saveAnalyzeResult(AnalyzeResult result);
 
 }

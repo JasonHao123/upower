@@ -1,5 +1,6 @@
 package jason.app.weixin.neo4j.service;
 
+import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.social.model.SocialUser;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +12,8 @@ public interface INeo4jService {
 
 	void createRelation(Long fromUser, Long toUser, Long[] types,Float rating);
 
-	@Transactional
-	public void analyzeUserRelationDistance(Long userId, Integer extensiveLevel);
-
 	public void createUser(SocialUser user);
+
+	public AnalyzeResult analyze(Long id);
 
 }

@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd	
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
-	default-autowire="byName">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/task  
+http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/data/neo4j
+		http://www.springframework.org/schema/data/neo4j/spring-neo4j.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- Scans within the base package of the application for @Components to 
-		configure as beans -->
-	<import resource="test-db.xml" />
+	<neo4j:config graphDatabaseService="graphDatabaseService"
+		base-package="jason.app.weixin.neo4j.domain" />
+	<bean id="graphDatabaseService"
+		class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
+		<constructor-arg value="http://localhost:7474/db/data" />
+		<constructor-arg name="user"
+			value="neo4j" />
+		<constructor-arg name="password"
+			value="cde34rfv" />
+	</bean>
 
-	<tx:annotation-driven />
-	<context:component-scan base-package="jason.app.weixin.neo4j" />	
+	<neo4j:repositories base-package="jason.app.weixin.neo4j.repository" />
+
+
+
 
 </beans>

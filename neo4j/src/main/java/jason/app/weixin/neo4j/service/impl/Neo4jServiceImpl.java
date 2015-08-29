@@ -1,5 +1,6 @@
 package jason.app.weixin.neo4j.service.impl;
 
+import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.neo4j.domain.SocialRelation;
 import jason.app.weixin.neo4j.domain.SocialUser;
 import jason.app.weixin.neo4j.repository.SocialUserNeo4jRepository;
@@ -82,29 +83,6 @@ public class Neo4jServiceImpl implements INeo4jService{
 	}
 
 	@Override
-	@Transactional
-	public void analyzeUserRelationDistance(Long userId, Integer extensiveLevel) {
-		// TODO Auto-generated method stub
-		try {
-		SocialUser user = userRepo.findByUserId(userId);
-		String query = "start one=node("+user.getId()+")  MATCH p = shortestPath(one-[:RELATE_TO*.."+extensiveLevel+"]->(two:SocialUser))  RETURN distinct one.userId as from,two.userId as to,length(p) as distance";
-		QueryResultBuilder users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
-		Iterator<Map> items = users.as(Map.class).iterator();
-		
-		while(items.hasNext()) {
-			 Map item = (Map) items.next();
-			 final SocialRelationDTO dto = new SocialRelationDTO();
-	
-				BeanUtils.copyProperties(dto,item);
-				socialService.saveDistance(dto);
-		}
-
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public void createUser(jason.app.weixin.social.model.SocialUser user2) {
 		// TODO Auto-generated method stub
 		SocialUser user = userRepo.findByUserId(user2.getId());
@@ -123,6 +101,28 @@ public class Neo4jServiceImpl implements INeo4jService{
 		user.setProvince(user2.getProvince());
 		user.setCity(user2.getCity());
 		userRepo.save(user);
+	}
+
+	@Override
+	public AnalyzeResult analyze(Long userId) {
+		try {
+		SocialUser user = userRepo.findByUserId(userId);
+		String query = "start one=node("+user.getId()+")  MATCH p = shortestPath(one-[:RELATE_TO*.."+3+"]->(two:SocialUser))  RETURN distinct one.userId as from,two.userId as to,length(p) as distance";
+		QueryResultBuilder users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
+		Iterator<Map> items = users.as(Map.class).iterator();
+		
+		while(items.hasNext()) {
+			 Map item = (Map) items.next();
+			 final SocialRelationDTO dto = new SocialRelationDTO();
+	
+				BeanUtils.copyProperties(dto,item);
+				socialService.saveDistance(dto);
+		}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

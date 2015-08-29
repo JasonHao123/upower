@@ -1,5 +1,6 @@
 package jason.app.weixin.social.service.impl;
 
+import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.social.constant.MessageType;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
@@ -322,6 +323,19 @@ public class SocialServiceImpl implements ISocialService {
 			Pageable pageable) {
 		
 		return SocialMailTranslator.toDTO(mailRepository.findByFrom_IdInAndTo_IdInOrderByCreateDateDesc(users,users,pageable));
+	}
+
+	@Override
+	public SocialUser loadProfileByOpenId(String openid) {
+		// TODO Auto-generated method stub
+		return SocialUserTranslator.toDTO(socialUserRepo.findByOpenid(openid));
+		
+	}
+
+	@Override
+	public AnalyzeResult saveAnalyzeResult(AnalyzeResult result) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

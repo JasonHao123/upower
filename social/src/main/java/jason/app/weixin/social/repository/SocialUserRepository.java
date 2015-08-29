@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SocialUserRepository extends JpaRepository<SocialUserImpl, Long>{
 	public List<SocialUserImpl> findByLastUpdateGreaterThan(Date date);
+
+	public SocialUserImpl findByOpenid(String openid);
 }
