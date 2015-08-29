@@ -164,7 +164,9 @@ public class SecurityServiceImpl implements ISecurityService {
 		            Authentication authentication = provider.authenticate(token);
 		            if(authentication.isAuthenticated()) {
 			            SecurityContextHolder.getContext().setAuthentication(authentication);
-			            rememberService.loginSuccess(request, resp, authentication);
+			            if(rememberService!=null) {
+			            	rememberService.loginSuccess(request, resp, authentication);
+			            }
 			            return true;
 		            }
             	}
