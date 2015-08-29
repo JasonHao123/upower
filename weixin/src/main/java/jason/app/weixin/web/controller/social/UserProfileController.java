@@ -84,7 +84,7 @@ private ProfileValidator validator = new ProfileValidator();
         	result.reject("nickname","the user is not valid, please login again!");
         }
         if(result.hasErrors()) {
-        	 return "user.profile.edit";
+        	 return "social.profile.edit";
         }
         final SocialUser profile = new SocialUser();
         profile.setId(user.getId());

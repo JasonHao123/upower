@@ -60,17 +60,15 @@ $("#stars").raty({
 <div id="userRating" style="font-size: 14;padding-bottom: 5px;">评价: </div>
 <c:choose>
 <c:when test="${isSelf}">
-<div class="ui-grid-b">
+<div class="ui-grid-a">
 <div class="ui-block-a"><a data-role="button" data-ajax="false" href="<c:url value="/social/profile/edit.do" />" >编辑</a></div>
 <div class="ui-block-b"><a data-role="button" data-ajax="false" href="<c:url value="/social/invite.do" />">邀请好友</a></div>
-<div class="ui-block-c"><a data-role="button" data-ajax="false" href="<c:url value="/social/power.do" />">社交分析</a></div>
 </div>
 </c:when>
 <c:otherwise>
-<div class="ui-grid-b">
+<div class="ui-grid-a">
 <div class="ui-block-a"><a data-role="button" data-ajax="false" href="<c:url value="/social/addfriend.do"><c:param name="id" value="${profile.id}" /></c:url>" ><c:choose><c:when test="${isFriend}">修改关系</c:when><c:otherwise>添加好友</c:otherwise></c:choose></a></div>
 <div class="ui-block-b"><a data-role="button" data-ajax="false" href="<c:url value="/social/conversation.do"><c:param name="id" value="${profile.id}" /></c:url>">聊天记录</a></div>
-<div class="ui-block-c"><a data-role="button" data-ajax="false" href="<c:url value="/social/power.do" />">社交分析</a></div>
 </div>
 </c:otherwise>
 </c:choose>
@@ -104,7 +102,7 @@ $("#stars").raty({
 					</ul>
 </div>
 
-
+<c:if test="${not isSelf}">
 <div id="commentFooter" data-role="footer" data-position="fixed" data-tap-toggle="false" >
 	<div id="stars">评价：</div>
 		
@@ -113,3 +111,4 @@ $("#stars").raty({
    		<a id="send" href="#" class=" ui-btn  ui-corner-all ui-btn-right" style="top: -0.4em">发送</a>
 
 	</div><!-- /footer -->
+</c:if>

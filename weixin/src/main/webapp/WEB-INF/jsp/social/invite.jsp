@@ -28,8 +28,8 @@ wx.ready(function(){
 	});
     
 	wx.onMenuShareAppMessage({
-		title:'友势力',
-		desc: '${profile.nickname}邀请您成为好友', // 分享标题
+		title:'${profile.nickname}邀请您成为好友',
+		desc: '友势力是一个分析人际关系，并利用人际关系网络提供差异化服务的平台', // 分享标题
 	    link: 'http://www.weaktie.cn<c:url value="/social/accept.do"><c:param name="id" value="${app}" /></c:url>', // 分享链接
 	    imgUrl: '${profile.headimgurl}', // 分享图标
 	    success: function () { 

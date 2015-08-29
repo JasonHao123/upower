@@ -30,7 +30,7 @@
 <script type="text/javascript">
 
 wx.config({
-    debug: true,
+    debug: false,
     appId: '${appId}',
     timestamp:'${timestamp}',
     nonceStr: '${noncestr}',

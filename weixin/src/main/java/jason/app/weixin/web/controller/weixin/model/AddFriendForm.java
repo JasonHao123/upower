@@ -1,9 +1,17 @@
 package jason.app.weixin.web.controller.weixin.model;
 
 public class AddFriendForm {
+	private Long userId;
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	private String id;
 	private Long[] friendshipType;
 	private Float rating;
+	
 	public String getId() {
 		return id;
 	}
