@@ -7,13 +7,13 @@
   
   
    <definition name="social.home" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="个人首页" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/profile.jsp" />
   </definition>
   
 
         <definition name="social.profile.edit" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="编辑个人信息" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/profileedit.jsp" />
   </definition>
   
@@ -24,38 +24,34 @@
   </definition>
   
     <definition name="social.addfriend" extends="base">
+    <put-attribute name="title" value="申请添加好友" />
     	<put-attribute name="content" value="/WEB-INF/jsp/social/addfriend.jsp" />
   </definition>
   
           <definition name="social.reply.friend.add" extends="base">
+          <put-attribute name="title" value="回复好友申请" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend2.jsp" />
   </definition>
   
   
       <definition name="social.friend.list" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="好友列表" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/friends.jsp" />
     <put-attribute name="navi" value="user" />
   </definition>
   
   
       <definition name="social.mail.list" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="私信列表" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/mail.jsp" />
   </definition> 
         <definition name="social.friend.add" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="申请添加好友" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/addfriend.jsp" />
   </definition>
   
-  
-          <definition name="social.already.friend" extends="base">
-    <put-attribute name="title" value="page.title.login" />
-    <put-attribute name="content" value="/WEB-INF/jsp/social/alreadyfriend.jsp" />
-  </definition>
-  
      <definition name="social.conversation" extends="base">
-    <put-attribute name="title" value="page.title.login" />
+    <put-attribute name="title" value="聊天会话" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/conversation.jsp" />
   </definition>
 

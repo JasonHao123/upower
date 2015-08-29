@@ -154,13 +154,13 @@
 			id="slider-fill" value="${profileForm.age }" min="0" max="100" step="1"
 			data-highlight="true"> <label for="title">职业大类:</label> <select
 			id="category1" name="category1">
-			<option></option>
+			<option value="choose-one" data-placeholder="true">请选择...</option>
 			<c:forEach items="${categories}" var="category">
 				<option value="${category.id}" <c:if test="${category.id==profileForm.category1 }">selected</c:if>>${category.name}</option>
 			</c:forEach>
 		</select> <label for="title">职业分类:</label> <select id="category2"
 			name="category2">
-			<option></option>
+			<option value="choose-one" data-placeholder="true">请选择...</option>
 						<c:forEach items="${categories2}" var="category">
 				<option value="${category.id}" <c:if test="${category.id==profileForm.category2 }">selected</c:if>>${category.name}</option>
 			</c:forEach>

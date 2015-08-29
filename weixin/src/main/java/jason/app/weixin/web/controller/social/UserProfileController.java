@@ -1,5 +1,6 @@
 package jason.app.weixin.web.controller.social;
 
+import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
@@ -8,12 +9,17 @@ import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.social.model.ProfileForm;
 import jason.app.weixin.web.controller.social.model.ProfileValidator;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,8 +34,8 @@ public class UserProfileController {
     private static final Logger logger = LoggerFactory
             .getLogger(UserProfileController.class);
     
-//@Autowired
-//private JmsTemplate jmsTemplate;
+@Autowired
+private JmsTemplate jmsTemplate;
 	
 @Autowired
 private ICategoryService categoryService;
@@ -89,27 +95,18 @@ private ProfileValidator validator = new ProfileValidator();
         profile.setHobby(profileForm.getHobby());
         profile.setLocation(profileForm.getLocation());
         socialService.saveProfile(profile);
-        /*
+        
 		jmsTemplate.send(new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
               //  return session.createTextMessage("hello queue world");
-            	AddUserCommand addUser = new AddUserCommand();
+            	CreateUserCommand addUser = new CreateUserCommand();
             	addUser.setUserId(profile.getId());
-            	addUser.setNickname(profile.getNickname());
-            	addUser.setAge(profile.getAge());
-            	addUser.setCategory1(profile.getCategory1());
-            	addUser.setCategory2(profile.getCategory2());
-            	addUser.setLocations(profile.getLocation());
-            	addUser.setHobbys(profile.getHobby());
             	return session.createObjectMessage(addUser);
               }
           });
-          */
-        if(profileForm.getId()==null) {
-        	return "redirect:/check.do";
-        }else {
-        	return "redirect:/user/profile.do";
-        }
+   
+    
+        	return "redirect:/social/home.do";
         
     }
 

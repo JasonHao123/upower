@@ -4,11 +4,13 @@
 
 
 	<definition name="login" extends="base">
+		<put-attribute name="title" value="登录" />
 		<put-attribute name="content" value="/WEB-INF/jsp/login/login.jsp" />
 	</definition>
 	
 
 	<definition name="login.fail" extends="base">
+	<put-attribute name="title" value="登录失败" />
 		<put-attribute name="content"
 			value="/WEB-INF/jsp/login/fail.jsp" />
 	</definition>
