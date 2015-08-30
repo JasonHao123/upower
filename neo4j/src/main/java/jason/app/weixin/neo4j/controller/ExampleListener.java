@@ -72,7 +72,7 @@ public class ExampleListener implements MessageListener {
         }
     }
 
-	private void handleAnalyzeRelation(Object object) {
+	private void handleAnalyzeRelation(Object object) throws Exception {
 		// TODO Auto-generated method stub
 		AnalyzeRelationCommand command = (AnalyzeRelationCommand)object;
 		/**		SocialUser  user = socialService.loadProfileByOpenId(command.getOpenid());
@@ -87,7 +87,7 @@ public class ExampleListener implements MessageListener {
 		weixinService.postMessage(message);
 	}
 
-	private void handleCreateUser(Object object) {
+	private void handleCreateUser(Object object) throws Exception {
 		CreateUserCommand command = (CreateUserCommand)object;
 		SocialUser socialUser = null;
 		if(command.getOpenId()!=null) {

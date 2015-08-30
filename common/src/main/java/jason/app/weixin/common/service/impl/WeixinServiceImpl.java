@@ -13,14 +13,15 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +55,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	
 	private Date expireDate;
 	
-	private HttpClient httpClient =  HttpClientBuilder.create().build();
+	private HttpClient httpClient = HttpClients.createSystem(); //HttpClientBuilder.create()..build();
 	
 	private Calendar calendar = Calendar.getInstance(); 
 
@@ -63,19 +65,26 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 
 	private String secret;
 	
+	private RequestConfig requestConfig = RequestConfig.custom()
+            .setSocketTimeout(5000)
+            .setConnectTimeout(5000)
+            .setConnectionRequestTimeout(5000)
+            .build();
+	
 	@Autowired(required=false)
 	private WeixinConfigRepository configRepo;
 	
 	@Override
-	public void postMessage(SendMessageCommand msg) {
-		// TODO Auto-generated method stub
-		try {
+	@Async
+	public void postMessage(SendMessageCommand msg) throws Exception{
+
 			if(!checkAccessToken()) {
 				refreshAccessToken();
 			}
 			
 			String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+accessToken;
 	        HttpPost method = new HttpPost(url);  
+	        method.setConfig(requestConfig);
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        mapper.writeValue(out, msg);
 	        StringEntity entity = new StringEntity(out.toString(),"utf-8");//解决中文乱码问题    
@@ -83,10 +92,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	        entity.setContentType("application/json");    
 	        method.setEntity(entity);  
 	        httpClient.execute(method);
-		}catch(Exception e) {
-			//e.printStackTrace();
-			logger.error(e.getMessage());
-		}
+
 	}
 
 	private boolean checkAccessToken() {
@@ -107,6 +113,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 			logger.debug("openid+"+openId);
 			String url = String.format(GET_USER_INFO_TEMPLATE, accessToken,openId);
 	        HttpGet method = new HttpGet(url);  
+	        method.setConfig(requestConfig);
 	        ByteArrayOutputStream out = new ByteArrayOutputStream();
 	        HttpResponse response = httpClient.execute(method);
 	        int statusCode=response.getStatusLine().getStatusCode();
@@ -150,6 +157,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 		if(config.getExpireDate()==null || config.getExpireDate().compareTo(calendar.getTime())<0) {
 		try {
 			HttpGet get = new HttpGet(accessTokenUrl);
+			get.setConfig(requestConfig);
 			HttpResponse httpResponse = httpClient.execute(get);
 			 int statusCode=httpResponse.getStatusLine().getStatusCode();
 		        if (statusCode==HttpStatus.SC_OK) {
@@ -164,6 +172,7 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 		        	config.setExpireDate(expireDate);
 		        }
 		        get = new HttpGet(String.format(ticketUrl, accessToken));
+		        get.setConfig(requestConfig);
 		         httpResponse = httpClient.execute(get);
 				  statusCode=httpResponse.getStatusLine().getStatusCode();
 			        if (statusCode==HttpStatus.SC_OK) {

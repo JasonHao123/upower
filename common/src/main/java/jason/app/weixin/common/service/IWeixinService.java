@@ -1,9 +1,10 @@
 package jason.app.weixin.common.service;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.WeixinUser;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface IWeixinService {
 
@@ -11,7 +12,8 @@ public interface IWeixinService {
 
 	String getTicket();
 	
-	public void postMessage(SendMessageCommand msg);
+	@Async 
+	public void postMessage(SendMessageCommand msg) throws Exception;
 
 	String getAppId();
 
