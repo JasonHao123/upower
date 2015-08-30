@@ -91,7 +91,8 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	        entity.setContentEncoding("UTF-8");    
 	        entity.setContentType("application/json");    
 	        method.setEntity(entity);  
-	        httpClient.execute(method);
+	        HttpResponse resp = httpClient.execute(method);
+	        EntityUtils.consume(resp.getEntity());
 
 	}
 
