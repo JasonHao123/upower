@@ -12,6 +12,7 @@
 	
 	<http auto-config="true" use-expressions="true" disable-url-rewriting="true" >
 	    <intercept-url pattern="/resources/**" access="permitAll" />
+	    <intercept-url pattern="/public/**" access="permitAll" />
 	    <intercept-url pattern="/login.do" access="permitAll" />
 	    <intercept-url pattern="/processor.do" access="permitAll" />
 	    <intercept-url pattern="/oauth/**" access="permitAll" />
