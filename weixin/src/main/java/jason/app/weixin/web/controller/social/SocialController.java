@@ -157,6 +157,7 @@ public class SocialController {
         User user = securityService.getCurrentUser();
         final SocialUser profile = socialService.loadProfile(user.getId());
 		if(StringUtils.hasText(profile.getOpenid())) {
+			logger.info("analyze "+profile.getOpenid()+" "+powerForm.getType()+" "+powerForm.getDistance());
 			jmsTemplate.send(new MessageCreator() {
 	            public javax.jms.Message createMessage(Session session) throws JMSException {
 	              //  return session.createTextMessage("hello queue world");
@@ -167,6 +168,8 @@ public class SocialController {
 	            	return session.createObjectMessage(command);
 	              }
 	          });
+		}else {
+			logger.warn("user doesn't have openid ");
 		}
         return "social.power.message";
     }

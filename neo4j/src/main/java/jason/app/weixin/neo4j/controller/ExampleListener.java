@@ -79,6 +79,7 @@ public class ExampleListener implements MessageListener {
 		AnalyzeResult result = neo4jService.analyze(user.getId());
 		result = socialService.saveAnalyzeResult(result);
 		*/
+		logger.info("handle command "+command.getOpenid()+" "+command.getType()+ " "+command.getDistance());
 		SendMessageCommand message = new SendMessageCommand();
 		message.setMsgtype("text");
 		message.setText(new Text("点击以下链接查看分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?id=1\">查看</a>"));
