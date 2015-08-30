@@ -340,11 +340,17 @@ public class SocialMakeFriendController {
 		request.setCreateDate(new Date());
 		request = addFriendRequestRepo.save(request);
 		if(StringUtils.hasText(toUser.getOpenid())) {
-			SendMessageCommand command = new SendMessageCommand();
+			final SendMessageCommand command = new SendMessageCommand();
 			command.setMsgtype("text");
 			command.setTouser(toUser.getOpenid());
 			command.setText(new Text(userImpl.getNickname()+"正在申请添加您为好友，点击以下链接添加好友。<a href=\"http://www.weaktie.cn/weixin/social/replyrequest.do?id="+request.getId()+"\">同意添加</a>"));
-			weixinService.postMessage(command);
+			jmsTemplate.send(new MessageCreator() {
+	            public javax.jms.Message createMessage(Session session) throws JMSException {
+	              //  return session.createTextMessage("hello queue world");
+	            	return session.createObjectMessage(command);
+	              }
+	          });
+			
 		}
 		
 		return "redirect:/social/home.do?id="+addFriendRequestForm.getUserId();
