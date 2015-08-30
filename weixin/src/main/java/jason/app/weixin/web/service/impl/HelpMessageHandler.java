@@ -22,7 +22,7 @@ public class HelpMessageHandler extends MessageHandler {
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
-        response.setContent("支持以下命令：<ul><li>个人首页</li><li>邀请好友</li><li>好友</li><li>私信</li><li>社交分析</li></ul>");
+        response.setContent("命令接口开发中！");
         return response;
 	}
 

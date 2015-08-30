@@ -359,7 +359,11 @@ public class SocialServiceImpl implements ISocialService {
 		CommentImpl cmt = commentRepo.findByAuthor_IdAndTarget_Id(comment.getAuthor().getId(),comment.getTarget().getId());
 		if(cmt==null) {
 			cmt = CommentTranslator.toEntity(comment);
+		}else {
+			cmt.setMessage(comment.getMessage());
+			cmt.setRating(comment.getRating());
 		}
+		
 		cmt.setCreateDate(new Date());
 		cmt = commentRepo.save(cmt);
 		return CommentTranslator.toDTO(cmt);
