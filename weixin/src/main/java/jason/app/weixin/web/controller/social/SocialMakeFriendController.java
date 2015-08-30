@@ -274,7 +274,7 @@ public class SocialMakeFriendController {
 		            	SendMessageCommand command = new SendMessageCommand();
 		            	command.setMsgtype("text");
 		            	command.setTouser(link.getUser().getOpenid());
-		            	command.setText(new Text(userImpl.getNickname() +" 接受了你的好友申请，"+CommonUtil.getHeOrShe(userImpl.getSex())+"也想添加你为好友! 点击以下链接接受请求。<a href=\"http://www.weaktie.cn/weixin/replyrequest.do?id="+id+"\">接受</a>"));
+		            	command.setText(new Text(userImpl.getNickname() +" 接受了你的好友申请，"+CommonUtil.getHeOrShe(userImpl.getSex())+"也想添加你为好友! 点击以下链接接受请求。<a href=\"http://www.weaktie.cn/weixin/social/replyrequest.do?id="+id+"\">接受</a>"));
 		            	return session.createObjectMessage(command);
 		              }
 		          });
