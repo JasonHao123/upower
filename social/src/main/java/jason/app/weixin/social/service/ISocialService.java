@@ -2,6 +2,7 @@ package jason.app.weixin.social.service;
 
 import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.social.model.AddFriendRequest;
+import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialMail;
@@ -57,5 +58,11 @@ public interface ISocialService {
 	SocialUser loadProfileByOpenId(String openid);
 
 	AnalyzeResult saveAnalyzeResult(AnalyzeResult result);
+
+	List<Comment> getUserComments(Long id, Pageable pageable);
+
+	Comment saveComment(Comment comment);
+
+	SocialMail saveMail(SocialMail comment);
 
 }

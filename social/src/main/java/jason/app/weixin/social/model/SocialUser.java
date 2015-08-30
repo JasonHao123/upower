@@ -1,5 +1,7 @@
 package jason.app.weixin.social.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class SocialUser {
     private Long id;
     private String nickname;
@@ -15,6 +17,7 @@ public class SocialUser {
 	private String province;
 	private String country;
 	private String headimgurl;
+	@JsonIgnore
 	private String openid;
 	public String getOpenid() {
 		return openid;

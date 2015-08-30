@@ -53,14 +53,12 @@ $('#targetScore').raty({
 <div id="targetScore"></div>
 
 <p><input id="target-score" name="rating" type="hidden" ></p>
-	<div class="ui-grid-a ui-responsive">
+	<div class="ui-grid-a">
 		<div class="ui-block-a">
-			<input type="submit" <c:if test="${self}"> disabled="disabled"</c:if> value="<spring:message
-			code="page.label.signup.submit" />">
+			<input type="submit" data-ajax="false" <c:if test="${self}"> disabled="disabled"</c:if> value="保存">
 		</div>
 		<div class="ui-block-b">
-			<input type="reset" <c:if test="${self}"> disabled="disabled"</c:if> value="<spring:message
-			code="page.label.signup.reset" />" />
+			<input type="reset" <c:if test="${self}"> disabled="disabled"</c:if> value="重置" />
 		</div>
 
 	</div>

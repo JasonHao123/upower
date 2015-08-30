@@ -5,13 +5,16 @@ import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.social.constant.MessageType;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.AddFriendRequestImpl;
+import jason.app.weixin.social.entity.CommentImpl;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SettingsImpl;
 import jason.app.weixin.social.entity.SocialDistanceImpl;
+import jason.app.weixin.social.entity.SocialMailImpl;
 import jason.app.weixin.social.entity.SocialMessageImpl;
 import jason.app.weixin.social.entity.SocialRelationshipImpl;
 import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.AddFriendRequest;
+import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialMail;
@@ -19,6 +22,7 @@ import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
 import jason.app.weixin.social.repository.AddFriendRequestRepository;
+import jason.app.weixin.social.repository.CommentRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
@@ -28,6 +32,7 @@ import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.social.translator.AddFriendRequestTranslator;
+import jason.app.weixin.social.translator.CommentTranslator;
 import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
 import jason.app.weixin.social.translator.SocialMailTranslator;
@@ -80,6 +85,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private SocialMailRepository mailRepository;
+	
+	@Autowired
+	private CommentRepository commentRepo;
 	
 	@Override
 	@Transactional
@@ -336,6 +344,33 @@ public class SocialServiceImpl implements ISocialService {
 	public AnalyzeResult saveAnalyzeResult(AnalyzeResult result) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Comment> getUserComments(Long id, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return CommentTranslator.toDTO(commentRepo.findByTarget_IdOrderByCreateDateAsc(id,pageable));
+	}
+
+	@Override
+	@Transactional
+	public Comment saveComment(Comment comment) {
+		// TODO Auto-generated method stub
+		CommentImpl cmt = commentRepo.findByAuthor_IdAndTarget_Id(comment.getAuthor().getId(),comment.getTarget().getId());
+		if(cmt==null) {
+			cmt = CommentTranslator.toEntity(comment);
+		}
+		cmt.setCreateDate(new Date());
+		cmt = commentRepo.save(cmt);
+		return CommentTranslator.toDTO(cmt);
+	}
+
+	@Override
+	public SocialMail saveMail(SocialMail comment) {
+		// TODO Auto-generated method stub
+		SocialMailImpl mail = SocialMailTranslator.toEntity(comment);
+		mail = mailRepository.save(mail);
+		return SocialMailTranslator.toDTO(mail);
 	}
 
 }

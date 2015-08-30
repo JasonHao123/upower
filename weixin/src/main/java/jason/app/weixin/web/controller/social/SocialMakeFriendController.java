@@ -376,14 +376,25 @@ public class SocialMakeFriendController {
 	@RequestMapping(value = "/editrelation", method = RequestMethod.POST)
 	@Transactional
 	public String postEditRelation(Model model,final AddFriendRequestForm addFriendRequestForm, BindingResult result) {
-    	User user = securityService.getCurrentUser();
+    	final User user = securityService.getCurrentUser();
 		SocialRelationshipImpl relation = socialRelationRepo.findByFrom_IdAndTo_Id(user.getId(),addFriendRequestForm.getUserId());
 		if(relation!=null) {
 			relation.setRating(addFriendRequestForm.getRating());
 			relation.setLastUpdate(new Date());
 			relation.setRelationType(Arrays.toString(addFriendRequestForm.getFriendshipType()));
 			socialRelationRepo.save(relation);
+			jmsTemplate.send(new MessageCreator() {
+	            public Message createMessage(Session session) throws JMSException {
+	              //  return session.createTextMessage("hello queue world");
+	            	CreateRelationCommand command = new CreateRelationCommand();
+	            	command.setToUser(addFriendRequestForm.getUserId());
+	            	command.setFromUser(user.getId());
+	            	command.setTypes(addFriendRequestForm.getFriendshipType());
+	            	command.setRating(addFriendRequestForm.getRating());
+	            	return session.createObjectMessage(command);
+	              }
+	          });
 		}
-		return "redirecd:/social/editrelation.do?id="+addFriendRequestForm.getId();
+		return "redirect:/social/editrelation.do?id="+addFriendRequestForm.getId();
 	}
 }

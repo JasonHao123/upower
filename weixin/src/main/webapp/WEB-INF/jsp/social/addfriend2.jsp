@@ -46,12 +46,10 @@ $('#targetScore').raty({
 </c:if>
 	<div class="ui-grid-a ui-responsive">
 		<div class="ui-block-a">
-			<input type="submit" value="<spring:message
-			code="page.label.signup.submit" />">
+			<input type="submit" value="保存">
 		</div>
 		<div class="ui-block-b">
-			<input type="reset" value="<spring:message
-			code="page.label.signup.reset" />" />
+			<input type="reset" value="重置" />
 		</div>
 
 	</div>

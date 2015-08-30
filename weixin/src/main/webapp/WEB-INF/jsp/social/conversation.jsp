@@ -15,7 +15,11 @@ function getData() {
 	$.getJSON("<c:url value="/social/conversation2.do" ><c:param name="id" value="${id}" /></c:url>&page="+pageNo,function(result){
 	    if(result.length>0) {
 		    $.each(result, function(i, message){
-			      $("#messages").append("<li><h3>"+message.from.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p class=\"ui-li-aside\"><strong>6:24</strong>PM</p></li>");
+		    	var dataTheme = "data-theme=\"a\"";
+		    	if(message.self) {
+		    		dataTheme = "data-theme=\"c\"";
+		    	}
+			      $("#messages").append("<li "+dataTheme+" ><h3>"+message.from.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p class=\"ui-li-aside\"><strong>"+message.createDate+"</strong></p></li>");
 			    });
 		    $("#messages").listview("refresh");
 			pageNo = pageNo + 1;
@@ -25,17 +29,18 @@ function getData() {
 }
 $( document ).on( "pagecreate", "#myPage", function() {
 	$("#send").click(function() {
-		$.getJSON("<c:url value="/social/postMail.do" ><c:param name="id" value="${id}" /></c:url>",function(result){
-		    if(result.length>0) {
-			    $.each(result, function(i, message){
-				      $("#messages").append("<li><h3>"+message.from.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p class=\"ui-li-aside\"><strong>6:24</strong>PM</p></li>");
-				    });
-			    $("#messages").listview("refresh");
-				pageNo = pageNo + 1;
-		    }
-			busy = false;
+		$.post( "<c:url value="/social/mail.do" />", { id: ${id},message:$("#messageContent").val() })
+		  .done(function( message ) {
+			  
+		    	  var item = $("<li data-theme=\"c\"><h3>"+message.from.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p class=\"ui-li-aside\"><strong>"+message.createDate+"</strong></p></li>");		    	  
+		    	  $(item).prependTo( $( "#messages" ) );
+		    	  item[0].scrollIntoView(true);
+	    	 	 $("#messages").listview("refresh");			    
+				$("#messageContent").val("")
 		  });
 	});
+
+	
 	$(document).on("scrollstop",function(){
 		//Check the user is at the bottom of the element
 		if($(window).scrollTop() + $(window).height() >= $(this).height() && !busy) {
@@ -66,10 +71,8 @@ $( document ).on( "pagecreate", "#myPage", function() {
         </ul>
         </div>
  <div data-role="footer" data-position="fixed" data-tap-toggle="false" >
-  		<a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-bars ui-nodisc-icon ui-alt-icon ui-btn-left"></a>
-  		
+
   		<textarea id="messageContent" rows="1" cols="30" style="" ></textarea>
 
-   		<a id="send" href="#" class="jqm-search-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-search ui-nodisc-icon ui-alt-icon ui-btn-right"></a>
-
+<a id="send" href="#" class=" ui-btn  ui-corner-all ui-btn-right" style="top: -0.4em">发送</a>
 	</div><!-- /footer -->

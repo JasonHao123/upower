@@ -280,7 +280,7 @@ public class WeixinController {
 		            	SendMessageCommand command = new SendMessageCommand();
 		            	command.setMsgtype("text");
 		            	command.setTouser(link.getUser().getOpenid());
-		            	command.setText(new Text(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend! Click the link below to accept the request.<a href=\"http://www.weaktie.cn/weixin/replyrequest.do?id="+id+"\">Accpet</a>"));
+		            	command.setText(new Text(userImpl.getNickname() +" accept your add friend link, he also want to add you as friend! Click the link below to accept the request.<a href=\"http://www.weaktie.cn/weixin/social/replyrequest.do?id="+id+"\">Accpet</a>"));
 		            	return session.createObjectMessage(command);
 		              }
 		          });

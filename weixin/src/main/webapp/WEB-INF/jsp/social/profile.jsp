@@ -5,24 +5,61 @@
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.raty.css" />">
 <script src="<c:url value="/resources/js/jquery.raty.js" />"></script>
+
 <script type="text/javascript">
 <!--
+var busy = false;
+var pageNo = 0;
+function getData() {
+	if(pageNo==0) {
+		$("#comments").empty();
+	}
+	$.getJSON("<c:url value="/social/comments.do" ><c:param name="id" value="${profile.id}" /></c:url>&page="+pageNo,function(result){
+	    if(result.length>0) {
+	    	
+		    $.each(result, function(i, message){
+		    	  var item = "<li id=\"comment"+message.id+"\"><h3>"+message.author.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p rating=\""+message.rating+"\" class=\"ui-li-aside\"></p></li>";		    	  
+		    	  $(item).appendTo( $( "#comments" ) );
+		    	
+			    });
+		    $("#comments").listview("refresh");
+		    $(".ui-li-aside").each(function(a,b){
+	    		$(b).raty({		  
+			    	  half     : true,
+			    	  score: $(b).attr("rating"),
+			    	  readOnly:true
+			    	});
+	    	});
+			pageNo = pageNo + 1;
+	    }
+		busy = false;
+	  });
+}
+
 $( document ).on( "pagecreate", "#myPage", function() {
+	
+	$(document).on("scrollstop",function(){
+		//Check the user is at the bottom of the element
+		if($(window).scrollTop() + $(window).height() >= $(this).height() && !busy) {
+		 
+		    // Now we are working, so busy is true
+		    busy = true;
+		    setTimeout(function() {
+		        // This is the Ajax function                    
+		        getData();
+		 
+		    }, 500);
+		 
+		}
+		});
+	getData();
 
 $('#userRating').raty({
 	  half     : true,
 	  score: 4,
 	  readOnly: true
 	});
-$(".ui-li-aside").each(function() {
-	$(this).raty({
-		  
-		  half     : true,
-		  score: 3.5,
-		  readOnly:true
-		});
-});
-<c:if test="${not isSelf}">
+<c:if test="false">
 	$("#disRating").raty({
 		  
 		  half     : true,
@@ -31,11 +68,39 @@ $(".ui-li-aside").each(function() {
 		});
 </c:if>
 
-$("#stars").raty({
-	  
+	$("#stars").raty({
+	  targetScore: '#commentScore',
 	  half     : true,
 	  score: 0
 	});
+	
+	$("#send").click(function() {
+		$.post( "<c:url value="/social/comment.do" />", { id: ${profile.id}, rating: $("#commentScore").val(),message:$("#messageContent").val() })
+		  .done(function( message ) {
+			  if($("#comment"+message.id).length>0) {
+				 var item  = $("#comment"+message.id)[0];
+				  $(item).empty();
+				  $(item).html("<h3>"+message.author.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p rating=\""+message.rating+"\" class=\"ui-li-aside\"></p>");
+				  item.scrollIntoView(true);
+			  }else {
+		    	  var item = $("<li id=\"comment"+message.id+"\"><h3>"+message.author.nickname+"</h3><p style='white-space:pre-wrap;'>"+message.message+"</p><p rating=\""+message.rating+"\" class=\"ui-li-aside\"></p></li>");		    	  
+		    	  $(item).appendTo( $( "#comments" ) );
+		    	  item[0].scrollIntoView(true);
+			  }
+			  
+	    	  $("#comments").listview("refresh");
+			    $(".ui-li-aside").each(function(a,b){
+		    		$(b).raty({		  
+				    	  half     : true,
+				    	  score: $(b).attr("rating"),
+				    	  readOnly:true
+				    	});
+		    	});
+
+				$("#messageContent").val("")
+		  });
+	});
+	
 
 });
 //-->
@@ -54,7 +119,7 @@ $("#stars").raty({
 <label>年龄: ${profile.age }</label>
 <label>城市:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
 <label>爱好:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
-<c:if test="${not isSelf}">
+<c:if test="false">
 <div id="disRating" style="font-size: 14;padding-bottom: 5px;">社交距离: ${distance}&nbsp;&nbsp;&nbsp;</div>
 </c:if>
 <div id="userRating" style="font-size: 14;padding-bottom: 5px;">评价: </div>
@@ -74,37 +139,26 @@ $("#stars").raty({
 </c:choose>
 
 <h2>评价:</h2>
-					<ul data-role="listview" data-theme="d" data-divider-theme="d">
-						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="3" /></c:url>" data-ajax="false">
+					<ul data-role="listview" data-theme="d" data-divider-theme="d" id="comments">
+						<li>
 								<h3>Stephen Weber</h3>
 								<p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
 								<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
 								<p class="ui-li-aside"></p>
-						</a></li>
-						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="4" /></c:url>" data-ajax="false">
+						</li>
+						<li>
 							<h3>jQuery Team</h3>
 							<p><strong>Boston Conference Planning</strong></p>
 							<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
 							<p class="ui-li-aside"></p>
-						</a></li>
-						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="5" /></c:url>" data-ajax="false">
-							<h3>Avery Walker</h3>
-							<p><strong>Re: Dinner Tonight</strong></p>
-							<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait! </p>
-							<p class="ui-li-aside"></p>
-						</a></li>
-						<li><a href="<c:url value="/user/profile.do" ><c:param name="id" value="6" /></c:url>" data-ajax="false">
-							<h3>Amazon.com</h3>
-							<p><strong>4-for-3 Books for Kids</strong></p>
-							<p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>
-							<p class="ui-li-aside"></p>
-						</a></li>
+						</li>
+
 					</ul>
 </div>
 
 <c:if test="${not isSelf}">
 <div id="commentFooter" data-role="footer" data-position="fixed" data-tap-toggle="false" >
-	<div id="stars">评价：</div>
+	<div id="stars"><input id="commentScore" name="rating" type="hidden" >评价：</div>
 		
   		<input id="messageContent" type="text" />
 

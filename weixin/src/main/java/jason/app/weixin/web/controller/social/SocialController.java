@@ -3,7 +3,9 @@ package jason.app.weixin.web.controller.social;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
+import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
+import jason.app.weixin.social.model.SocialMail;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,10 +95,29 @@ public class SocialController {
 	public @ResponseBody List<SocialUser> messages(@PageableDefault(size=10,page=0) Pageable pageable) {
 
 		User user = securityService.getCurrentUser();
-		List<Message> messages =null;
-		
+	
 		return socialService.getFriends(user.getId(),pageable);
 
 	}    
+	
+	@RequestMapping(value = "/comments", method = RequestMethod.GET)
+	public @ResponseBody List<Comment> comments(@RequestParam("id") Long id,@PageableDefault(size=10,page=0) Pageable pageable) {
+
+		return socialService.getUserComments(id,pageable);
+
+	}  
+	
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
+	@Transactional
+	public @ResponseBody Comment comment(@RequestParam("id") Long id,@RequestParam("message") String message, @RequestParam("rating") Float rating) {
+		Comment comment = new Comment();
+		User user = securityService.getCurrentUser();
+		comment.setAuthor(socialService.loadProfile(user.getId()));
+		comment.setTarget(socialService.loadProfile(id));
+		comment.setRating(rating);
+		comment.setMessage(message);
+		comment = socialService.saveComment(comment);
+		return comment;
+	}   
     
 }

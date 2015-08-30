@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,7 +46,27 @@ public class ConversationController {
 
 		User user = securityService.getCurrentUser();
 
-		return socialService.getUserConversation(Arrays.asList(user.getId(),id),pageable);
+		List<SocialMail> mails =  socialService.getUserConversation(Arrays.asList(user.getId(),id),pageable);
+		for(SocialMail mail:mails) {
+			if(mail.getFrom().getId().equals(user.getId())) {
+				mail.setSelf(true);
+			}
+		}
+		return mails;
 
 	}
+	
+	
+	@RequestMapping(value = "/mail", method = RequestMethod.POST)
+	@Transactional
+	public @ResponseBody SocialMail mail(@RequestParam("id") Long id,@RequestParam("message") String message) {
+		SocialMail comment = new SocialMail();
+		User user = securityService.getCurrentUser();
+		comment.setFrom(socialService.loadProfile(user.getId()));
+		comment.setTo(socialService.loadProfile(id));
+		comment.setSelf(true);
+		comment.setMessage(message);
+		comment = socialService.saveMail(comment);
+		return comment;
+	} 
 }
