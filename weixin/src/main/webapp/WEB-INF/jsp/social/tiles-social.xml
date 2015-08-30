@@ -54,5 +54,15 @@
     <put-attribute name="title" value="聊天会话" />
     <put-attribute name="content" value="/WEB-INF/jsp/social/conversation.jsp" />
   </definition>
+  
+   <definition name="social.power" extends="base">
+    <put-attribute name="title" value="社交分析" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/power.jsp" />
+  </definition>
+  
+     <definition name="social.power.message" extends="base">
+    <put-attribute name="title" value="分析处理中" />
+    <put-attribute name="content" value="/WEB-INF/jsp/social/powermessage.jsp" />
+  </definition>
 
 </tiles-definitions>

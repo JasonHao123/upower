@@ -41,4 +41,12 @@ public class HomeController {
 	}
 	*/
 
+	
+	@RequestMapping(value = "/public/result", method = RequestMethod.GET)
+	public String publicResult(Model model) {
+		logger.info("Welcome home!");
+		model.addAttribute("controllerMessage",
+				"This is the message from the controller!");
+		return "public.result";
+	}
 }

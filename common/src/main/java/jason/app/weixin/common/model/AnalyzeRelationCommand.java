@@ -4,6 +4,20 @@ import java.io.Serializable;
 
 public class AnalyzeRelationCommand implements Serializable{
 	private String openid;
+	private Integer distance;
+	private String type;
+	public Integer getDistance() {
+		return distance;
+	}
+	public void setDistance(Integer distance) {
+		this.distance = distance;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getOpenid() {
 		return openid;
 	}

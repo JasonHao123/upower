@@ -75,12 +75,13 @@ public class ExampleListener implements MessageListener {
 	private void handleAnalyzeRelation(Object object) {
 		// TODO Auto-generated method stub
 		AnalyzeRelationCommand command = (AnalyzeRelationCommand)object;
-		SocialUser  user = socialService.loadProfileByOpenId(command.getOpenid());
+		/**		SocialUser  user = socialService.loadProfileByOpenId(command.getOpenid());
 		AnalyzeResult result = neo4jService.analyze(user.getId());
 		result = socialService.saveAnalyzeResult(result);
+		*/
 		SendMessageCommand message = new SendMessageCommand();
 		message.setMsgtype("text");
-		message.setText(new Text("点击以下链接查看分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?id="+result.getId()+"\">查看</a>"));
+		message.setText(new Text("点击以下链接查看分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?id=1\">查看</a>"));
 		message.setTouser(command.getOpenid());
 		weixinService.postMessage(message);
 	}

@@ -2,7 +2,6 @@ package jason.app.weixin.web.controller.social;
 
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Text;
-import jason.app.weixin.common.util.CommonUtil;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.social.model.SocialMail;
