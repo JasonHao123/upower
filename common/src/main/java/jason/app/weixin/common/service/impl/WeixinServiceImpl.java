@@ -75,7 +75,6 @@ public class WeixinServiceImpl implements IWeixinService,InitializingBean{
 	private WeixinConfigRepository configRepo;
 	
 	@Override
-	@Async
 	public void postMessage(SendMessageCommand msg) throws Exception{
 
 			if(!checkAccessToken()) {

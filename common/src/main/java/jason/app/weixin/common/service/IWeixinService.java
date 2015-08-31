@@ -11,8 +11,7 @@ public interface IWeixinService {
 	WeixinUser getUserInfo(String openId);
 
 	String getTicket();
-	
-	@Async 
+	 
 	public void postMessage(SendMessageCommand msg) throws Exception;
 
 	String getAppId();

@@ -56,51 +56,7 @@ public class SocialController {
 
 
 	private PowerValidator validator = new PowerValidator();
-	
 
-    @RequestMapping("/home")
-    public String profile(Model model,@RequestParam(required=false,value="id") Long id) {
-        User user = securityService.getCurrentUser();
-        if(user==null) {
-        	return "redirect:/social/profile/edit.do";
-        }else {
-        	SocialUser profile = null;
-        	if(id==null || user.getId()==id) {
-        		profile = socialService.loadProfile(user.getId());
-        	}else {
-        		profile = socialService.loadProfile(id);
-        	}
-        	model.addAttribute("profile",profile);
-        	model.addAttribute("isSelf",StringUtils.isEmpty(id) || user.getId()==id);
-    		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
-    		model.addAttribute("distance",distance);
-    		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
-            return "social.home";
-        }
-      /**  
-    	if(id!=null) {
-    		SocialUser profile = socialService.loadProfile(id);
-        	model.addAttribute("profile",profile);
-        	boolean self = user.getId()==profile.getId();
-        	if(!self) {
-        		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
-        		model.addAttribute("distance",distance);
-        	}
-        	model.addAttribute("isSelf",self);
-    	}else {
-
-	        if(user!=null) {
-	        	SocialUser profile = socialService.loadProfile(user.getId());
-	        	model.addAttribute("profile",profile);
-	        	model.addAttribute("isSelf",user.getId()==profile.getId());
-	        }else {
-	        	return "redirect:/user/profile/edit.do";
-	        }
-    	}
-        return "user.profile";
-        
-        */
-    }
 	
     @RequestMapping("/friends")
     public String friends() {

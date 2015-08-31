@@ -14,6 +14,10 @@ public interface INeo4jService {
 
 	public void createUser(SocialUser user);
 
-	public AnalyzeResult analyze(Long id);
+	public AnalyzeResult analyzeSexAndAge(Long id, Integer distance);
+
+	public AnalyzeResult analyzeLocation(Long id, Integer distance);
+
+	public AnalyzeResult analyzeProfession(Long id, Integer distance);
 
 }

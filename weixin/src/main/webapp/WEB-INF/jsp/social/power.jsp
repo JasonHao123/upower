@@ -32,6 +32,7 @@
 			<option value="LOCATION">地区</option>
 			<option value="PROFESSION">职业</option>
 			<option value="SOCIAL">关系网络</option>
+			<option value="NETWORK">网络结构</option>
 	<!--	<option value="PROFESSION">基本信息</option>
 	 		<option value="SOCIAL">关系网络</option>
 			<option value="SOCIAL">网络结构</option>

@@ -17,13 +17,13 @@
 	    <intercept-url pattern="/processor.do" access="permitAll" />
 	    <intercept-url pattern="/oauth/**" access="permitAll" />
 		<intercept-url pattern="/**" access="isAuthenticated()" />
-        <form-login login-page="/login.do"  authentication-success-handler-ref="authenticationSuccessHandler" />
+        <form-login login-page="/oauth/authorize.do"  authentication-success-handler-ref="authenticationSuccessHandler" />
 
 	</http>
  
 	<authentication-manager>
-  <authentication-provider user-service-ref="oauthUserDetailService"> 	
-<!-- 	<authentication-provider user-service-ref="userDetailService"> -->
+ <authentication-provider user-service-ref="oauthUserDetailService"> 
+<!--  	<authentication-provider user-service-ref="userDetailService"> 	-->
 	   		<password-encoder ref="passwordEncoder" />
 	   </authentication-provider>
 	</authentication-manager>

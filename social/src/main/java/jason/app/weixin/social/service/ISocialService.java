@@ -57,12 +57,16 @@ public interface ISocialService {
 
 	SocialUser loadProfileByOpenId(String openid);
 
-	AnalyzeResult saveAnalyzeResult(AnalyzeResult result);
+	void saveAnalyzeResult(AnalyzeResult result);
 
 	List<Comment> getUserComments(Long id, Pageable pageable);
 
 	Comment saveComment(Comment comment);
 
 	SocialMail saveMail(SocialMail comment);
+
+	Float getUserRating(Long id);
+
+	AnalyzeResult getAnalyzeResult(String key);
 
 }

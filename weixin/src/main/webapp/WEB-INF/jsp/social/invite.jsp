@@ -18,7 +18,7 @@ wx.ready(function(){
 	        // 用户确认分享后执行的回调函数
 	        $.ajax( "http://www.weaktie.cn<c:url value="/social/invite2.do"><c:param name="id" value="${timeline}" /></c:url>" )
 			  .done(function() {
-			    alert( "success" );
+			   // alert( "success" );
 			  })
 	    },
 	    cancel: function () { 
@@ -36,7 +36,7 @@ wx.ready(function(){
 	        // 用户确认分享后执行的回调函数
 	        $.ajax( "http://www.weaktie.cn<c:url value="/social/invite2.do"><c:param name="id" value="${app}" /></c:url>" )
 			  .done(function() {
-			    alert( "success" );
+			 //   alert( "success" );
 			  })
 	    },
 	    cancel: function () { 

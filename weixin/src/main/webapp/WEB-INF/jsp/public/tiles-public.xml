@@ -9,6 +9,7 @@
      <definition name="public.result" extends="base">
     <put-attribute name="title" value="分析结果" />
     <put-attribute name="content" value="/WEB-INF/jsp/public/result.jsp" />
+    <put-attribute name="apiList" value="'onMenuShareTimeline','onMenuShareAppMessage'" />
   </definition>
 
 </tiles-definitions>

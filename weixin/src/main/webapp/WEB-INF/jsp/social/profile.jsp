@@ -56,7 +56,7 @@ $( document ).on( "pagecreate", "#myPage", function() {
 
 $('#userRating').raty({
 	  half     : true,
-	  score: 4,
+	  score: ${userRating},
 	  readOnly: true
 	});
 <c:if test="false">
@@ -117,7 +117,8 @@ $('#userRating').raty({
 <c:otherwise>（性别未知）</c:otherwise></c:choose>
 </label>
 <label>年龄: ${profile.age }</label>
-<label>城市:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
+<label>城市:<c:choose><c:when test="${not empty profile.province }">${profile.province}<c:if test="${not empty profile.city}">-${profile.city}</c:if></c:when><c:otherwise>未知</c:otherwise></c:choose></label>
+<label style="display: none;">城市:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
 <label>爱好:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
 <c:if test="false">
 <div id="disRating" style="font-size: 14;padding-bottom: 5px;">社交距离: ${distance}&nbsp;&nbsp;&nbsp;</div>

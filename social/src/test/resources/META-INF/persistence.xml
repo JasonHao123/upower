@@ -15,6 +15,8 @@
 		<class>jason.app.weixin.social.entity.SettingsImpl</class>
 		<class>jason.app.weixin.social.entity.SocialMailImpl</class>
 		<class>jason.app.weixin.social.entity.CommentImpl</class>
+		<class>jason.app.weixin.social.entity.AnalyzeResultImpl</class>
+		<class>jason.app.weixin.social.entity.SeriesItemImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

@@ -164,8 +164,8 @@
 						<c:forEach items="${categories2}" var="category">
 				<option value="${category.id}" <c:if test="${category.id==profileForm.category2 }">selected</c:if>>${category.name}</option>
 			</c:forEach>
-		</select> <label for="locations">常出没城市:</label>
-		<ul id="locations"
+		</select> <label style="display: none;" for="locations">常出没城市:</label>
+		<ul id="locations" style="display: none;"
 			class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
 			<c:forEach items="${profileForm.location }" var="location">
 			<li>${location}</li>

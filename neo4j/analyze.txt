@@ -1,0 +1,9 @@
+SEX AND AGE
+START n=node(2) MATCH (n)-[r:RELATE_TO*..3]->(m:SocialUser) WHERE m.userId<>2  WITH distinct m RETURN m.sex,count(m)
+
+
+AGE
+
+START n=node(2) MATCH (n)-[r:RELATE_TO*..3]->(m:SocialUser) WHERE m.userId<>2  WITH distinct m RETURN m.age/10*10 as age,count(m) as cnt order by cnt desc
+
+

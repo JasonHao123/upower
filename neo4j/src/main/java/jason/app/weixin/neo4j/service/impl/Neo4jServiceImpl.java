@@ -1,20 +1,18 @@
 package jason.app.weixin.neo4j.service.impl;
 
 import jason.app.weixin.common.model.AnalyzeResult;
+import jason.app.weixin.common.model.SeriesItem;
 import jason.app.weixin.neo4j.domain.SocialRelation;
 import jason.app.weixin.neo4j.domain.SocialUser;
 import jason.app.weixin.neo4j.repository.SocialUserNeo4jRepository;
 import jason.app.weixin.neo4j.service.INeo4jService;
-import jason.app.weixin.social.entity.SocialDistanceImpl;
-import jason.app.weixin.social.model.SocialRelationDTO;
-import jason.app.weixin.social.repository.SocialDistanceRepository;
-import jason.app.weixin.social.repository.SocialUserRepository;
 import jason.app.weixin.social.service.ISocialService;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,24 +102,82 @@ public class Neo4jServiceImpl implements INeo4jService{
 	}
 
 	@Override
-	public AnalyzeResult analyze(Long userId) {
+	public AnalyzeResult analyzeSexAndAge(Long id, Integer distance) {
+		AnalyzeResult result = new AnalyzeResult();
+		List<SeriesItem> series = new ArrayList<SeriesItem>();
 		try {
-		SocialUser user = userRepo.findByUserId(userId);
-		String query = "start one=node("+user.getId()+")  MATCH p = shortestPath(one-[:RELATE_TO*.."+3+"]->(two:SocialUser))  RETURN distinct one.userId as from,two.userId as to,length(p) as distance";
-		QueryResultBuilder users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
-		Iterator<Map> items = users.as(Map.class).iterator();
-		
-		while(items.hasNext()) {
-			 Map item = (Map) items.next();
-			 final SocialRelationDTO dto = new SocialRelationDTO();
-	
-				BeanUtils.copyProperties(dto,item);
-				socialService.saveDistance(dto);
-		}
+			SocialUser user = userRepo.findByUserId(id);
+			String query = "START n=node("+user.getId()+") MATCH (n)-[r:RELATE_TO*.."+distance+"]->(m:SocialUser) WHERE m.userId<>"+id+"  WITH distinct m RETURN m.sex as sex,count(m) as cnt";
+			QueryResultBuilder users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
+			Iterator<Map> items = users.as(Map.class).iterator();	
+			int i = 0;
+			while(items.hasNext()) {
+				 Map item = (Map) items.next();
+				  SeriesItem dto = new SeriesItem();	
+				  dto.setSeries("SEX");
+				  dto.setKey(decodeSexKey((Integer) item.get("sex")));
+				  dto.setValue(Double.valueOf(item.get("cnt").toString()));
+				  dto.setOrder(i++);
+				  series.add(dto);				  
+			}
 
+			query = "START n=node("+user.getId()+") MATCH (n)-[r:RELATE_TO*.."+distance+"]->(m:SocialUser) WHERE m.userId<>"+id+"  WITH distinct m RETURN m.age/10 as age,count(m) as cnt order by cnt desc, age asc";
+			users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
+			items = users.as(Map.class).iterator();	
+			 i = 0;
+			while(items.hasNext()) {
+				 Map item = (Map) items.next();
+				  SeriesItem dto = new SeriesItem();	
+				  dto.setSeries("AGE");
+				  dto.setKey(decodeAgeKey((Integer) item.get("age")));
+				  dto.setValue(Double.valueOf(item.get("cnt").toString()));
+				  dto.setOrder(i++);
+				  series.add(dto);				  
+			}
+			result.setData(series);
+		
 		}catch(Exception e) {
 			e.printStackTrace();
+			result = null;
 		}
+		return result;
+	}
+
+	private String decodeAgeKey(Integer age) {
+		// TODO Auto-generated method stub
+		if(age==null) return "未知";
+		else if(age==0) return "0-10岁";
+		else if(age==1) return "10-20岁";
+		else if(age==2) return "20-30岁";
+		else if(age==3) return "30-40岁";
+		else if(age==4) return "40-50岁";
+		else if(age==5) return "50-60岁";
+		else if(age==6) return "60-70岁";
+		else if(age==7) return "70-80岁";
+		else if(age==8) return "80-90岁";
+		else if(age==9) return "90-100岁";
+		else if(age==10) return "100-110岁";
+		
+		return "寿星";
+	}
+
+	private String decodeSexKey(Integer sex) {
+		// TODO Auto-generated method stub
+		if(sex==null) return "未知";
+		else if(sex==1) return "男";
+		else if(sex==2) return "女";
+		return "超人";
+	}
+
+	@Override
+	public AnalyzeResult analyzeLocation(Long id, Integer distance) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AnalyzeResult analyzeProfession(Long id, Integer distance) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

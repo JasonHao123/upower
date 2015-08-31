@@ -4,9 +4,14 @@
 
   <definition name="base"
     template="/WEB-INF/jsp/layout/layout.jsp">
-    <put-attribute name="title" value="base def" />
+    <put-attribute name="title" value="友势力" />
     <put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />  
     <put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+  </definition>
+  
+    <definition name="jqwidgets"
+    template="/WEB-INF/jsp/layout/jqwlayout.jsp">
+    <put-attribute name="title" value="友势力" />
   </definition>
 
 </tiles-definitions>

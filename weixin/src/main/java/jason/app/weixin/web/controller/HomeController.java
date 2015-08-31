@@ -1,5 +1,6 @@
 package jason.app.weixin.web.controller;
 
+import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.social.service.ISocialService;
 
@@ -64,10 +65,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/public/result", method = RequestMethod.GET)
-	public String publicResult(Model model) {
+	public String publicResult(Model model,@RequestParam("key") String key) {
 		logger.info("Welcome home!");
 		model.addAttribute("controllerMessage",
 				"This is the message from the controller!");
+		AnalyzeResult result = socialService.getAnalyzeResult(key);
+		model.addAttribute("result",result);
+		model.addAttribute("profile",socialService.loadProfile(result.getUserId()));
 		return "public.result";
 	}
 }

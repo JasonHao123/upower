@@ -23,9 +23,11 @@ import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/social")
@@ -45,6 +47,28 @@ private ISocialService socialService;
 
 @Autowired
 private ISecurityService securityService;
+
+@RequestMapping("/home")
+public String profile(Model model,@RequestParam(required=false,value="id") Long id) {
+    User user = securityService.getCurrentUser();
+    if(user==null && id==null) {
+    	return "redirect:/social/profile/edit.do";
+    }else {
+    	SocialUser profile = null;
+    	if(id==null || user.getId()==id) {
+    		profile = socialService.loadProfile(user.getId());
+    	}else {
+    		profile = socialService.loadProfile(id);
+    	}
+    	model.addAttribute("userRating",socialService.getUserRating(profile.getId()));
+    	model.addAttribute("profile",profile);
+    	model.addAttribute("isSelf",StringUtils.isEmpty(id) || user.getId()==id);
+		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+		model.addAttribute("distance",distance);
+		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
+        return "social.home";
+    }
+}
 
 private ProfileValidator validator = new ProfileValidator();
     @RequestMapping(value="/profile/edit",method=RequestMethod.GET)

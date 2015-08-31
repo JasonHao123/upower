@@ -5,6 +5,7 @@ import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.social.constant.MessageType;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.AddFriendRequestImpl;
+import jason.app.weixin.social.entity.AnalyzeResultImpl;
 import jason.app.weixin.social.entity.CommentImpl;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SettingsImpl;
@@ -22,6 +23,7 @@ import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
 import jason.app.weixin.social.repository.AddFriendRequestRepository;
+import jason.app.weixin.social.repository.AnalyzeResultRepository;
 import jason.app.weixin.social.repository.CommentRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
@@ -32,6 +34,7 @@ import jason.app.weixin.social.repository.SocialRelationshipRepository;
 import jason.app.weixin.social.repository.SocialUserRepository;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.social.translator.AddFriendRequestTranslator;
+import jason.app.weixin.social.translator.AnalyzeResultTranslator;
 import jason.app.weixin.social.translator.CommentTranslator;
 import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
@@ -88,6 +91,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private CommentRepository commentRepo;
+	
+	@Autowired
+	private AnalyzeResultRepository analyzeResultRepo;
 	
 	@Override
 	@Transactional
@@ -341,9 +347,10 @@ public class SocialServiceImpl implements ISocialService {
 	}
 
 	@Override
-	public AnalyzeResult saveAnalyzeResult(AnalyzeResult result) {
+	public void saveAnalyzeResult(AnalyzeResult result) {
 		// TODO Auto-generated method stub
-		return null;
+		AnalyzeResultImpl entity = AnalyzeResultTranslator.toEntity(result);
+		 analyzeResultRepo.save(entity);
 	}
 
 	@Override
@@ -375,6 +382,22 @@ public class SocialServiceImpl implements ISocialService {
 		SocialMailImpl mail = SocialMailTranslator.toEntity(comment);
 		mail = mailRepository.save(mail);
 		return SocialMailTranslator.toDTO(mail);
+	}
+
+	@Override
+	public Float getUserRating(Long id) {
+		// TODO Auto-generated method stub
+		Float rating= commentRepo.getUserRating(id);
+		if(rating==null) rating = 0F;
+		return rating;
+	}
+
+	@Override
+	public AnalyzeResult getAnalyzeResult(String key) {
+		// TODO Auto-generated method stub
+		AnalyzeResultImpl result = analyzeResultRepo.findByKeyStr(key);
+		
+		return AnalyzeResultTranslator.toDTO(result);
 	}
 
 }
