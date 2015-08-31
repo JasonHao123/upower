@@ -20,6 +20,7 @@ import org.springframework.data.neo4j.conversion.QueryResultBuilder;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 public class Neo4jServiceImpl implements INeo4jService{
@@ -172,7 +173,58 @@ public class Neo4jServiceImpl implements INeo4jService{
 	@Override
 	public AnalyzeResult analyzeLocation(Long id, Integer distance) {
 		// TODO Auto-generated method stub
-		return null;
+		AnalyzeResult result = new AnalyzeResult();
+		List<SeriesItem> series = new ArrayList<SeriesItem>();
+		try {
+			SocialUser user = userRepo.findByUserId(id);
+			String query = "START n=node("+user.getId()+") MATCH (n)-[r:RELATE_TO*.."+distance+"]->(m:SocialUser) WHERE m.userId<>"+id+"  WITH distinct m RETURN m.country as country,count(m) as cnt";
+			QueryResultBuilder users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
+			Iterator<Map> items = users.as(Map.class).iterator();	
+			int i = 0;
+			while(items.hasNext()) {
+				 Map item = (Map) items.next();
+				  SeriesItem dto = new SeriesItem();	
+				  dto.setSeries("COUNTRY");
+				  dto.setKey(decodeCountryKey((String) item.get("country")));
+				  dto.setValue(Double.valueOf(item.get("cnt").toString()));
+				  dto.setOrder(i++);
+				  series.add(dto);				  
+			}
+
+			query = "START n=node("+user.getId()+") MATCH (n)-[r:RELATE_TO*.."+distance+"]->(m:SocialUser) WHERE m.userId<>"+id+"  WITH distinct m RETURN m.province as province,count(m) as cnt order by cnt desc, province asc";
+			users =  (QueryResultBuilder) neo4jTemplate.query(query, null);
+			items = users.as(Map.class).iterator();	
+			 i = 0;
+			while(items.hasNext()) {
+				 Map item = (Map) items.next();
+				  SeriesItem dto = new SeriesItem();	
+				  dto.setSeries("PROVINCE");
+				  dto.setKey(decodeProvinceKey((String) item.get("province")));
+				  dto.setValue(Double.valueOf(item.get("cnt").toString()));
+				  dto.setOrder(i++);
+				  series.add(dto);				  
+			}
+			
+			
+			result.setData(series);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+			result = null;
+		}
+		return result;
+	}
+
+	private String decodeCountryKey(String str) {
+		// TODO Auto-generated method stub
+		if(StringUtils.hasText(str)) return str;
+		return "未知";
+	}
+
+	private String decodeProvinceKey(String str) {
+		// TODO Auto-generated method stub
+		if(StringUtils.hasText(str)) return str;
+		return "未知";
 	}
 
 	@Override

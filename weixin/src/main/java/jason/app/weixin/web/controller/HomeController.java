@@ -72,6 +72,6 @@ public class HomeController {
 		AnalyzeResult result = socialService.getAnalyzeResult(key);
 		model.addAttribute("result",result);
 		model.addAttribute("profile",socialService.loadProfile(result.getUserId()));
-		return "public.result";
+		return "public.result."+result.getType();
 	}
 }

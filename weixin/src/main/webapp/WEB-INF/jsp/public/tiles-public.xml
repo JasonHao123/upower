@@ -11,5 +11,17 @@
     <put-attribute name="content" value="/WEB-INF/jsp/public/result.jsp" />
     <put-attribute name="apiList" value="'onMenuShareTimeline','onMenuShareAppMessage'" />
   </definition>
+  
+       <definition name="public.result.SEX" extends="base">
+    <put-attribute name="title" value="分析结果" />
+    <put-attribute name="content" value="/WEB-INF/jsp/public/result1.jsp" />
+    <put-attribute name="apiList" value="'onMenuShareTimeline','onMenuShareAppMessage'" />
+  </definition>
+  
+       <definition name="public.result.LOCATION" extends="base">
+    <put-attribute name="title" value="分析结果" />
+    <put-attribute name="content" value="/WEB-INF/jsp/public/result2.jsp" />
+    <put-attribute name="apiList" value="'onMenuShareTimeline','onMenuShareAppMessage'" />
+  </definition>
 
 </tiles-definitions>

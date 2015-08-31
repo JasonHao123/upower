@@ -87,10 +87,10 @@ public class ExampleListener implements MessageListener {
 			message = "关系网络不完善，无法进行分析，请邀请更多好友加入，或等待好友邀请更多人加入，谢谢！";
 		}else if("SEX".equals(command.getType())){
 			 result = neo4jService.analyzeSexAndAge(user.getId(),command.getDistance());
-			 message = "点击以下链接查看分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?key=%s\">查看</a>";
+			 message = "性别年龄关系范围"+command.getDistance()+"分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?key=%s\">查看</a>";
 		}else if("LOCATION".equals(command.getType())){
-			// result = neo4jService.analyzeLocation(user.getId(),command.getDistance());	
-			message = "程序猿努力开发中，敬请期待！";
+			 result = neo4jService.analyzeLocation(user.getId(),command.getDistance());	
+			 message = "地区关系范围"+command.getDistance()+"分析结果<a href=\"http://www.weaktie.cn/weixin/public/result.do?key=%s\">查看</a>";
 		}else if("PROFESSION".equals(command.getType())){
 			// result = neo4jService.analyzeProfession(user.getId(),command.getDistance()); 
 			message = "程序猿努力开发中，敬请期待！";
