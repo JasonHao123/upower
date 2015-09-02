@@ -59,11 +59,11 @@ $('#userRating').raty({
 	  score: ${userRating},
 	  readOnly: true
 	});
-<c:if test="false">
+<c:if test="${not isSelf}">
 	$("#disRating").raty({
 		  
 		  half     : true,
-		  score: 4,
+		  score: ${distance.rating},
 		  readOnly:true
 		});
 </c:if>
@@ -120,8 +120,8 @@ $('#userRating').raty({
 <label>城市:<c:choose><c:when test="${not empty profile.province }">${profile.province}<c:if test="${not empty profile.city}">-${profile.city}</c:if></c:when><c:otherwise>未知</c:otherwise></c:choose></label>
 <label style="display: none;">城市:<c:forEach items="${profile.location }" var="location">${location}</c:forEach> </label>
 <label>爱好:<c:forEach items="${profile.hobby }" var="hobby">${hobby}</c:forEach> </label>
-<c:if test="false">
-<div id="disRating" style="font-size: 14;padding-bottom: 5px;">社交距离: ${distance}&nbsp;&nbsp;&nbsp;</div>
+<c:if test="${not isSelf }">
+<div id="disRating" style="font-size: 14;padding-bottom: 5px;">社交距离: ${distance.distance}&nbsp;&nbsp;&nbsp;</div>
 </c:if>
 <div id="userRating" style="font-size: 14;padding-bottom: 5px;">评价: </div>
 <c:choose>

@@ -18,6 +18,7 @@ import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
@@ -38,6 +39,7 @@ import jason.app.weixin.social.translator.AnalyzeResultTranslator;
 import jason.app.weixin.social.translator.CommentTranslator;
 import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
+import jason.app.weixin.social.translator.SocialDistanceTranslator;
 import jason.app.weixin.social.translator.SocialMailTranslator;
 import jason.app.weixin.social.translator.SocialUserTranslator;
 
@@ -213,10 +215,10 @@ public class SocialServiceImpl implements ISocialService {
 	}
 
 	@Override
-	public Integer getSocialDistance(Long id, Long id2) {
+	public SocialDistance getSocialDistance(Long id, Long id2) {
 		// TODO Auto-generated method stub
 		SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(id,id2);
-		if(distance!=null) return distance.getDistance();
+		if(distance!=null) return SocialDistanceTranslator.toDTO(distance);
 		return null;
 	}
 

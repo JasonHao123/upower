@@ -6,6 +6,7 @@ import jason.app.weixin.neo4j.domain.SocialRelation;
 import jason.app.weixin.neo4j.domain.SocialUser;
 import jason.app.weixin.neo4j.repository.SocialUserNeo4jRepository;
 import jason.app.weixin.neo4j.service.INeo4jService;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.service.ISocialService;
 
 import java.util.ArrayList;
@@ -231,6 +232,61 @@ public class Neo4jServiceImpl implements INeo4jService{
 	public AnalyzeResult analyzeProfession(Long id, Integer distance) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<SocialDistance> analyzeDistance(jason.app.weixin.social.model.SocialUser su) {
+		// TODO Auto-generated method stub
+		List<SocialDistance> result = new ArrayList<SocialDistance>();
+		SocialUser socialUser = userRepo.findByUserId(su.getId());
+		if(socialUser==null) {
+			createUser(su);
+			socialUser = userRepo.findByUserId(su.getId());
+		}
+		if(socialUser!=null) {
+			String query = "start user=node("
+					+ socialUser.getId()
+					+ ") MATCH p=shortestpath((user)-[r:RELATE_TO*..5]->(f:SocialUser)) RETURN id(f) as id,length(p) as distance";
+			QueryResultBuilder users = (QueryResultBuilder) neo4jTemplate.query(
+					query, null);
+			Iterator<Map> items = users.as(Map.class).iterator();
+			while(items.hasNext()) {
+				 Map item = (Map) items.next();
+				 SocialDistance dis = new SocialDistance();
+				 dis.setFrom(su);
+				 dis.setDistance((Integer) item.get("distance"));
+				 jason.app.weixin.social.model.SocialUser to = new jason.app.weixin.social.model.SocialUser();
+				 to.setId(Long.valueOf(item.get("id").toString()));
+				 dis.setTo(to);
+//				 logger.info(item.get("id").toString()+": "+item.get("distance").toString());
+				 result.add(dis);
+			}
+			
+			// analyze average distance;
+			for(SocialDistance sd:result) {
+				query = "start user=node("
+						+ socialUser.getId()
+						+ "), other = node("+sd.getTo().getId()+") MATCH (user)-[r:RELATE_TO*"+sd.getDistance()+".."+(sd.getDistance()+1)+"]->(other) UNWIND r as rr RETURN other.userId as userId,count(rr) as cnt,avg(rr.rating) as rating";
+				 users = (QueryResultBuilder) neo4jTemplate.query(
+						query, null);
+				 items = users.as(Map.class).iterator();
+				if(items.hasNext()) {
+					 Map item = (Map) items.next();
+					 logger.info(item.get("userId")+" "+item.get("cnt")+" "+item.get("rating")+" "+sd.getDistance());
+					 Integer count = (Integer) item.get("cnt");
+					 Double factor = 1D;
+					 if(count>sd.getDistance()) {
+						 factor = Math.pow(1.05, Math.round(count/(sd.getDistance()+1))-1);
+					 }
+					 Double rating = (Double) item.get("rating");
+					 if(rating ==null) rating = 0D;
+					 rating = (Double) (rating*Math.pow(0.9D, sd.getDistance()-1)*factor);
+					 sd.getTo().setId(Long.valueOf(item.get("userId").toString()));
+					 sd.setRating(rating.floatValue());
+				}
+			}
+		}
+		return result;
 	}
 
 

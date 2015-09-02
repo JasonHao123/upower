@@ -1,6 +1,9 @@
 package jason.app.weixin.neo4j.service;
 
+import java.util.List;
+
 import jason.app.weixin.common.model.AnalyzeResult;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialUser;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -19,5 +22,7 @@ public interface INeo4jService {
 	public AnalyzeResult analyzeLocation(Long id, Integer distance);
 
 	public AnalyzeResult analyzeProfession(Long id, Integer distance);
+
+	public List<SocialDistance> analyzeDistance(SocialUser su);
 
 }

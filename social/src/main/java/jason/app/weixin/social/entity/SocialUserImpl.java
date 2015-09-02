@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="SOCIAL_USER")
@@ -20,6 +21,17 @@ public String toString() {
 	@Id
 	private Long id;
 	
+	@Version
+	private Long version;
+	
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	@Column(unique=true)
 	private String nickname;
 	

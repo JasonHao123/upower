@@ -4,6 +4,7 @@ import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.social.model.ProfileForm;
@@ -63,7 +64,11 @@ public String profile(Model model,@RequestParam(required=false,value="id") Long 
     	model.addAttribute("userRating",socialService.getUserRating(profile.getId()));
     	model.addAttribute("profile",profile);
     	model.addAttribute("isSelf",StringUtils.isEmpty(id) || user.getId()==id);
-		Integer distance = socialService.getSocialDistance(user.getId(),profile.getId());
+		SocialDistance distance = socialService.getSocialDistance(user.getId(),profile.getId());
+		if(distance==null) {
+			distance = new SocialDistance();
+			distance.setRating(0F);
+		}
 		model.addAttribute("distance",distance);
 		model.addAttribute("isFriend",socialService.isFriend(user.getId(), profile.getId()));
         return "social.home";

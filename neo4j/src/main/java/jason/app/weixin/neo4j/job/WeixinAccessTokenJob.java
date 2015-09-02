@@ -13,9 +13,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
-@Job("testJob")
-@Trigger(name="helloTrigger",interval=7000000L)
+//@Component
+//@Job("testJob")
+//@Trigger(name="helloTrigger",interval=7000000L)
 public class WeixinAccessTokenJob extends QuartzJobBean {  
 	private static Logger logger = LoggerFactory.getLogger(WeixinAccessTokenJob.class);
 

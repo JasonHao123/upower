@@ -5,6 +5,7 @@ import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
@@ -28,7 +29,7 @@ public interface ISocialService {
 
 	Message getMessage(Long userId,Long id);
 
-	Integer getSocialDistance(Long id, Long id2);
+	SocialDistance getSocialDistance(Long id, Long id2);
 
 	List<Message> getUserMessages(Long id, Pageable pageable);
 
