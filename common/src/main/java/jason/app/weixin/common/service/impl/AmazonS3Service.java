@@ -4,19 +4,10 @@ import jason.app.weixin.common.constant.MediaType;
 import jason.app.weixin.common.model.FileInfo;
 import jason.app.weixin.common.service.IAmazonS3Service;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,8 +26,6 @@ public class AmazonS3Service implements IAmazonS3Service,InitializingBean {
     private String bucket;
 	
     private TransferManager tm;
-    
-    private Tika tika = new Tika();
     
 //    private Calendar calendar = Calendar.getInstance();
     private DateFormat format = new SimpleDateFormat("yyyyMMdd");
