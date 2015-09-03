@@ -230,12 +230,13 @@ public class WeixinServiceImpl implements IWeixinService, InitializingBean {
 		HttpResponse httpResponse = httpClient.execute(get);
 		int statusCode = httpResponse.getStatusLine().getStatusCode();
 		if (statusCode == HttpStatus.SC_OK) {
-			if(httpResponse.getEntity().getContentType()!=null) {
-				fileInfo.setContentType(httpResponse.getEntity().getContentType()
+			Header contentType = httpResponse.getFirstHeader("Content-Type");
+			if(contentType!=null) {
+				fileInfo.setContentType(contentType
 					.getValue());
 			}
 			logger.info("Content-Type:"+fileInfo.getContentType());
-			fileInfo.setFileName(determinFileNameFromHeader(httpResponse.getFirstHeader("Content-Disposition")));
+			fileInfo.setFileName(determinFileNameFromHeader(httpResponse.getFirstHeader("Content-disposition")));
 			httpResponse.getEntity().writeTo(new FileOutputStream(output));
 			fileInfo.setFile(output);
 		}
