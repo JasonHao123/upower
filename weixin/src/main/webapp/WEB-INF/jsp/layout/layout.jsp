@@ -4,6 +4,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page pageEncoding="UTF-8"%>
+
+<c:set var="leftPane" scope="request">
+	<tiles:insertAttribute name="leftPane" ignore="true" />
+</c:set>
+<c:set var="rightPane" scope="request">
+	<tiles:insertAttribute name="rightPane" ignore="true" />
+</c:set>
+
 <c:set var="titleKey">
 	<tiles:insertAttribute name="title" ignore="true" />
 </c:set>
@@ -45,9 +53,13 @@ wx.config({
 
 <tiles:insertAttribute name="header" />
 <tiles:insertAttribute name="content" />	
-
+		<c:if test="${leftPane!=''}">
+		<tiles:insertAttribute name="left" />
+		</c:if>
 <tiles:insertAttribute name="footer" />
-
+		<c:if test="${rightPane!=''}">
+		<tiles:insertAttribute name="right" />
+		</c:if>
 
 </div><!-- /page -->
 

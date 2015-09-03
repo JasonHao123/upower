@@ -70,4 +70,6 @@ public interface ISocialService {
 
 	AnalyzeResult getAnalyzeResult(String key);
 
+	SocialUser findByExternalId(String fromUserName);
+
 }

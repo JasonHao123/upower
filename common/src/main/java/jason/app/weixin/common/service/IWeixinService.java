@@ -1,5 +1,8 @@
 package jason.app.weixin.common.service;
 
+import java.io.File;
+
+import jason.app.weixin.common.model.FileInfo;
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.WeixinUser;
 
@@ -19,5 +22,7 @@ public interface IWeixinService {
 	String getSecret();
 	@Transactional
 	void refreshAccessToken();
+
+	FileInfo downloadMedia(String mediaId) throws Exception;
 
 }

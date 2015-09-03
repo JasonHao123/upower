@@ -402,4 +402,10 @@ public class SocialServiceImpl implements ISocialService {
 		return AnalyzeResultTranslator.toDTO(result);
 	}
 
+	@Override
+	public SocialUser findByExternalId(String fromUserName) {
+		// TODO Auto-generated method stub
+		return SocialUserTranslator.toDTO(socialUserRepo.findByOpenid(fromUserName));
+	}
+
 }

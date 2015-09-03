@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+  
+    <definition name="circle.post" extends="base">
+    <put-attribute name="title" value="发消息" />
+    <put-attribute name="content" value="/WEB-INF/jsp/circle/post.jsp" />
+
+  </definition>
+
+
+</tiles-definitions>

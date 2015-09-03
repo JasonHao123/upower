@@ -8,6 +8,7 @@
 		<jta-data-source>java:/MysqlXADS</jta-data-source> 
 		<class>jason.app.weixin.common.entity.CategoryImpl</class>
 		<class>jason.app.weixin.common.entity.WeixinConfigImpl</class>
+		<class>jason.app.weixin.common.entity.FileImpl</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

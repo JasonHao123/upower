@@ -32,6 +32,32 @@ public class WeixinParam
     private String event;
 	@XmlElement(name="EventKey")
     private String eventKey;
+	@XmlElement(name="PicUrl")
+	private String picUrl;
+	@XmlElement(name="MediaId")
+	private String mediaId;
+	
+	@XmlElement(name="ThumbMediaId")
+	private String thumbMediaId;
+	
+	public String getThumbMediaId() {
+		return thumbMediaId;
+	}
+	public void setThumbMediaId(String thumbMediaId) {
+		this.thumbMediaId = thumbMediaId;
+	}
+	public String getPicUrl() {
+		return picUrl;
+	}
+	public void setPicUrl(String picUrl) {
+		this.picUrl = picUrl;
+	}
+	public String getMediaId() {
+		return mediaId;
+	}
+	public void setMediaId(String mediaId) {
+		this.mediaId = mediaId;
+	}
 	public String getFromUserName() {
 		return fromUserName;
 	}

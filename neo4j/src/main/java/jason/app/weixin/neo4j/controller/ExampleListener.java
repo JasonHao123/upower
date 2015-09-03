@@ -1,19 +1,26 @@
 package jason.app.weixin.neo4j.controller;
 
-import java.sql.SQLException;
-import java.util.UUID;
-
+import jason.app.weixin.common.constant.MediaType;
 import jason.app.weixin.common.model.AnalyzeRelationCommand;
 import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
+import jason.app.weixin.common.model.FileInfo;
+import jason.app.weixin.common.model.FileItem;
+import jason.app.weixin.common.model.SaveMediaCommand;
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Text;
 import jason.app.weixin.common.model.WeixinUser;
+import jason.app.weixin.common.service.IAmazonS3Service;
+import jason.app.weixin.common.service.IFileService;
 import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.neo4j.service.INeo4jService;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
+
+import java.io.File;
+import java.util.Date;
+import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -41,6 +48,12 @@ public class ExampleListener implements MessageListener {
 	@Autowired
 	private INeo4jService neo4jService;
 	
+	@Autowired
+	private IAmazonS3Service s3Service;
+	
+	@Autowired
+	private IFileService fileService;
+	
 	@Transactional
     public void onMessage(Message message) {
 		logger.info("on message"+message);
@@ -66,6 +79,8 @@ public class ExampleListener implements MessageListener {
 					weixinService.postMessage(command);
 				}else if(object instanceof AnalyzeRelationCommand) {
 					handleAnalyzeRelation(object);
+				}else if(object instanceof SaveMediaCommand) {
+					handleSaveMedia(object);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -76,6 +91,46 @@ public class ExampleListener implements MessageListener {
             throw new IllegalArgumentException("Message must be of type TextMessage");
         }
     }
+
+	private void handleSaveMedia(Object object) throws Exception{
+		// TODO Auto-generated method stub
+		FileInfo media = null;
+		FileInfo thumbnail = null;
+		try {
+			SaveMediaCommand command = (SaveMediaCommand)object;
+			media = weixinService.downloadMedia(command.getMediaId());
+			media.setMediaType(command.getMediaType());
+			SocialUser user = socialService.findByExternalId(command.getOpenid());
+			
+			if(command.getThumbnailId()!=null) {
+				thumbnail = weixinService.downloadMedia(command.getThumbnailId());
+			}
+			if(thumbnail==null && MediaType.IMAGE==command.getMediaType()) {
+				thumbnail = fileService.createThumbnail(media);
+			}
+			
+			String mediaUrl = s3Service.saveFile(media);
+			logger.info("media url "+mediaUrl);
+			String thumbnailUrl =null;
+			if(thumbnail!=null) {
+				thumbnailUrl = s3Service.saveFile(thumbnail);
+			}
+			logger.info("thumbnail url "+mediaUrl);
+			FileItem file = new FileItem();
+			file.setUrl(mediaUrl);
+			file.setThumbnail(thumbnailUrl);
+			file.setCreateDate(new Date());
+			file.setUserId(user.getId());
+			fileService.saveFile(file);
+		}finally {
+			if(media!=null && media.getFile()!=null) {
+				media.getFile().delete();
+			}
+			if(thumbnail!=null && thumbnail.getFile()!=null) {
+				thumbnail.getFile().delete();
+			}
+		}
+	}
 
 	private void handleAnalyzeRelation(Object object) throws Exception {
 		// TODO Auto-generated method stub
