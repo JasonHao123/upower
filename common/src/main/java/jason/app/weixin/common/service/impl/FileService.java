@@ -42,7 +42,7 @@ public class FileService implements IFileService {
 		File output = File.createTempFile("weaktie_", ".tmp");
 		if(MediaType.IMAGE==media.getMediaType()) {
 			BufferedImage image = ImageIO.read(media.getFile());
-			BufferedImage resizedImage = new BufferedImage(50, 50, BufferedImage.TYPE_4BYTE_ABGR);
+			BufferedImage resizedImage = new BufferedImage(50, 50, BufferedImage.TYPE_3BYTE_BGR);
 			Graphics2D g = resizedImage.createGraphics();
 			g.drawImage(image, 0, 0, 50, 50, null);
 			g.dispose();
