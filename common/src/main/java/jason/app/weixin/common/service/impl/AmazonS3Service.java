@@ -103,7 +103,7 @@ public class AmazonS3Service implements IAmazonS3Service,InitializingBean {
          	// Or you can block and wait for the upload to finish
          	upload.waitForCompletion();
          	System.out.println("Upload complete.");
-         	return "http://s3.cn-north-1.amazonaws.com.cn/"+bucket+path;
+         	return "http://s3.cn-north-1.amazonaws.com.cn/"+bucket+"/"+path;
          } catch (AmazonClientException amazonClientException) {
          	System.out.println("Unable to upload file, upload was aborted.");
          	amazonClientException.printStackTrace();
@@ -115,11 +115,11 @@ private String getRootContextByMediaType(MediaType mediaType) {
 	// TODO Auto-generated method stub
 	switch(mediaType) {
 	case FILE:
-		return "/files/";
+		return "files/";
 	case IMAGE:
-		return "/images/";
+		return "images/";
 	case VIDEO:
-		return "/videos/";
+		return "videos/";
 	}
 	return null;
 }

@@ -225,7 +225,7 @@ public class WeixinServiceImpl implements IWeixinService, InitializingBean {
 				mediaId);
 		File output = File.createTempFile("weaktie_", ".tmp");
 
-		HttpGet get = new HttpGet(accessTokenUrl);
+		HttpGet get = new HttpGet(url);
 		get.setConfig(requestConfig);
 		HttpResponse httpResponse = httpClient.execute(get);
 		int statusCode = httpResponse.getStatusLine().getStatusCode();
