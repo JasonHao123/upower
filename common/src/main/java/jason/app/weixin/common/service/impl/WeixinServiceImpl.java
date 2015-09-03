@@ -224,7 +224,7 @@ public class WeixinServiceImpl implements IWeixinService, InitializingBean {
 		String url = String.format(DOWNLOAD_MEDIA_TEMPLATE, accessToken,
 				mediaId);
 		File output = File.createTempFile("weaktie_", ".tmp");
-
+		logger.info("download media URL:"+url);
 		HttpGet get = new HttpGet(url);
 		get.setConfig(requestConfig);
 		HttpResponse httpResponse = httpClient.execute(get);
