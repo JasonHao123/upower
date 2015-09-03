@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,25 @@ public class FileService implements IFileService {
 		// TODO Auto-generated method stub
 		return FileTranslator.toDTO(fileRepo.findByUserIdAndCreateDateGreaterThanAndCreateDateLessThan(id,start,end));
 		
+	}
+
+	@Override
+	public FileInfo resizePhoto(FileInfo media) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedImage image = ImageIO.read(media.getFile());
+		if(image.getWidth()>600) {
+			int scaledHeight = image.getHeight()*600/image.getHeight();
+			BufferedImage resizedImage = new BufferedImage(600, scaledHeight, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics2D g = resizedImage.createGraphics();
+			g.drawImage(image, 0, 0, 600, scaledHeight, null);
+			g.dispose();
+			g.setComposite(AlphaComposite.Src);
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+			ImageIO.write(resizedImage, "jpg", media.getFile());
+		}
+		return media;
 	}
 
 }
