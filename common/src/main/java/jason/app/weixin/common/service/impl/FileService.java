@@ -16,6 +16,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,11 @@ public class FileService implements IFileService {
 			FileInfo info = new FileInfo();
 			info.setContentType("image/jpeg");
 			info.setFile(output);
-			info.setFileName(media.getFileName().replace(".", "_")+".jpg");
+			if(media.getFileName()!=null) {
+				info.setFileName(media.getFileName().replace(".", "_")+".jpg");
+			}else {
+				info.setFileName(DigestUtils.md5Hex(output.getPath())+".jpg");
+			}
 			info.setMediaType(media.getMediaType());
 			return info;
 		}

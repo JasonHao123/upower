@@ -244,7 +244,7 @@ public class WeixinServiceImpl implements IWeixinService, InitializingBean {
 		return fileInfo;
 	}
 
-	private String determinFileNameFromHeader(Header header) {
+	public String determinFileNameFromHeader(Header header) {
 		// TODO Auto-generated method stub
 		if(header!=null) {
 			String str = header.getValue();
