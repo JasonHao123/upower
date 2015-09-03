@@ -9,12 +9,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultEventHandlerChain implements EventHandlerChain,InitializingBean{
+	
+	private static Logger logger = LoggerFactory.getLogger(DefaultEventHandlerChain.class);
 
 	@Autowired
 	private List<Handler> handlers;
@@ -37,6 +41,11 @@ public class DefaultEventHandlerChain implements EventHandlerChain,InitializingB
 	@Override
 	public WeixinParam handle(WeixinParam params, WeixinHeader header) {
 		// TODO Auto-generated method stub
+		logger.info("fromUser:"+params.getFromUserName());
+		logger.info("event:"+params.getEvent());
+		logger.info("event key:"+params.getEventKey());
+		logger.info("message type:"+params.getMsgType());
+		logger.info("mediaId:"+params.getMediaId());
 		for(Handler handler:handlers) {
 			if(handler.canHandle(params, header)) {
 				return handler.handle(params, header);
