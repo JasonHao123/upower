@@ -9,6 +9,13 @@ public class FileItem {
 	private Date createDate;
 	private Long userId;
 	private boolean isImage;
+	private String contentType;
+	public String getContentType() {
+		return contentType;
+	}
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -13,6 +13,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -64,6 +66,13 @@ public class FileService implements IFileService {
 			return info;
 		}
 		return null;
+	}
+
+	@Override
+	public List<FileItem> findImagesByUser(Long id, Date start, Date end) {
+		// TODO Auto-generated method stub
+		return FileTranslator.toDTO(fileRepo.findByUserIdAndCreateDateGreaterThanAndCreateDateLessThan(id,start,end));
+		
 	}
 
 }

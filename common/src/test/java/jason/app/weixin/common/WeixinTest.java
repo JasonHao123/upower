@@ -1,6 +1,7 @@
 package jason.app.weixin.common;
 
 import jason.app.weixin.common.model.WeixinUser;
+import jason.app.weixin.common.service.impl.WeixinServiceImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,7 +25,14 @@ public class WeixinTest {
 	private ObjectMapper mapper = new ObjectMapper();
 	public static void main(String[] args) throws ClientProtocolException, IOException {
 		// TODO Auto-generated method stub
-		new WeixinTest().test();
+		// new WeixinTest().test();
+		// new WeixinServiceImpl().determinFileNameFromHeader("");
+		String str = "filename=\"PHgs2uozNjiIQg9kl9ZmSn8kPPr0wxUirrgawsLfL9i-6T6ejo8rtHpfpmxFdr7E.jpg\"";
+		int startPos = str.indexOf("\"");
+		int endPos = str.lastIndexOf("\"");
+		if(startPos>0 && endPos>startPos) {
+			System.out.println( str.substring(startPos+1,endPos));
+		}
 	}
 	public  void test() throws ClientProtocolException, IOException {
 		String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ApQsJlRjhOVrkVZGndU8Q2tycV7FbdcSnSxHx4bbMAhRqP6kEu2iriN6YvseLP0-5TOP8E_esIZd0L9XKztJCI3f1am7XjHmgNZEC87GSz4&media_id=PHgs2uozNjiIQg9kl9ZmSn8kPPr0wxUirrgawsLfL9i-6T6ejo8rtHpfpmxFdr7E";

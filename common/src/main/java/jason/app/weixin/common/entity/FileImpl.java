@@ -30,7 +30,16 @@ public class FileImpl {
     
     @Column
 	private Long userId;
+    
+    @Column
+    private String contentType;
 
+	public String getContentType() {
+		return contentType;
+	}
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 	public Long getId() {
 		return id;
 	}

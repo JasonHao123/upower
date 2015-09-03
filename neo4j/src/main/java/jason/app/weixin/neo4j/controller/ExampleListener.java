@@ -122,6 +122,7 @@ public class ExampleListener implements MessageListener {
 			file.setThumbnail(thumbnailUrl);
 			file.setCreateDate(new Date());
 			file.setUserId(user.getId());
+			file.setContentType(media.getContentType());
 			fileService.saveFile(file);
 		}finally {
 			if(media!=null && media.getFile()!=null) {

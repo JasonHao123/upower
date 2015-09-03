@@ -1,7 +1,7 @@
 import java.io.File;
 
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -13,7 +13,7 @@ public class UploadObjectMultipartUploadUsingHighLevelAPI {
         String keyName            = "test";
         String filePath           = "/Users/jasonhao/Documents/test";  
         
-        TransferManager tm = new TransferManager(new EnvironmentVariableCredentialsProvider());        
+        TransferManager tm = new TransferManager(new ProfileCredentialsProvider());        
         tm.getAmazonS3Client().setEndpoint("s3.cn-north-1.amazonaws.com.cn");
         System.out.println("Hello");
         // TransferManager processes all transfers asynchronously, 

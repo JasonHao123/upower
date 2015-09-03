@@ -1,9 +1,9 @@
 package jason.app.weixin.web.controller.rest.model;
 
 public class Image {
-    private String filelink="https://s3.cn-north-1.amazonaws.com.cn/weaktie/weak-ties.jpg";
-    private String thumb="https://s3.cn-north-1.amazonaws.com.cn/weaktie/weak-ties.jpg";
-    private String image="https://s3.cn-north-1.amazonaws.com.cn/weaktie/weak-ties.jpg";
+    private String filelink;
+    private String thumb;
+    private String image;
     private String folder;
 	public String getFilelink() {
 		return filelink;
