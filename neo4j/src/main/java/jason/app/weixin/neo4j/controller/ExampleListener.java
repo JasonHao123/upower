@@ -84,6 +84,7 @@ public class ExampleListener implements MessageListener {
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
 				throw new RuntimeException(e);
 			}
         }
