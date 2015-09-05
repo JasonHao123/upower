@@ -7,7 +7,7 @@
 
 <c:choose>
 <c:when test="${leftPane!=''}">
-  		<a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-bars ui-nodisc-icon ui-alt-icon ui-btn-left">
+  		<a href="#" class="jqm-navmenu-link ui-btn  ui-corner-all  ui-nodisc-icon ui-alt-icon ui-btn-left">
 
 <spring:message code="${leftPane}" text="${leftPane}" />
 </a>

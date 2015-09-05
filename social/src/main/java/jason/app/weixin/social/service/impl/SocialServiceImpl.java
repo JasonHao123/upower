@@ -20,6 +20,7 @@ import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
+import jason.app.weixin.social.model.SocialMessage;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.repository.AddFriendLinkRepository;
@@ -41,12 +42,19 @@ import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
 import jason.app.weixin.social.translator.SocialDistanceTranslator;
 import jason.app.weixin.social.translator.SocialMailTranslator;
+import jason.app.weixin.social.translator.SocialMessageTranslator;
 import jason.app.weixin.social.translator.SocialUserTranslator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +67,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SocialServiceImpl implements ISocialService {
 	
+	private static final Integer DEFAULT_DISTANCE = 3;
+
 	private Logger logger = LoggerFactory.getLogger(SocialServiceImpl.class);
 	
 	@Autowired
@@ -96,6 +106,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private AnalyzeResultRepository analyzeResultRepo;
+	
+	@PersistenceContext(unitName="SocialPU")
+	private EntityManager em;
 	
 	@Override
 	@Transactional
@@ -188,9 +201,14 @@ public class SocialServiceImpl implements ISocialService {
 		for(SocialMessageImpl msg:messages) {
 			Message message = MessageTranslator.toDTO(msg.getMessage());
 			message.setCategory(categoryService.findById(msg.getMessage().getCategory()));
-			SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(id, msg.getMessage().getAuthor().getId());
-			if(distance!=null) {
-				message.setDistance(distance.getDistance());
+			if(id==msg.getMessage().getAuthor().getId()) {
+				SocialDistance dis = new SocialDistance();
+				dis.setDistance(0);
+				dis.setRating(5F);
+				message.setSocialDistance(dis);
+			}else {
+				SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(id, msg.getMessage().getAuthor().getId());
+				message.setSocialDistance(SocialDistanceTranslator.toDTO(distance));
 			}
 			message.setId(msg.getId());
 			result.add(message);
@@ -205,10 +223,13 @@ public class SocialServiceImpl implements ISocialService {
 		Message message = null;
 		if(msg.getUser().getId().equals(userId)) {
 			message = MessageTranslator.toDTO(msg.getMessage());
+			if(message.getCategory()!=null) {
+				message.setCategory(categoryService.findById(message.getCategory().getId()));
+			}
 			//message.setId(msg.getId());
 			SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(userId, msg.getMessage().getAuthor().getId());
 			if(distance!=null) {
-				message.setDistance(distance.getDistance());
+				message.setSocialDistance(SocialDistanceTranslator.toDTO(distance));
 			}
 		}
 		return message;
@@ -425,6 +446,74 @@ public class SocialServiceImpl implements ISocialService {
 		form.setId(impl.getId());
 		
 		return form;
+	}
+
+	@Override
+	public SocialMessage publishMessageToUser(Long messageId, Long userId) {
+		// TODO Auto-generated method stub
+		logger.info("publish message "+messageId+" to "+userId);
+		SocialMessageImpl msg = messageRepo.findByUser_IdAndMessage_Id(userId, messageId);
+		if(msg==null) {
+			msg = new SocialMessageImpl();
+			msg.setMessage(msgRepo.findOne(messageId));
+			msg.setUser(socialUserRepo.findOne(userId));
+			msg.setCreateDate(new Date());
+			msg = messageRepo.save(msg);
+		}
+		return SocialMessageTranslator.toDTO(msg);
+	}
+
+	@Override
+	@Transactional
+	public void publishMessage(Long messageId) {
+		// TODO Auto-generated method stub
+		MessageImpl msg = msgRepo.findOne(messageId);
+		if(msg!=null) {
+			Integer distance = msg.getTargetDistance();
+			if(distance==null) {
+				distance = DEFAULT_DISTANCE;
+			}
+			List<SocialUser> target = findTargetUsers(msg.getAuthor().getId(),msg.getTargetSex(),msg.getTargetMinAge(),msg.getTargetMaxAge(),distance,msg.getTargetRating());
+			for(SocialUser usr:target) {
+				publishMessageToUser(messageId, usr.getId());
+			}
+		}
+	}
+
+	private List<SocialUser> findTargetUsers(Long userId, Integer targetSex,
+			Integer targetMinAge, Integer targetMaxAge, Integer targetDistance,
+			Float targetRating) {
+		// TODO Auto-generated method stub
+		String queryStr = "select sd.toUser from SocialDistanceImpl sd where sd.fromUser.id =:userId and sd.distance < :distance ";
+		Hashtable<String,Object> map = new Hashtable<String, Object>();
+		map.put("userId", userId);
+		map.put("distance", targetDistance);
+		if(targetSex!=null) {
+			queryStr = queryStr + " and sd.toUser.sex = :sex ";
+			map.put("sex", targetSex);
+		}
+		if(targetMinAge!=null) {
+			queryStr = queryStr + " and sd.toUser.age >= :minAge ";
+			map.put("minAge", targetMinAge);
+		}
+		if(targetMaxAge!=null) {
+			queryStr = queryStr + " and sd.toUser.age <= :maxAge ";
+			map.put("maxAge", targetMaxAge);
+		}
+		if(targetRating!=null) {
+			queryStr = queryStr + " and sd.rating >= :rating ";
+			map.put("rating", targetRating);
+		}
+		Query query = em.createQuery(queryStr);
+		for(Entry<String,Object> entry:map.entrySet()) {
+			query.setParameter(entry.getKey(), entry.getValue());
+		}
+		List<SocialUserImpl> users =  query.getResultList();
+		List<SocialUser> result = new ArrayList<SocialUser>();
+		for(SocialUserImpl user:users) {
+			result.add(SocialUserTranslator.toDTO(user));
+		}
+		return result;
 	}
 
 }

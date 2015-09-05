@@ -7,6 +7,7 @@ import jason.app.weixin.social.model.Message;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
+import jason.app.weixin.social.model.SocialMessage;
 import jason.app.weixin.social.model.SocialRelationDTO;
 import jason.app.weixin.social.model.SocialUser;
 
@@ -75,5 +76,9 @@ public interface ISocialService {
 	jason.app.weixin.social.model.Message getMessage(Long id, Long id2);
 
 	Message saveMessage(Message form);
+
+	void publishMessage(Long messageId);
+
+	SocialMessage publishMessageToUser(Long messageId, Long userId);
 
 }

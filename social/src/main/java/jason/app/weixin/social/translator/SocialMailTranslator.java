@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SocialMailTranslator {
 	
-	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static List<SocialMail> toDTO(
 			List<SocialMailImpl> entities) {

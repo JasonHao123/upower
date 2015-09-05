@@ -37,7 +37,7 @@ public class MessageImpl {
 	private Status status;
     
 	@Column
-	private String targetSex;
+	private Integer targetSex;
 	@Column
 	private Integer targetMinAge;
 	@Column
@@ -56,11 +56,11 @@ public class MessageImpl {
 		this.status = status;
 	}
 
-	public String getTargetSex() {
+	public Integer getTargetSex() {
 		return targetSex;
 	}
 
-	public void setTargetSex(String targetSex) {
+	public void setTargetSex(Integer targetSex) {
 		this.targetSex = targetSex;
 	}
 

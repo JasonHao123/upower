@@ -9,16 +9,16 @@ public class PostMessageForm {
 	private String content;
 	private Status status;
 	
-	private String sex;
+	private Integer sex;
 	private Integer minAge;
 	private Integer maxAge;
 	private Integer distance;
 	private Float rating;
 	
-	public String getSex() {
+	public Integer getSex() {
 		return sex;
 	}
-	public void setSex(String sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 	public Integer getMinAge() {

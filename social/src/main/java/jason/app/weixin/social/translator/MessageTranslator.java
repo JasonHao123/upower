@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 
 public class MessageTranslator {
 	
-	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static Message toDTO(MessageImpl msg) {
 		// TODO Auto-generated method stub

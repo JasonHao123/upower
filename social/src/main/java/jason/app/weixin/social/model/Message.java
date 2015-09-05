@@ -10,8 +10,15 @@ public class Message {
 	private Category category;
 	private String content;
 	private Status status;
+	private SocialDistance socialDistance;
 	
-	private String sex;
+	public SocialDistance getSocialDistance() {
+		return socialDistance;
+	}
+	public void setSocialDistance(SocialDistance socialDistance) {
+		this.socialDistance = socialDistance;
+	}
+	private Integer sex;
 	private Integer minAge;
 	private Integer maxAge;
 	private Integer distance;
@@ -69,10 +76,10 @@ public void setCategory(Category category) {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	public String getSex() {
+	public Integer getSex() {
 		return sex;
 	}
-	public void setSex(String sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 	public Integer getMinAge() {

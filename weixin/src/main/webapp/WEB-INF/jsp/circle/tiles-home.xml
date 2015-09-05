@@ -4,6 +4,15 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 
+  <definition name="circle.home" extends="base">
+    <put-attribute name="title" value="朋友圈2.0" />
+    <put-attribute name="leftPane" value="分类过滤" />
+    <put-attribute name="rightPane" value="标签过滤" />
+    <put-attribute name="left" value="/WEB-INF/jsp/circle/left.jsp" />
+    <put-attribute name="content" value="/WEB-INF/jsp/circle/content.jsp" />
+    <put-attribute name="right" value="/WEB-INF/jsp/circle/right2.jsp" />
+  </definition>
+
   
     <definition name="circle.post" extends="base">
     <put-attribute name="title" value="发消息" />
@@ -11,6 +20,11 @@
     <put-attribute name="rightPane" value="已保存" />
     <put-attribute name="right" value="/WEB-INF/jsp/circle/right.jsp" />
 
+  </definition>
+  
+      <definition name="circle.message" extends="base">
+    <put-attribute name="title" value="消息" />
+    <put-attribute name="content" value="/WEB-INF/jsp/circle/message.jsp" />
   </definition>
 
 

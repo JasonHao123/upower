@@ -78,9 +78,9 @@
     <legend>性别:</legend>
         <input type="radio" name="sex" id="all" value="" <c:if test="${empty postMessageForm.sex}">checked="checked" </c:if>>
         <label for="all">不限</label>
-        <input type="radio" name="sex" id="male" value="male" <c:if test="${'male'== postMessageForm.sex}">checked="checked" </c:if>>
+        <input type="radio" name="sex" id="male" value="1" <c:if test="${1== postMessageForm.sex}">checked="checked" </c:if>>
         <label for="male">男</label>
-        <input type="radio" name="sex" id="female" value="female" <c:if test="${'female'== postMessageForm.sex}">checked="checked" </c:if>>
+        <input type="radio" name="sex" id="female" value="2" <c:if test="${2== postMessageForm.sex}">checked="checked" </c:if>>
         <label for="female">女</label>
 </fieldset>
     <div data-role="rangeslider">
@@ -99,7 +99,7 @@
 </div>
 	<div class="ui-grid-a">
 		<div class="ui-block-a">
-			<button data-ajax="false" id="save">保存</button>
+			<button data-ajax="false" id="save" <c:if test="${postMessageForm.status =='PUBLISHED'}">disabled="disabled"</c:if>>保存</button>
 		</div>
 		<div class="ui-block-b">
 			<button data-ajax="false" id="publish">发布</button>

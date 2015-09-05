@@ -7,6 +7,7 @@ import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.model.FileInfo;
 import jason.app.weixin.common.model.FileItem;
+import jason.app.weixin.common.model.PublishMessageCommand;
 import jason.app.weixin.common.model.SaveMediaCommand;
 import jason.app.weixin.common.model.SendMessageCommand;
 import jason.app.weixin.common.model.Text;
@@ -14,6 +15,7 @@ import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IAmazonS3Service;
 import jason.app.weixin.common.service.IFileService;
 import jason.app.weixin.common.service.IWeixinService;
+import jason.app.weixin.neo4j.job.PublishMessageJob;
 import jason.app.weixin.neo4j.service.INeo4jService;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
@@ -81,6 +83,8 @@ public class ExampleListener implements MessageListener {
 					handleAnalyzeRelation(object);
 				}else if(object instanceof SaveMediaCommand) {
 					handleSaveMedia(object);
+				}else if(object instanceof PublishMessageCommand) {
+					handlePublishMessage(object);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -92,6 +96,13 @@ public class ExampleListener implements MessageListener {
             throw new IllegalArgumentException("Message must be of type TextMessage");
         }
     }
+
+	private void handlePublishMessage(Object object) {
+		// TODO Auto-generated method stub
+		logger.info("publish message "+object);
+		PublishMessageCommand command = (PublishMessageCommand)object;
+		socialService.publishMessage(command.getMessageId());
+	}
 
 	private void handleSaveMedia(Object object) throws Exception{
 		// TODO Auto-generated method stub

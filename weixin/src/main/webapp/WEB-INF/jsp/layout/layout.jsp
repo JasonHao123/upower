@@ -36,7 +36,10 @@
 	<script type="text/javascript">
 	$( document ).on( "pagecreate", ".jqm-demos", function( event ) {
 		$( ".jqm-search-link" ).on( "click", function() {
-			$( "#right" ).panel( "open" );
+			$( ".jqm-search-panel" ).panel( "open" );
+		});
+		$( ".jqm-navmenu-link" ).on( "click", function() {
+			$( ".jqm-navmenu-panel" ).panel( "open" );
 		});
 		});
 	</script>

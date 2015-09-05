@@ -7,6 +7,7 @@ public class SocialDistanceTranslator {
 
 	public static SocialDistance toDTO(SocialDistanceImpl distance) {
 		// TODO Auto-generated method stub
+		if(distance==null) return null;
 		SocialDistance dis = new SocialDistance();
 		dis.setFrom(SocialUserTranslator.toDTO(distance.getFromUser()));
 		dis.setTo(SocialUserTranslator.toDTO(distance.getToUser()));
