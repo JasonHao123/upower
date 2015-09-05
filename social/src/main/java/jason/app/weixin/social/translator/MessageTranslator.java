@@ -28,6 +28,7 @@ public class MessageTranslator {
 		message.setRating(msg.getTargetRating());
 		message.setSex(msg.getTargetSex());
 		message.setStatus(msg.getStatus());
+		message.setLink(msg.getLink());
 		if(msg.getLastUpdate()!=null) {
 			message.setLastUpdate(format.format(msg.getLastUpdate()));
 		}
@@ -50,6 +51,7 @@ public class MessageTranslator {
 		message.setTargetRating(msg.getRating());
 		message.setTargetSex(msg.getSex());
 		message.setStatus(msg.getStatus());
+		message.setLink(msg.getLink());
 		return message;
 	}
 

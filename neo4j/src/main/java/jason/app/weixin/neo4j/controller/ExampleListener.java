@@ -15,12 +15,11 @@ import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IAmazonS3Service;
 import jason.app.weixin.common.service.IFileService;
 import jason.app.weixin.common.service.IWeixinService;
-import jason.app.weixin.neo4j.job.PublishMessageJob;
 import jason.app.weixin.neo4j.service.INeo4jService;
+import jason.app.weixin.social.constant.Status;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 
-import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -101,7 +100,18 @@ public class ExampleListener implements MessageListener {
 		// TODO Auto-generated method stub
 		logger.info("publish message "+object);
 		PublishMessageCommand command = (PublishMessageCommand)object;
-		socialService.publishMessage(command.getMessageId());
+		if(command.getMessageId()!=null) {
+			socialService.publishMessage(command.getMessageId());
+		}else if(command.getOpenid()!=null) {
+			SocialUser user = socialService.findByExternalId(command.getOpenid());
+			jason.app.weixin.social.model.Message message = new jason.app.weixin.social.model.Message();
+			message.setAuthor(user);
+			message.setStatus(Status.PUBLISHED);
+			message.setTitle(command.getTitle());
+			message.setLink(command.getUrl());
+			message = socialService.saveMessage(message);
+			socialService.publishMessage(message.getId());
+		}
 	}
 
 	private void handleSaveMedia(Object object) throws Exception{
@@ -116,6 +126,7 @@ public class ExampleListener implements MessageListener {
 			
 			if(command.getThumbnailId()!=null) {
 				thumbnail = weixinService.downloadMedia(command.getThumbnailId());
+				thumbnail.setMediaType(command.getMediaType());
 			}
 			if(thumbnail==null && MediaType.IMAGE==command.getMediaType()) {
 				thumbnail = fileService.createThumbnail(media);

@@ -10,6 +10,13 @@ public class Message {
 	private Category category;
 	private String content;
 	private Status status;
+	private String link;
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
 	private SocialDistance socialDistance;
 	
 	public SocialDistance getSocialDistance() {

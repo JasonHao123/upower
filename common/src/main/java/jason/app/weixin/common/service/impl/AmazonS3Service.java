@@ -121,7 +121,7 @@ private String getRootContextByMediaType(MediaType mediaType) {
 	case VIDEO:
 		return "videos/";
 	}
-	return null;
+	return "/others";
 }
 
 	

@@ -36,7 +36,25 @@ public class WeixinParam
 	private String picUrl;
 	@XmlElement(name="MediaId")
 	private String mediaId;
+	@XmlElement(name="Title")
+	private String title;
+	@XmlElement(name="Url")
+	private String url;
 	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+
 	@XmlElement(name="ThumbMediaId")
 	private String thumbMediaId;
 	
