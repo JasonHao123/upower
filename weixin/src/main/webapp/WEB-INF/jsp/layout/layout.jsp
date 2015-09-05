@@ -33,10 +33,16 @@
 
 	<script src="<c:url value="/resources/js/jquery.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery.mobile-1.4.5.min.js" />"></script>
+	<script type="text/javascript">
+	$( document ).on( "pagecreate", ".jqm-demos", function( event ) {
+		$( ".jqm-search-link" ).on( "click", function() {
+			$( "#right" ).panel( "open" );
+		});
+		});
+	</script>
 <c:if test="${not empty apiList}">
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
-
 wx.config({
     debug: false,
     appId: '${appId}',

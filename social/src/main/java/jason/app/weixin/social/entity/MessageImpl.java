@@ -1,6 +1,7 @@
 package jason.app.weixin.social.entity;
 
 import jason.app.weixin.social.constant.MessageType;
+import jason.app.weixin.social.constant.Status;
 
 import java.util.Date;
 
@@ -32,6 +33,69 @@ public class MessageImpl {
     @Column
     private String title;
 	
+    @Column
+	private Status status;
+    
+	@Column
+	private String targetSex;
+	@Column
+	private Integer targetMinAge;
+	@Column
+	private Integer targetMaxAge;
+	@Column
+	private Integer targetDistance;
+	@Column
+	private Float targetRating;
+	
+	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public String getTargetSex() {
+		return targetSex;
+	}
+
+	public void setTargetSex(String targetSex) {
+		this.targetSex = targetSex;
+	}
+
+	public Integer getTargetMinAge() {
+		return targetMinAge;
+	}
+
+	public void setTargetMinAge(Integer targetMinAge) {
+		this.targetMinAge = targetMinAge;
+	}
+
+	public Integer getTargetMaxAge() {
+		return targetMaxAge;
+	}
+
+	public void setTargetMaxAge(Integer targetMaxAge) {
+		this.targetMaxAge = targetMaxAge;
+	}
+
+	public Integer getTargetDistance() {
+		return targetDistance;
+	}
+
+	public void setTargetDistance(Integer targetDistance) {
+		this.targetDistance = targetDistance;
+	}
+
+	public Float getTargetRating() {
+		return targetRating;
+	}
+
+	public void setTargetRating(Float targetRating) {
+		this.targetRating = targetRating;
+	}
+
 	public SocialUserImpl getAuthor() {
 		return author;
 	}
@@ -51,7 +115,7 @@ public class MessageImpl {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdate;
 	
-	@Column(length=2048)
+	@Column(columnDefinition="text")
 	private String content;
 
 	public Long getCategory() {

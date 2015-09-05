@@ -123,6 +123,7 @@ public class ExampleListener implements MessageListener {
 			file.setCreateDate(new Date());
 			file.setUserId(user.getId());
 			file.setContentType(media.getContentType());
+			file.setMediaType(command.getMediaType());
 			fileService.saveFile(file);
 		}finally {
 			if(media!=null && media.getFile()!=null) {

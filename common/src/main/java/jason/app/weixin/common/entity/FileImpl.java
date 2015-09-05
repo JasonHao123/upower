@@ -1,5 +1,7 @@
 package jason.app.weixin.common.entity;
 
+import jason.app.weixin.common.constant.MediaType;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -33,7 +35,33 @@ public class FileImpl {
     
     @Column
     private String contentType;
+    
+    @Column
+    private MediaType mediaType;
+    
+    @Column
+	private String fileName;
+    @Column
+	private Long size;
 
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
+	}
+	public MediaType getMediaType() {
+		return mediaType;
+	}
+	public void setMediaType(MediaType mediaType) {
+		this.mediaType = mediaType;
+	}
 	public String getContentType() {
 		return contentType;
 	}

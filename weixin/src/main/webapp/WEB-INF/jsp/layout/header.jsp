@@ -16,7 +16,7 @@
 <a href="#" class="jqm-navmenu-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-back" data-rel="back"><spring:message code="page.button.title.back" text="Back" /></a>
 </c:otherwise>
 </c:choose><c:if test="${rightPane!=''}">
-   		<a href="#" class="jqm-search-link ui-btn ui-btn-icon-notext ui-corner-all ui-icon-search ui-nodisc-icon ui-alt-icon ui-btn-right">
+   		<a href="#" class="jqm-search-link ui-btn ui-corner-all  ui-nodisc-icon ui-alt-icon ui-btn-right">
 
 <spring:message code="${rightPane}" text="${rightPane}" />
 </a>

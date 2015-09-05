@@ -8,6 +8,8 @@
     <definition name="circle.post" extends="base">
     <put-attribute name="title" value="发消息" />
     <put-attribute name="content" value="/WEB-INF/jsp/circle/post.jsp" />
+    <put-attribute name="rightPane" value="已保存" />
+    <put-attribute name="right" value="/WEB-INF/jsp/circle/right.jsp" />
 
   </definition>
 

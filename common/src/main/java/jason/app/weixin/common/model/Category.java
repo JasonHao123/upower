@@ -12,7 +12,12 @@ public class Category {
     private String type;
     private String subType;
     private boolean leaf;
-    public boolean isLeaf() {
+    public Category(){}
+    public Category(Long category) {
+		// TODO Auto-generated constructor stub
+    	this.id = category;
+	}
+	public boolean isLeaf() {
         return leaf;
     }
     public void setLeaf(boolean leaf) {

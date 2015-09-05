@@ -27,7 +27,7 @@ public interface ISocialService {
 
 	List<Message> getPersonalMessages(Long id, Long category, Pageable pageable);
 
-	Message getMessage(Long userId,Long id);
+	Message getSocialMessage(Long userId,Long id);
 
 	SocialDistance getSocialDistance(Long id, Long id2);
 
@@ -71,5 +71,9 @@ public interface ISocialService {
 	AnalyzeResult getAnalyzeResult(String key);
 
 	SocialUser findByExternalId(String fromUserName);
+
+	jason.app.weixin.social.model.Message getMessage(Long id, Long id2);
+
+	Message saveMessage(Message form);
 
 }

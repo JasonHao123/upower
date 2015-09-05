@@ -32,7 +32,7 @@ public class VideoMessageHandler extends MessageHandler {
 	@Override
 	public boolean canHandle(WeixinParam params, WeixinHeader header) {
 		// TODO Auto-generated method stub
-		return super.canHandle(params, header) && ("video".equalsIgnoreCase(params.getMsgType()));
+		return super.canHandle(params, header) && ("shortvideo".equalsIgnoreCase(params.getMsgType()));
 	}
 	
 	@Override

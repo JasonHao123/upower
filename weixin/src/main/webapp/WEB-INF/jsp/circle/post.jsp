@@ -6,64 +6,105 @@
 <%@ page pageEncoding="UTF-8" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/redactor.css" />" />
 <script src="<c:url value="/resources/js/redactor.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/imagemanager.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/filemanager.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/fontcolor.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/fontfamily.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/fontsize.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/fullscreen.js" />" type="text/javascript" charset="utf-8"></script>
+
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.raty.css" />">
 <script src="<c:url value="/resources/js/jquery.raty.js" />"></script>
   <script>
 		$( document ).on( "pagecreate", "#myPage", function() {
 	        $('#message').redactor({
-	    		imageGetJson: '<c:url value="/rest/images.do" />',
+	        	imageManagerJson: '<c:url value="/rest/images.do" />',
 	    		imageUpload: '<c:url value="/rest/upload.do" />',
-	    		fileUpload: '<c:url value="/rest/uploadFile.do" />'
+	    		focus: true,
+                fileUpload: '<c:url value="/rest/uploadFile.do" />',
+                fileManagerJson: '<c:url value="/rest/files.do" />',
+                plugins: ['imagemanager','filemanager','fontcolor','fontsize','fontfamily','fullscreen']
 	    	});
 	        
 	        $('#targetScore').raty({
 	      	  half     : true,
-	      	  score: 0
+	      	  score: ${postMessageForm.rating},
+	    	  targetScore: '#rating',
 	      	});
+	        
+	        $("#save").click(function() {
+	        	if($("#status").val()=="") {
+	        		$("#status").val("DRAFT");
+	        	}
+	        	$("#postMessageForm").submit();
+	        });
+	        $("#publish").click(function() {
+	        	$("#status").val("PUBLISHED");
+	        	$("#postMessageForm").submit();
+	        });
 			
 		});
 		
 </script>
 		<div role="main" class="ui-content jqm-content">
-		<form id="myForm"  method="POST" data-ajax="false">
-		<label>Title:</label>
-		<input name="title">
+			<spring:hasBindErrors name="postMessageForm">
+		<p>
+			<b><spring:message code="page.label.fixerror"
+					text="Please fix all errors!" /></b>
+		</p>
+	</spring:hasBindErrors>
+		<form id="postMessageForm"  method="POST" data-ajax="false">
+		<input type="hidden" name="id" value="${postMessageForm.id}">
+		<input id="status" type="hidden" name="status" >		
+		<label>标题:</label>
+		<spring:bind path="postMessageForm.title">
+			<input type="text" name="title" value="<c:out value="${status.value}" />">
+			<font color="red"><c:out value="${status.errorMessage}" /></font>
+		</spring:bind>
+				<label>分类:</label>
+		<select name="category">
+		<c:forEach items="${categories}" var="category">
+			<option value="${category.id}" <c:if test="${postMessageForm.category == category.id}">selected</c:if> >${category.name}</option>
+			</c:forEach>
+		</select>
+		<spring:bind path="postMessageForm.content">
+			<textarea id="message" name="content" rows="5" cols="20"><c:out value="${status.value}" /></textarea>
+			<font color="red"><c:out value="${status.errorMessage}" /></font>
+		</spring:bind>
 
-<textarea id="message" name="message" rows="5" cols="20"></textarea>
 <div data-role="collapsible">
-    <h4>推送范围设置</h4>
+    <h4>对象群体</h4>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
     <legend>性别:</legend>
-        <input type="radio" name="radio-choice-b" id="radio-choice-c" value="list" checked="checked">
-        <label for="radio-choice-c">不限</label>
-        <input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid">
-        <label for="radio-choice-d">男</label>
-        <input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
-        <label for="radio-choice-e">女</label>
+        <input type="radio" name="sex" id="all" value="" <c:if test="${empty postMessageForm.sex}">checked="checked" </c:if>>
+        <label for="all">不限</label>
+        <input type="radio" name="sex" id="male" value="male" <c:if test="${'male'== postMessageForm.sex}">checked="checked" </c:if>>
+        <label for="male">男</label>
+        <input type="radio" name="sex" id="female" value="female" <c:if test="${'female'== postMessageForm.sex}">checked="checked" </c:if>>
+        <label for="female">女</label>
 </fieldset>
     <div data-role="rangeslider">
         <label for="range-1a">年龄（0-100 表示不限）:</label>
-        <input type="range" name="range-1a" id="range-1a" min="0" max="100" value="0">
+        <input type="range" name="minAge" id="range-1a" min="0" max="100" value="${ postMessageForm.minAge}">
         <label for="range-1b">Rangeslider:</label>
-        <input type="range" name="range-1b" id="range-1b" min="0" max="100" value="100">
+        <input type="range" name="maxAge" id="range-1b" min="0" max="100" value="${ postMessageForm.maxAge}">
     </div>
 
 <label for="slider-fill">社交距离（0：表示不限）:</label>
-<input type="range" name="slider-fill" id="slider-fill" value="0" min="0" max="7" step="1" data-highlight="true">
+<input type="range" name="distance" id="slider-fill" value="${ postMessageForm.distance}" min="0" max="7" step="1" data-highlight="true">
 <label for="slider-fill">友好度:</label>
 <div id="targetScore"></div>
-
+<input name="rating" id="rating" type="hidden">
+</form>
 </div>
 	<div class="ui-grid-a">
 		<div class="ui-block-a">
-			<input type="submit" value="<spring:message
-			code="page.label.signup.submit" />">
+			<button data-ajax="false" id="save">保存</button>
 		</div>
 		<div class="ui-block-b">
-			<input type="reset" value="<spring:message
-			code="page.label.signup.reset" />" />
+			<button data-ajax="false" id="publish">发布</button>
 		</div>
 
 	</div>
-</form>
+
     </div><!-- /content -->

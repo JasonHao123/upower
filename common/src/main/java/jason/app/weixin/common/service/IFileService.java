@@ -13,8 +13,11 @@ public interface IFileService {
 
 	FileInfo createThumbnail(FileInfo media) throws Exception;
 
-	List<FileItem> findImagesByUser(Long id, Date time, Date date);
-
 	FileInfo resizePhoto(FileInfo fileInfo) throws IOException;
+
+	List<FileItem> findImagesByUser(Long id, Date start,
+			Date end);
+
+	List<FileItem> findFilesByUser(Long id, Date lastDay, Date date);
 
 }

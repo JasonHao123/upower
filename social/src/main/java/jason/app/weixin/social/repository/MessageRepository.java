@@ -18,4 +18,6 @@ public interface MessageRepository extends JpaRepository<MessageImpl, Long>{
 
 	List<MessageImpl> findByLastUpdateGreaterThan(Date time);
 
+	MessageImpl findByIdAndAuthor_Id(Long id, Long userId);
+
 }

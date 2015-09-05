@@ -16,6 +16,9 @@ public class FileTranslator {
 		impl.setUrl(file.getUrl());
 		impl.setUserId(file.getUserId());
 		impl.setContentType(file.getContentType());
+		impl.setMediaType(file.getMediaType());
+		impl.setFileName(file.getFileName());
+		impl.setSize(file.getSize());
 		return impl;
 	}
 
@@ -37,6 +40,9 @@ public class FileTranslator {
 		impl.setUrl(file.getUrl());
 		impl.setUserId(file.getUserId());
 		impl.setContentType(file.getContentType());
+		impl.setMediaType(file.getMediaType());
+		impl.setFileName(file.getFileName());
+		impl.setSize(file.getSize());
 		return impl;
 	}
 

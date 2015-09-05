@@ -199,7 +199,7 @@ public class SocialServiceImpl implements ISocialService {
 	}
 
 	@Override
-	public Message getMessage(Long userId,Long id) {
+	public Message getSocialMessage(Long userId,Long id) {
 		// TODO Auto-generated method stub
 		SocialMessageImpl msg = messageRepo.findOne(id);
 		Message message = null;
@@ -406,6 +406,25 @@ public class SocialServiceImpl implements ISocialService {
 	public SocialUser findByExternalId(String fromUserName) {
 		// TODO Auto-generated method stub
 		return SocialUserTranslator.toDTO(socialUserRepo.findByOpenid(fromUserName));
+	}
+
+	@Override
+	public Message getMessage(Long userId, Long id) {
+		// TODO Auto-generated method stub
+		return MessageTranslator.toDTO(msgRepo.findByIdAndAuthor_Id(id,userId));
+	}
+
+	@Override
+	@Transactional
+	public Message saveMessage(Message form) {
+		// TODO Auto-generated method stub
+		MessageImpl impl = MessageTranslator.toEntity(form);
+		impl.setAuthor(socialUserRepo.findOne(form.getAuthor().getId()));
+		impl.setLastUpdate(new Date());
+		impl = msgRepo.save(impl);
+		form.setId(impl.getId());
+		
+		return form;
 	}
 
 }

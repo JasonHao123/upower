@@ -5,14 +5,12 @@ import jason.app.weixin.common.model.FileInfo;
 import jason.app.weixin.common.model.FileItem;
 import jason.app.weixin.common.service.IAmazonS3Service;
 import jason.app.weixin.common.service.IFileService;
-import jason.app.weixin.neo4j.controller.ExampleListener;
 import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.web.controller.rest.model.Image;
 import jason.app.weixin.web.controller.rest.model.UploadResult;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -79,6 +77,9 @@ public class FileUploadController {
 			fileItem.setCreateDate(new Date());
 			fileItem.setUserId(user.getId());
 			fileItem.setContentType(fileInfo.getContentType());
+			fileItem.setMediaType(MediaType.IMAGE);
+			fileItem.setFileName(file.getOriginalFilename());
+			fileItem.setSize(file.getSize());
 			fileService.saveFile(fileItem);
 			result.setFilelink(mediaUrl);
 			
@@ -93,8 +94,41 @@ public class FileUploadController {
     }
 	
 	@RequestMapping(value = "/uploadFile")
-    public @ResponseBody UploadResult handleFormUploadFile(HttpServletRequest req,HttpServletResponse resp){
+	@Transactional
+    public @ResponseBody UploadResult uploadFile(HttpServletRequest req,HttpServletResponse resp,@RequestParam("file") MultipartFile file){
+		User user = securityService.getCurrentUser();
 		UploadResult result = new UploadResult();
+		try {
+			File tempFile = File.createTempFile("weaktie", "tmp");
+			file.transferTo(tempFile);
+			FileInfo fileInfo = new FileInfo();
+			fileInfo.setContentType(file.getContentType());
+			fileInfo.setFileName(file.getName());
+			fileInfo.setMediaType(MediaType.FILE);
+			fileInfo.setFile(tempFile);
+
+			String mediaUrl = s3Service.saveFile(fileInfo);
+			
+			logger.info("thumbnail url "+mediaUrl);
+			FileItem fileItem = new FileItem();
+			fileItem.setUrl(mediaUrl);
+			
+			fileItem.setCreateDate(new Date());
+			fileItem.setUserId(user.getId());
+			fileItem.setContentType(fileInfo.getContentType());
+			fileItem.setMediaType(MediaType.FILE);
+			fileItem.setFileName(file.getOriginalFilename());
+			fileItem.setSize(file.getSize());
+			fileService.saveFile(fileItem);
+			result.setFilelink(mediaUrl);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		
 		return result;
     }
 
@@ -146,5 +180,40 @@ public class FileUploadController {
 		
 		return images;
     }
+	
+	
+	@RequestMapping(value = "/files")
+    public @ResponseBody List<jason.app.weixin.web.controller.rest.model.File> files(HttpServletRequest req,HttpServletResponse resp){
+		List<jason.app.weixin.web.controller.rest.model.File> images = new ArrayList<jason.app.weixin.web.controller.rest.model.File>();
+		User user = securityService.getCurrentUser();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.MONTH, -1);
+		Date lastDay = calendar.getTime();
+		List<FileItem> files = fileService.findFilesByUser(user.getId(),lastDay,new Date());
+		
+		for(FileItem file:files) {
+			jason.app.weixin.web.controller.rest.model.File image = new jason.app.weixin.web.controller.rest.model.File();
+			image.setTitle(file.getFileName());
+			image.setName(file.getFileName());
+			image.setSize(decodeSize(file.getSize()));
+			image.setLink(file.getUrl());
+			images.add(image);
+		}
+		
+		return images;
+	}
+
+	private String decodeSize(Long size) {
+		// TODO Auto-generated method stub
+		if(size==null) return null;
+		String [] surfix = {"B","KB","MB","GB"};
+		Long sz = size;
+		int pos = 0;
+		while(sz>1024) {
+			sz = sz/1024;
+			pos++;
+		}
+		return sz+surfix[pos];
+	}
 
 }

@@ -72,7 +72,7 @@ public class FileService implements IFileService {
 	@Override
 	public List<FileItem> findImagesByUser(Long id, Date start, Date end) {
 		// TODO Auto-generated method stub
-		return FileTranslator.toDTO(fileRepo.findByUserIdAndCreateDateGreaterThanAndCreateDateLessThan(id,start,end));
+		return FileTranslator.toDTO(fileRepo.findByUserIdAndMediaTypeAndCreateDateGreaterThanAndCreateDateLessThan(id,MediaType.IMAGE,start,end));
 		
 	}
 
@@ -93,6 +93,13 @@ public class FileService implements IFileService {
 			ImageIO.write(resizedImage, "jpg", media.getFile());
 		}
 		return media;
+	}
+
+	@Override
+	public List<FileItem> findFilesByUser(Long id, Date start, Date end) {
+		// TODO Auto-generated method stub
+		return FileTranslator.toDTO(fileRepo.findByUserIdAndMediaTypeAndCreateDateGreaterThanAndCreateDateLessThan(id,MediaType.FILE,start,end));
+		
 	}
 
 }

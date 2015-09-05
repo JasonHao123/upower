@@ -1,5 +1,7 @@
 package jason.app.weixin.common.model;
 
+import jason.app.weixin.common.constant.MediaType;
+
 import java.util.Date;
 
 public class FileItem {
@@ -10,6 +12,27 @@ public class FileItem {
 	private Long userId;
 	private boolean isImage;
 	private String contentType;
+	private MediaType mediaType;
+	private String fileName;
+	private Long size;
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public Long getSize() {
+		return size;
+	}
+	public void setSize(Long size) {
+		this.size = size;
+	}
+	public MediaType getMediaType() {
+		return mediaType;
+	}
+	public void setMediaType(MediaType mediaType) {
+		this.mediaType = mediaType;
+	}
 	public String getContentType() {
 		return contentType;
 	}
