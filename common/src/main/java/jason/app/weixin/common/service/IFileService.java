@@ -20,4 +20,6 @@ public interface IFileService {
 
 	List<FileItem> findFilesByUser(Long id, Date lastDay, Date date);
 
+	List<FileItem> findVideosByUser(Long id, Date lastDay, Date date);
+
 }

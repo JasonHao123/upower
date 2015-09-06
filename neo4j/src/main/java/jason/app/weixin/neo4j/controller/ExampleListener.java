@@ -3,6 +3,7 @@ package jason.app.weixin.neo4j.controller;
 import jason.app.weixin.common.constant.MediaType;
 import jason.app.weixin.common.model.AnalyzeRelationCommand;
 import jason.app.weixin.common.model.AnalyzeResult;
+import jason.app.weixin.common.model.Category;
 import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.model.FileInfo;
@@ -106,11 +107,18 @@ public class ExampleListener implements MessageListener {
 			SocialUser user = socialService.findByExternalId(command.getOpenid());
 			jason.app.weixin.social.model.Message message = new jason.app.weixin.social.model.Message();
 			message.setAuthor(user);
-			message.setStatus(Status.PUBLISHED);
+//			message.setStatus(Status.PUBLISHED);
+			message.setCategory(new Category(79L));
 			message.setTitle(command.getTitle());
 			message.setLink(command.getUrl());
+			message.setCategory(new Category(79L));
 			message = socialService.saveMessage(message);
-			socialService.publishMessage(message.getId());
+			try {
+				sendMessage(command.getOpenid(),"请点击以下链接编辑消息并发布。<a href=\"http://www.weaktie.cn/weixin/circle/post.do?id="+message.getId()+"\">编辑</a>");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				new RuntimeException(e);
+			}
 		}
 	}
 

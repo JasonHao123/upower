@@ -12,20 +12,23 @@
 <script src="<c:url value="/resources/js/fontfamily.js" />" type="text/javascript" charset="utf-8"></script>
 <script src="<c:url value="/resources/js/fontsize.js" />" type="text/javascript" charset="utf-8"></script>
 <script src="<c:url value="/resources/js/fullscreen.js" />" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/js/video.js" />" type="text/javascript" charset="utf-8"></script>
 
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.raty.css" />">
 <script src="<c:url value="/resources/js/jquery.raty.js" />"></script>
   <script>
 		$( document ).on( "pagecreate", "#myPage", function() {
+			<c:if test="${empty postMessageForm.link}">
 	        $('#message').redactor({
 	        	imageManagerJson: '<c:url value="/rest/images.do" />',
 	    		imageUpload: '<c:url value="/rest/upload.do" />',
 	    		focus: true,
                 fileUpload: '<c:url value="/rest/uploadFile.do" />',
                 fileManagerJson: '<c:url value="/rest/files.do" />',
-                plugins: ['imagemanager','filemanager','fontcolor','fontsize','fontfamily','fullscreen']
+                videoManagerJson: '<c:url value="/rest/videos.do" />',
+                plugins: ['imagemanager','filemanager','fontcolor','fontsize','fontfamily','fullscreen','video']
 	    	});
-	        
+	        </c:if>
 	        $('#targetScore').raty({
 	      	  half     : true,
 	      	  score: ${postMessageForm.rating},
@@ -67,11 +70,16 @@
 			<option value="${category.id}" <c:if test="${postMessageForm.category == category.id}">selected</c:if> >${category.name}</option>
 			</c:forEach>
 		</select>
+		<c:if test="${empty postMessageForm.link}">
 		<spring:bind path="postMessageForm.content">
 			<textarea id="message" name="content" rows="5" cols="20"><c:out value="${status.value}" /></textarea>
 			<font color="red"><c:out value="${status.errorMessage}" /></font>
 		</spring:bind>
-
+		</c:if>
+		<c:if test="${not empty postMessageForm.link}">
+		<input type="text" name="link"  value="${postMessageForm.link }">
+		<iframe width="100%" height="600px" src="${postMessageForm.link }"></iframe>
+		</c:if>
 <div data-role="collapsible">
     <h4>对象群体</h4>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">

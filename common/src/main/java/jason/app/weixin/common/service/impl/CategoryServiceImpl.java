@@ -31,6 +31,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public Category findById(Long id) {
 		// TODO Auto-generated method stub
+		if(id==null || id==0L) return null;
 		return CategoryTranslator.toDTO(categoryRepo.findOne(id));
 	}
 

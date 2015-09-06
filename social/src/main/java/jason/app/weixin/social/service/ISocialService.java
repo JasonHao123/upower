@@ -4,6 +4,7 @@ import jason.app.weixin.common.model.AnalyzeResult;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
+import jason.app.weixin.social.model.MessageComment;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
@@ -80,5 +81,9 @@ public interface ISocialService {
 	void publishMessage(Long messageId);
 
 	SocialMessage publishMessageToUser(Long messageId, Long userId);
+
+	List<MessageComment> getMessageComments(Long id, Long id2, Pageable pageable);
+
+	MessageComment saveMessageComment(MessageComment comment);
 
 }

@@ -48,7 +48,7 @@
 			},
 			insert: function(e)
 			{
-				this.image.insert('<img src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '">');
+				this.image.insert('<img style="width:100%" src="' + $(e.target).attr('rel') + '" alt="' + $(e.target).attr('title') + '">');
 			}
 		};
 	};

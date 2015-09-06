@@ -7,13 +7,17 @@ import jason.app.weixin.security.model.User;
 import jason.app.weixin.security.service.ISecurityService;
 import jason.app.weixin.social.constant.Status;
 import jason.app.weixin.social.model.Message;
+import jason.app.weixin.social.model.MessageComment;
+import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMessage;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.web.controller.circle.model.PostMessageForm;
 import jason.app.weixin.web.controller.circle.model.PostMessageValidator;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.jms.JMSException;
 import javax.jms.Session;
@@ -31,6 +35,7 @@ import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,10 +64,26 @@ public class CircleController {
 	private PostMessageValidator validator = new PostMessageValidator();
 	
 	@RequestMapping(value = "/message", method = RequestMethod.GET)
-	public String message(Model model,@RequestParam(value="id",required=true) Long id) {
+	public String message(Model model,@RequestParam(value="id",required=false) Long id,@RequestParam(value="id2",required=false) Long id2) {
 		logger.info("Welcome home!");
 		User user = securityService.getCurrentUser();
-		model.addAttribute("message",socialService.getSocialMessage(user.getId(), id));
+		Message message = null;
+		if(id!=null) {
+			message = socialService.getSocialMessage(user.getId(),id);
+		}
+		if(id2!=null) {
+			message = socialService.getMessage2(user.getId(),id2); 
+		}
+		if(StringUtils.hasText(message.getLink())) {
+			message.setContent("<iframe width=\"100%\" height=\"600px\" src=\""+message.getLink()+"\"></iframe>");
+		}
+		if(message.getSocialDistance()==null) {
+			SocialDistance dis = new SocialDistance();
+			dis.setRating(user.getId()== message.getAuthor().getId()?5F:0F);
+			dis.setDistance(user.getId()== message.getAuthor().getId()?0:999);
+			message.setSocialDistance(dis);
+		}
+		model.addAttribute("message", message);
 		return "circle.message";
 	}
 	
@@ -87,6 +108,7 @@ public class CircleController {
         		form.setRating(message.getRating());
         		form.setSex(message.getSex());
         		form.setStatus(message.getStatus());
+        		form.setLink(message.getLink());
         	
         	}
         }
@@ -111,7 +133,7 @@ public class CircleController {
      */
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     @Transactional
-    public String postSignUp(HttpServletRequest request,HttpServletResponse response,PostMessageForm postMessageForm, BindingResult result) {
+    public String postSignUp(Model model,HttpServletRequest request,HttpServletResponse response,PostMessageForm postMessageForm, BindingResult result) {
         logger.info("Welcome home!");
         validator.validate(postMessageForm, result);
         User user = securityService.getCurrentUser();
@@ -120,6 +142,8 @@ public class CircleController {
         	result.reject("title","the user is not valid, please login again!");
         }
         if(result.hasErrors()) {
+            model.addAttribute("categories", categoryService.findByParent("message.type", null));
+            postMessageForm.setRating(0F);
         	 return "circle.post";
         }
         SocialUser profile = socialService.loadProfile(user.getId());
@@ -127,6 +151,9 @@ public class CircleController {
 		form.setId(postMessageForm.getId());
 		form.setTitle(postMessageForm.getTitle());
 		form.setContent(postMessageForm.getContent());
+		if(StringUtils.hasText(postMessageForm.getLink())) {
+			form.setLink(postMessageForm.getLink());
+		}
 		form.setCategory(categoryService.findById(postMessageForm.getCategory()));
 		if(form.getDistance()!=null && form.getDistance()>0) {
 			form.setDistance(postMessageForm.getDistance());
@@ -178,7 +205,7 @@ public class CircleController {
         User user = securityService.getCurrentUser();       
 		List<Message> messages = socialService.getUserMessages(user.getId(),pageable);
 		for(Message msg:messages) {
-			if(msg.getCategory()!=null) {
+			if(msg.getCategory()!=null && msg.getCategory().getName()==null) {
 				msg.setCategory(categoryService.findById(msg.getCategory().getId()));
 			}
 		}
@@ -211,4 +238,40 @@ public class CircleController {
 
 	}
 	
+	@RequestMapping(value = "/comments", method = RequestMethod.GET)
+	public @ResponseBody List<MessageComment> comments(@RequestParam(value="id",required=true) Long id,@PageableDefault(size=10,page=0) Pageable pageable) {
+
+		User user = securityService.getCurrentUser();
+		List<MessageComment> comments =socialService.getMessageComments(user.getId(),id,pageable);
+		
+		// return socialService.getPersonalMessages(user.getId(),category,pageable);
+		return comments;
+
+	}
+	
+	
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
+	@Transactional
+	public @ResponseBody MessageComment comment(@RequestParam("id") Long id,@RequestParam("message") String message, @RequestParam(value="comment",required=false) Long commentId) {
+		MessageComment comment = new MessageComment();
+		User user = securityService.getCurrentUser();
+		comment.setAuthor(socialService.loadProfile(user.getId()));
+		comment.setContent(message);
+		Message msg = new Message();
+		msg.setId(id);
+		comment.setMessage(msg);
+		if(commentId!=null) {
+			MessageComment reference = new MessageComment();
+			reference.setId(commentId);
+			comment.setReference(reference);
+		}
+		comment = socialService.saveMessageComment(comment);
+		SocialDistance dis = new SocialDistance();
+		dis.setDistance(0);
+		dis.setRating(5F);
+		comment.setDistance(dis);
+		
+	//	comment = socialService.saveComment(comment);
+		return comment;
+	} 
 }

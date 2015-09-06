@@ -102,4 +102,11 @@ public class FileService implements IFileService {
 		
 	}
 
+	@Override
+	public List<FileItem> findVideosByUser(Long id, Date start, Date end) {
+		// TODO Auto-generated method stub
+		return FileTranslator.toDTO(fileRepo.findByUserIdAndMediaTypeAndCreateDateGreaterThanAndCreateDateLessThan(id,MediaType.VIDEO,start,end));
+		
+	}
+
 }

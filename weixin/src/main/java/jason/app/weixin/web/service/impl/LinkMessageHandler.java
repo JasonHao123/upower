@@ -54,7 +54,7 @@ public class LinkMessageHandler extends MessageHandler {
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
-        response.setContent("链接已发布");
+        response.setContent("链接已保存。");
         return response;
 	}
 

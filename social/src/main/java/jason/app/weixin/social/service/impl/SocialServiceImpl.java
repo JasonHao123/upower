@@ -1,12 +1,14 @@
 package jason.app.weixin.social.service.impl;
 
 import jason.app.weixin.common.model.AnalyzeResult;
+import jason.app.weixin.common.model.Category;
 import jason.app.weixin.common.service.ICategoryService;
 import jason.app.weixin.social.constant.MessageType;
 import jason.app.weixin.social.entity.AddFriendLinkImpl;
 import jason.app.weixin.social.entity.AddFriendRequestImpl;
 import jason.app.weixin.social.entity.AnalyzeResultImpl;
 import jason.app.weixin.social.entity.CommentImpl;
+import jason.app.weixin.social.entity.MessageCommentImpl;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SettingsImpl;
 import jason.app.weixin.social.entity.SocialDistanceImpl;
@@ -17,6 +19,7 @@ import jason.app.weixin.social.entity.SocialUserImpl;
 import jason.app.weixin.social.model.AddFriendRequest;
 import jason.app.weixin.social.model.Comment;
 import jason.app.weixin.social.model.Message;
+import jason.app.weixin.social.model.MessageComment;
 import jason.app.weixin.social.model.Settings;
 import jason.app.weixin.social.model.SocialDistance;
 import jason.app.weixin.social.model.SocialMail;
@@ -27,6 +30,7 @@ import jason.app.weixin.social.repository.AddFriendLinkRepository;
 import jason.app.weixin.social.repository.AddFriendRequestRepository;
 import jason.app.weixin.social.repository.AnalyzeResultRepository;
 import jason.app.weixin.social.repository.CommentRepository;
+import jason.app.weixin.social.repository.MessageCommentRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
@@ -38,6 +42,7 @@ import jason.app.weixin.social.service.ISocialService;
 import jason.app.weixin.social.translator.AddFriendRequestTranslator;
 import jason.app.weixin.social.translator.AnalyzeResultTranslator;
 import jason.app.weixin.social.translator.CommentTranslator;
+import jason.app.weixin.social.translator.MessageCommentTranslator;
 import jason.app.weixin.social.translator.MessageTranslator;
 import jason.app.weixin.social.translator.SettingsTransaltor;
 import jason.app.weixin.social.translator.SocialDistanceTranslator;
@@ -45,6 +50,7 @@ import jason.app.weixin.social.translator.SocialMailTranslator;
 import jason.app.weixin.social.translator.SocialMessageTranslator;
 import jason.app.weixin.social.translator.SocialUserTranslator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -103,6 +109,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private CommentRepository commentRepo;
+	
+	@Autowired
+	private MessageCommentRepository msgCommentRepo;
 	
 	@Autowired
 	private AnalyzeResultRepository analyzeResultRepo;
@@ -200,7 +209,14 @@ public class SocialServiceImpl implements ISocialService {
 		List<Message> result = new ArrayList<Message>();
 		for(SocialMessageImpl msg:messages) {
 			Message message = MessageTranslator.toDTO(msg.getMessage());
-			message.setCategory(categoryService.findById(msg.getMessage().getCategory()));
+			if(msg.getMessage().getCategory()==null) {
+				Category cate = new Category(0L);
+				cate.setName("未设定");
+				message.setCategory(cate);
+			}else {
+				message.setCategory(categoryService.findById(msg.getMessage().getCategory()));
+			}
+			
 			if(id==msg.getMessage().getAuthor().getId()) {
 				SocialDistance dis = new SocialDistance();
 				dis.setDistance(0);
@@ -208,7 +224,14 @@ public class SocialServiceImpl implements ISocialService {
 				message.setSocialDistance(dis);
 			}else {
 				SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(id, msg.getMessage().getAuthor().getId());
-				message.setSocialDistance(SocialDistanceTranslator.toDTO(distance));
+				if(distance==null) {
+					SocialDistance dis = new SocialDistance();
+					dis.setRating(0F);
+					dis.setDistance(999);
+					message.setSocialDistance(dis);
+				}else {
+					message.setSocialDistance(SocialDistanceTranslator.toDTO(distance));
+				}
 			}
 			message.setId(msg.getId());
 			result.add(message);
@@ -251,8 +274,20 @@ public class SocialServiceImpl implements ISocialService {
 			List<Message> result = new ArrayList<Message>();
 			for(MessageImpl msg:messages) {
 				Message message = MessageTranslator.toDTO(msg);
-				message.setCategory(categoryService.findById(msg.getCategory()));
-				message.setDistance(0);				
+			//	message.setCategory(categoryService.findById(msg.getCategory()));
+				if(msg.getCategory()==null) {
+					Category cate = new Category(0L);
+					cate.setName("未设定");
+					message.setCategory(cate);
+				}else {
+					message.setCategory(categoryService.findById(msg.getCategory()));
+				}
+				message.setDistance(0);	
+				if(message.getSocialDistance()==null) {
+					SocialDistance dis = new SocialDistance();
+					dis.setRating(0F);
+					message.setSocialDistance(dis);
+				}
 				result.add(message);
 			}
 			return result;
@@ -514,6 +549,51 @@ public class SocialServiceImpl implements ISocialService {
 			result.add(SocialUserTranslator.toDTO(user));
 		}
 		return result;
+	}
+
+	@Override
+	public List<MessageComment> getMessageComments(Long userId, Long id,
+			Pageable pageable) {
+		// TODO Auto-generated method stub
+		List<MessageComment> comments =  MessageCommentTranslator.toDTO(msgCommentRepo.findByMessage_IdOrderByCreateDateDesc(id,pageable));
+		for(MessageComment comment:comments) {
+			if(userId==comment.getAuthor().getId()) {
+				SocialDistance dis = new SocialDistance();
+				dis.setDistance(0);
+				dis.setRating(5F);
+				comment.setDistance(dis);
+			}else {
+				SocialDistanceImpl distance = distanceRepo.findByFromUser_IdAndToUser_Id(userId, comment.getAuthor().getId());
+				if(distance==null) {
+					SocialDistance dis = new SocialDistance();
+					dis.setRating(0F);
+					dis.setDistance(999);
+					comment.setDistance(dis);
+				}else {
+					comment.setDistance(SocialDistanceTranslator.toDTO(distance));
+				}
+			}
+		}
+		return comments;
+		
+	}
+
+	@Override
+	@Transactional
+	public MessageComment saveMessageComment(MessageComment comment) {
+		// TODO Auto-generated method stub
+		MessageCommentImpl impl = new MessageCommentImpl();
+		impl.setAuthor(socialUserRepo.findOne(comment.getAuthor().getId()));
+		impl.setContent(comment.getContent());
+		impl.setCreateDate(new Date());
+		impl.setMessage(msgRepo.findOne(comment.getMessage().getId()));
+		if(comment.getReference()!=null) {
+			impl.setReference(msgCommentRepo.findOne(comment.getReference().getId()));
+		}
+		impl = msgCommentRepo.save(impl);
+		comment.setId(impl.getId());
+		comment.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(impl.getCreateDate()));
+		return comment;
 	}
 
 }

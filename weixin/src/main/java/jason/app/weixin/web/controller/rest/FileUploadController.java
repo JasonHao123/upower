@@ -95,9 +95,9 @@ public class FileUploadController {
 	
 	@RequestMapping(value = "/uploadFile")
 	@Transactional
-    public @ResponseBody UploadResult uploadFile(HttpServletRequest req,HttpServletResponse resp,@RequestParam("file") MultipartFile file){
+    public @ResponseBody jason.app.weixin.web.controller.rest.model.File uploadFile(HttpServletRequest req,HttpServletResponse resp,@RequestParam("file") MultipartFile file){
 		User user = securityService.getCurrentUser();
-		UploadResult result = new UploadResult();
+		jason.app.weixin.web.controller.rest.model.File result = new jason.app.weixin.web.controller.rest.model.File();
 		try {
 			File tempFile = File.createTempFile("weaktie", "tmp");
 			file.transferTo(tempFile);
@@ -120,8 +120,10 @@ public class FileUploadController {
 			fileItem.setFileName(file.getOriginalFilename());
 			fileItem.setSize(file.getSize());
 			fileService.saveFile(fileItem);
-			result.setFilelink(mediaUrl);
-			
+			result.setLink(mediaUrl);
+			result.setName(fileItem.getFileName());
+			result.setSize(decodeSize(fileItem.getSize()));
+			result.setTitle(fileItem.getFileName());
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -197,6 +199,27 @@ public class FileUploadController {
 			image.setName(file.getFileName());
 			image.setSize(decodeSize(file.getSize()));
 			image.setLink(file.getUrl());
+			images.add(image);
+		}
+		
+		return images;
+	}
+	
+	@RequestMapping(value = "/videos")
+    public @ResponseBody List<Image> videos(HttpServletRequest req,HttpServletResponse resp){
+		List<Image> images = new ArrayList<Image>();
+		User user = securityService.getCurrentUser();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.MONTH, -1);
+		Date lastDay = calendar.getTime();
+		List<FileItem> files = fileService.findVideosByUser(user.getId(),lastDay,new Date());
+		
+		for(FileItem file:files) {
+			Image image = new Image();
+			image.setImage(file.getUrl());
+			image.setThumb(file.getThumbnail());
+			image.setFilelink(file.getUrl());
+			image.setFolder("过去一月");
 			images.add(image);
 		}
 		

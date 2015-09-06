@@ -13,10 +13,10 @@ function getData() {
 	    if(result.length>0) {
 		    $.each(result, function(i, message){
 		    	var link = "<c:url value="/circle/message.do" />?id<c:if test="${cate==-1}">2</c:if>="+message.id;
-		    	if(message.link!=null) {
-		    		link = message.link;
-		    	}
-			      $("#messages").append("<li><a data-ajax='false' href='"+link+"'><img src='"+message.author.headimgurl+"' class='ui-li-thumb'><h3>"+message.author.nickname +"("+message.socialDistance.distance +"度)</h3><p><strong>"+message.title+"</strong></p><p class=\"ui-li-aside\">"+message.category.name +"</p></a></li>");
+		   // 	if(message.link!=null) {
+		   // 		link = message.link;
+		   // 	}
+			      $("#messages").append("<li><a data-ajax='false' href='"+link+"'><img src='"+message.author.headimgurl+"' class='ui-li-thumb'><h3>"+message.author.nickname +"("+message.socialDistance.distance +"度)</h3><p  style='white-space:pre-wrap;'><strong>"+message.title+"</strong></p><p class=\"ui-li-aside\">"+message.category.name +"</p></a></li>");
 
 		    });
 		    $("#messages").listview("refresh");
