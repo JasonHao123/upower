@@ -86,4 +86,6 @@ public interface ISocialService {
 
 	MessageComment saveMessageComment(MessageComment comment);
 
+	void saveSnippet(Long id, String content);
+
 }

@@ -11,6 +11,7 @@ import jason.app.weixin.social.entity.CommentImpl;
 import jason.app.weixin.social.entity.MessageCommentImpl;
 import jason.app.weixin.social.entity.MessageImpl;
 import jason.app.weixin.social.entity.SettingsImpl;
+import jason.app.weixin.social.entity.SnippetImpl;
 import jason.app.weixin.social.entity.SocialDistanceImpl;
 import jason.app.weixin.social.entity.SocialMailImpl;
 import jason.app.weixin.social.entity.SocialMessageImpl;
@@ -33,6 +34,7 @@ import jason.app.weixin.social.repository.CommentRepository;
 import jason.app.weixin.social.repository.MessageCommentRepository;
 import jason.app.weixin.social.repository.MessageRepository;
 import jason.app.weixin.social.repository.SettingsRepository;
+import jason.app.weixin.social.repository.SnippetRepository;
 import jason.app.weixin.social.repository.SocialDistanceRepository;
 import jason.app.weixin.social.repository.SocialMailRepository;
 import jason.app.weixin.social.repository.SocialMessageRepository;
@@ -115,6 +117,9 @@ public class SocialServiceImpl implements ISocialService {
 	
 	@Autowired
 	private AnalyzeResultRepository analyzeResultRepo;
+	
+	@Autowired
+	private SnippetRepository snippetRepo;
 	
 	@PersistenceContext(unitName="SocialPU")
 	private EntityManager em;
@@ -594,6 +599,16 @@ public class SocialServiceImpl implements ISocialService {
 		comment.setId(impl.getId());
 		comment.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(impl.getCreateDate()));
 		return comment;
+	}
+
+	@Override
+	@Transactional
+	public void saveSnippet(Long id, String content) {
+		// TODO Auto-generated method stub
+		SnippetImpl impl = new SnippetImpl();
+		impl.setAuthor(em.find(SocialUserImpl.class, id));
+		impl.setContent(content);
+		snippetRepo.save(impl);
 	}
 
 }

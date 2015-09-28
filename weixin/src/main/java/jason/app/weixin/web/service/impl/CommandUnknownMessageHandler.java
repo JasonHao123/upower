@@ -5,7 +5,7 @@ import jason.app.weixin.web.controller.weixin.model.WeixinParam;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class CommandUnknownMessageHandler extends MessageHandler {
 
 	

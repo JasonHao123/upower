@@ -1,19 +1,12 @@
 package jason.app.weixin.web.service.impl;
 
+import jason.app.weixin.common.model.LinkMessageCommand;
+import jason.app.weixin.web.controller.weixin.model.WeixinHeader;
+import jason.app.weixin.web.controller.weixin.model.WeixinParam;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-
-import jason.app.weixin.common.constant.MediaType;
-import jason.app.weixin.common.model.CreateUserCommand;
-import jason.app.weixin.common.model.PublishMessageCommand;
-import jason.app.weixin.common.model.SaveMediaCommand;
-import jason.app.weixin.common.service.IAmazonS3Service;
-import jason.app.weixin.common.service.IWeixinService;
-import jason.app.weixin.social.model.SocialUser;
-import jason.app.weixin.social.service.ISocialService;
-import jason.app.weixin.web.controller.weixin.model.WeixinHeader;
-import jason.app.weixin.web.controller.weixin.model.WeixinParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,21 +20,27 @@ public class LinkMessageHandler extends MessageHandler {
 	
 	private static Logger logger = LoggerFactory.getLogger(SubscribeEventHandler.class);
 
+	private static final String URL_PATTERN = "^[http:\\/\\/,https:\\/\\/]*[a-z,A-Z,0-9]+\\.[a-z,A-Z,0-9]+\\.[a-z,A-Z,0-9]+.+$";
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
 	@Override
 	public boolean canHandle(WeixinParam params, WeixinHeader header) {
 		// TODO Auto-generated method stub
-		return super.canHandle(params, header) && ("link".equalsIgnoreCase(params.getMsgType()));
+		return super.canHandle(params, header) && (("link".equalsIgnoreCase(params.getMsgType())||params.getContent().matches(URL_PATTERN)));
 	}
 	
 	@Override
 	public WeixinParam handle(final WeixinParam params, WeixinHeader header) {
-		final PublishMessageCommand command = new PublishMessageCommand();
+		final LinkMessageCommand command = new LinkMessageCommand();
 		command.setOpenid(params.getFromUserName());
-		command.setTitle(params.getTitle());
-		command.setUrl(params.getUrl());
+
+		if("link".equalsIgnoreCase(params.getMsgType())) {
+			command.setTitle(params.getTitle());
+			command.setUrl(params.getUrl());
+		}else {
+			command.setUrl(params.getContent().trim());
+		}
 			jmsTemplate.send(new MessageCreator() {
 	            public Message createMessage(Session session) throws JMSException {
 	              //  return session.createTextMessage("hello queue world");  
@@ -54,7 +53,7 @@ public class LinkMessageHandler extends MessageHandler {
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
-        response.setContent("链接已保存。");
+        response.setContent("链接保存成功，,回复添加标签，以空格分隔多个标签");
         return response;
 	}
 

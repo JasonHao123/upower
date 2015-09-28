@@ -8,22 +8,29 @@ import jason.app.weixin.common.model.CreateRelationCommand;
 import jason.app.weixin.common.model.CreateUserCommand;
 import jason.app.weixin.common.model.FileInfo;
 import jason.app.weixin.common.model.FileItem;
+import jason.app.weixin.common.model.LinkMessageCommand;
 import jason.app.weixin.common.model.PublishMessageCommand;
 import jason.app.weixin.common.model.SaveMediaCommand;
 import jason.app.weixin.common.model.SendMessageCommand;
+import jason.app.weixin.common.model.SnippetMessageCommand;
+import jason.app.weixin.common.model.TagMessageCommand;
 import jason.app.weixin.common.model.Text;
 import jason.app.weixin.common.model.WeixinUser;
 import jason.app.weixin.common.service.IAmazonS3Service;
 import jason.app.weixin.common.service.IFileService;
 import jason.app.weixin.common.service.IWeixinService;
 import jason.app.weixin.neo4j.service.INeo4jService;
-import jason.app.weixin.social.constant.Status;
+import jason.app.weixin.neo4j.service.impl.CacheUtil;
+import jason.app.weixin.neo4j.service.impl.Crawler;
+import jason.app.weixin.neo4j.service.impl.Item;
+import jason.app.weixin.social.entity.SnippetImpl;
 import jason.app.weixin.social.model.SocialUser;
 import jason.app.weixin.social.service.ISocialService;
 
 import java.util.Date;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -56,6 +63,9 @@ public class ExampleListener implements MessageListener {
 	@Autowired
 	private IFileService fileService;
 	
+	@Inject
+	private CacheUtil cacheUtil;
+	
 	@Transactional
     public void onMessage(Message message) {
 		logger.info("on message"+message);
@@ -85,6 +95,12 @@ public class ExampleListener implements MessageListener {
 					handleSaveMedia(object);
 				}else if(object instanceof PublishMessageCommand) {
 					handlePublishMessage(object);
+				}else if(object instanceof LinkMessageCommand ) {
+					handleLinkMessage(object);
+				}else if(object instanceof SnippetMessageCommand ) {
+					handleSnippetMessage(object);
+				}else if(object instanceof TagMessageCommand) {
+					handleTagMessage(object);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -97,12 +113,47 @@ public class ExampleListener implements MessageListener {
         }
     }
 
+	private void handleTagMessage(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleSnippetMessage(Object object) {
+		// TODO Auto-generated method stub
+		SnippetMessageCommand command = (SnippetMessageCommand)object;		
+		SocialUser user = socialService.findByExternalId(command.getOpenId());
+		socialService.saveSnippet(user.getId(),command.getContent());
+	//	snippet.setAuthor(author);
+	}
+
+	private void handleLinkMessage(Object object) {
+		// TODO Auto-generated method stub
+		LinkMessageCommand lmc = (LinkMessageCommand)object;
+		SocialUser user = socialService.findByExternalId(lmc.getOpenid());
+		jason.app.weixin.social.model.Message message = new jason.app.weixin.social.model.Message();
+		message.setAuthor(user);
+//		message.setStatus(Status.PUBLISHED);
+		message.setCategory(new Category(79L));
+	//	message.setTitle(lmc.getTitle());
+	//	message.setLink(command.getUrl());
+		Crawler.fetch(lmc.getUrl(),message);
+		message = socialService.saveMessage(message);
+		cacheUtil.cacheItem(new Item("message",message.getId()));
+		try {
+			sendMessage(lmc.getOpenid(),"请点击以下链接编辑消息并发布。<a href=\"http://www.weaktie.cn/weixin/circle/post.do?id="+message.getId()+"\">编辑</a>");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			new RuntimeException(e);
+		}
+		
+	}
+
 	private void handlePublishMessage(Object object) {
 		// TODO Auto-generated method stub
 		logger.info("publish message "+object);
 		PublishMessageCommand command = (PublishMessageCommand)object;
 		if(command.getMessageId()!=null) {
-			socialService.publishMessage(command.getMessageId());
+			/// socialService.publishMessage(command.getMessageId());
 		}else if(command.getOpenid()!=null) {
 			SocialUser user = socialService.findByExternalId(command.getOpenid());
 			jason.app.weixin.social.model.Message message = new jason.app.weixin.social.model.Message();
@@ -155,6 +206,7 @@ public class ExampleListener implements MessageListener {
 			file.setContentType(media.getContentType());
 			file.setMediaType(command.getMediaType());
 			fileService.saveFile(file);
+			cacheUtil.cacheItem(new Item("media",file.getId()));
 		}finally {
 			if(media!=null && media.getFile()!=null) {
 				media.getFile().delete();
