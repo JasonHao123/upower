@@ -60,6 +60,6 @@ public class LinkMessageHandler extends MessageHandler {
 	@Override
 	public int getOrder() {
 		// TODO Auto-generated method stub
-		return super.getOrder()+98;
+		return super.getOrder()+60;
 	}
 }

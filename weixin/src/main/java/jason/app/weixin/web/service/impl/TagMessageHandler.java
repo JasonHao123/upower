@@ -47,13 +47,13 @@ public class TagMessageHandler extends MessageHandler {
         response.setFromUserName(params.getToUserName());
         response.setCreateTime(params.getCreateTime());
         response.setToUserName(params.getFromUserName());       
-        response.setContent("文本保存成功！");
+        response.setContent("标签保存成功！");
         return response;
 	}
 
 	@Override
 	public int getOrder() {
 		// TODO Auto-generated method stub
-		return super.getOrder()+98;
+		return super.getOrder()+70;
 	}
 }
